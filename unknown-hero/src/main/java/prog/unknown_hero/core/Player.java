@@ -38,7 +38,7 @@ public class Player extends Character{
 	public void getWeapon(Weapon wp){
 		if(this.wp!=null) removeWeapon();
 		this.wp=wp;
-		this.wp.effect(this, 0);4h
+		this.wp.effect(this, 0);
 	}
 	private void removeWeapon() {
 		this.wp.effect(this, 1);
