@@ -14,6 +14,7 @@ public class GameController {
 	
 	static GameStage gameStage;
 	static int waitCount = 0;
+	static int startTime = 0;
 
 	private static final String GROUP_ID = "public";
 	private static final String APP_NAME = "zeroasclin@gmail.com";
@@ -73,6 +74,7 @@ public class GameController {
 				try {
 					final long time = Long.parseLong(result);
 					lastReceiveMessageTime = time - 3600000; // 將最後收到訊息的時間設為前1小時，以便抓取前1小時之後的訊息
+					startTime = time;
 				} catch (final Exception ex) {
 
 				}
@@ -245,7 +247,7 @@ public class GameController {
 				} else {
 					final JSONObject obj = new JSONObject();
 					obj.put("msg_groupid", GROUP_ID);
-					obj.put("msg_senderid", account);
+					obj.put("msg_senderid", ACCOUNT);
 					obj.put("msg_content", message);
 					obj.put("msg_type", "1");
 					api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, obj.toString());
@@ -290,7 +292,7 @@ public class GameController {
 		final String senderID = message.getString("msg_senderid");
 		final String content = message.getString("msg_content");
 		lastReceiveMessageTime = message.getLong("msg_time") + 1; //記錄最後收到訊息的時間
-		if (ignoreSelf) {
+		if (ignoreSelf || startTime > message.getLong("msg_time")) {
 			if (ACCOUNT.equals(senderID)) {
 				return;
 			}
