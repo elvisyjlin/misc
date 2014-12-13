@@ -19,8 +19,8 @@ public class GameController {
 	private static final String GROUP_ID = "public";
 	private static final String APP_NAME = "zeroasclin@gmail.com";
 	private static final String API_KEY = "9f046a5457cc84660323d4a2ef0a5091";
-	private static final String ACCOUNT = "user2";
-	private static final String PASSWORD = "994e363bd0a0a84df00f7b17a83fc286";
+	private static final String ACCOUNT = "user1";
+	private static final String PASSWORD = "52e39fd5a80a23a96e7729af4a2d7ce3";
 	private static final int REQUEST_INITIAL_LOGIN = 0;
 	private static final int REQUEST_INITIAL_GET_SERVER_TIME = 1;
 	private static final int REQUEST_INITIAL_SET_PROFILE = 2;
@@ -35,7 +35,7 @@ public class GameController {
 	private final static MeetiAPI api = new MeetiAPI();
 	private static boolean available = false, stopping = false;
 	private static JSONObject profile = null;
-	private static String account = "", name = "";
+	private static String name = "";
 	private static JSONArray messages = new JSONArray();
 	private static long lastReceiveMessageTime = 0;
 	private final static HashMap<String, JSONObject> profileMap = new HashMap<>();
@@ -53,7 +53,7 @@ public class GameController {
 							name = "unknown_hero";
 						}
 						profile = new JSONObject();
-						profile.put("person_email", account);
+						profile.put("person_email", ACCOUNT);
 						profile.put("person_name", name);
 						api.setProfile(REQUEST_INITIAL_SET_PROFILE, profile.toString());
 					} else {
