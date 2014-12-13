@@ -10,6 +10,9 @@ import java.util.Scanner;
 import org.magiclen.json.JSONArray;
 import org.magiclen.json.JSONObject;
 
+import prog.unknown_hero.utility.BaseMessage;
+import prog.unknown_hero.utility.Receiver;
+
 public class GameController {
 	
 	static GameStage gameStage;
@@ -234,10 +237,51 @@ public class GameController {
 		
 	}
 	
+	static enum GAME_PHASE {IDLE, WAIT, DRAW, HERO, PLAY, ATCK, EXCH, END};
+	
 	public static void gameStart() {
+		final JSONObject obj = new JSONObject();
+		obj.put("msg_groupid", GROUP_ID);
+		obj.put("msg_senderid", ACCOUNT);
+		obj.put("msg_content", "start");
+		obj.put("msg_type", "1");
+		api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, obj.toString());
+		
+		Player player = new Player(int, int);
+		GAME_PHASE gamePhase = GAME_PHASE.IDLE;
 		stopping = false;
 		while (!stopping) {
 			final String message = "";
+			
+			switch(gamePhase) {
+			case IDLE:
+				if(Receiver.hasMessage()) {
+					String[] receive = Receiver.get().content();
+					if("end".equals(receive[0])) {
+						if(player.showStatus().equals(receive[1])) {
+							gamePhase = GAME_PHASE.DRAW;
+						}
+					}
+				}
+				break;
+			case WAIT:
+				break;
+			case DRAW:
+				player.drawCard();
+				gamePhase = GAME_PHASE.HERO;
+				break;
+			case HERO:
+				break;
+			case PLAY:
+				break;
+			case ATCK:
+				break;
+			case EXCH:
+				break;
+			case END:
+				break;
+			}
+			
 			if (message.length() > 0) {
 				if (":q".equals(message)) { //輸入「:q」停止
 					stopping = true;
@@ -301,14 +345,14 @@ public class GameController {
 		if(gameStage.isWaiting()) {
 			if("join".equals(content)) {
 				System.out.println(++waitCount);
-				if(waitCount == 4) {
+				if(waitCount == 3) {
 					gameStart();
 				}
 			} else if("start".equals(content)) {
 				gameStart();
 			}
 		} else if(gameStage.isPlaying()) {
-			
+			Receiver.send(new BaseMessage(message.getString("msg_senderid"), message.getString("msg_content")));
 		}
 		/*
 		if (profileMap.containsKey(senderID)) {
