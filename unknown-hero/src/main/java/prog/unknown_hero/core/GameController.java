@@ -199,10 +199,11 @@ public class GameController {
 			groupData.put("group_admins", "user1");
 			System.out.println(groupData);
 			api.setGroup(REQUEST_SET_GROUP, GROUP_ID, groupData.toString());
+			System.out.println("創立群組！");
 		}
-		System.out.println("創立群組！");
 		
 		gameStage.nextStage();
+		waiting();
 			
 		return true;
 	}
@@ -211,6 +212,7 @@ public class GameController {
 
 		//開始取得系統通知
 		api.getSystemNotification(REQUEST_SYSTEM_NOTIFICATION);
+		System.out.println("開始接收");
 		
 		final JSONObject obj = new JSONObject();
 		obj.put("msg_groupid", GROUP_ID);
