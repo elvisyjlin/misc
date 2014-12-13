@@ -14,7 +14,7 @@ public class GameController {
 	
 	static GameStage gameStage;
 	static int waitCount = 0;
-	static int startTime = 0;
+	static long startTime = 0;
 
 	private static final String GROUP_ID = "public";
 	private static final String APP_NAME = "zeroasclin@gmail.com";
