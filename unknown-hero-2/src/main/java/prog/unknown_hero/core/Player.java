@@ -38,8 +38,9 @@ public class Player extends Character{
 		return tmpCdNum;
 	}
 	public int drawHeroticCard(List<Card> gameCard){
-		if(this.hand<4)
+		if(this.hand<4&&this.health>0)
 		{
+			this.health--;
 			int ct=0;
 			for(int i=0; i<gameCard.size(); i++)
 				if(gameCard.get(i) instanceof EffectCards) ct++;
