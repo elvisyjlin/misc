@@ -222,7 +222,25 @@ public class GameController {
 	}
 	
 	public static void gameStart() {
-		// set game
+		stopping = false;
+		while (!stopping) {
+			final String message = "";
+			if (message.length() > 0) {
+				if (":q".equals(message)) { //輸入「:q」停止
+					stopping = true;
+					System.out.println("掰掰");
+				} else if (":g".equals(message)) {
+					api.getGroups(REQUEST_GET_GROUP);
+				} else {
+					final JSONObject obj = new JSONObject();
+					obj.put("msg_groupid", GROUP_ID);
+					obj.put("msg_senderid", account);
+					obj.put("msg_content", message);
+					obj.put("msg_type", "1");
+					api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, obj.toString());
+				}
+			}
+		}
 		gameStage.nextStage();
 	}
 
