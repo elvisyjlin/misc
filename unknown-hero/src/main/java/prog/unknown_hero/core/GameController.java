@@ -13,6 +13,7 @@ import org.magiclen.json.JSONObject;
 public class GameController {
 	
 	static GameStage gameStage;
+	static int waitCount = 0;
 
 	private static final String GROUP_ID = "public";
 	private static final String APP_NAME = "zeroasclin@gmail.com";
@@ -189,6 +190,14 @@ public class GameController {
 			}
 		}
 		System.out.println("登入成功！");
+		System.out.println("---歷史訊息---");
+		final int l = messages.length();
+		for (int i = 0; i < l; i++) {
+			final JSONObject message = messages.getJSONObject(i);
+			System.out.println(message);
+			parseMessage(message);
+		}
+		System.out.println("--- ----- ---");
 		
 		if(init) {
 			JSONObject groupData = new JSONObject();
@@ -278,15 +287,15 @@ public class GameController {
 	 * @param ignoreSelf 傳入是否忽略自己的訊息
 	 */
 	public static void parseMessage(final JSONObject message, final boolean ignoreSelf) {
-		int waitCount = 0;
 		final String senderID = message.getString("msg_senderid");
 		final String content = message.getString("msg_content");
 		lastReceiveMessageTime = message.getLong("msg_time") + 1; //記錄最後收到訊息的時間
 		if (ignoreSelf) {
-			if (account.equals(senderID)) {
+			if (ACCOUNT.equals(senderID)) {
 				return;
 			}
 		}
+		System.out.println(message);
 		if(gameStage.isWaiting()) {
 			if("join".equals(content)) {
 				System.out.println(++waitCount);
