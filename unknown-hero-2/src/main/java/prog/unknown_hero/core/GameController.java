@@ -10,6 +10,9 @@ import java.util.Scanner;
 import org.magiclen.json.JSONArray;
 import org.magiclen.json.JSONObject;
 
+import prog.unknown_hero.utility.BaseMessage;
+import prog.unknown_hero.utility.Receiver;
+
 public class GameController {
 	
 	static GameStage gameStage;
@@ -234,7 +237,16 @@ public class GameController {
 		
 	}
 	
+	static enum GAME_PHASE {IDLE, WAIT, DRAW, HERO, PLAY, ATCK, EXCH, END};
+	
 	public static void gameStart() {
+		final JSONObject obj = new JSONObject();
+		obj.put("msg_groupid", GROUP_ID);
+		obj.put("msg_senderid", ACCOUNT);
+		obj.put("msg_content", "start");
+		obj.put("msg_type", "1");
+		api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, obj.toString());
+		
 		stopping = false;
 		while (!stopping) {
 			final String message = "";
@@ -301,14 +313,14 @@ public class GameController {
 		if(gameStage.isWaiting()) {
 			if("join".equals(content)) {
 				System.out.println(++waitCount);
-				if(waitCount == 4) {
+				if(waitCount == 3) {
 					gameStart();
 				}
 			} else if("start".equals(content)) {
 				gameStart();
 			}
 		} else if(gameStage.isPlaying()) {
-			
+			Receiver.send(new BaseMessage(message.getString("msg_senderid"), message.getString("msg_content")));
 		}
 		/*
 		if (profileMap.containsKey(senderID)) {
