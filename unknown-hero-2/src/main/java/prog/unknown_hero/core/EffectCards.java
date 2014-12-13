@@ -1,17 +1,20 @@
 package prog.unknown_hero.core;
 
+import java.util.List;
+
 public class EffectCards extends Card{
 	int types, color;
 	protected EffectCards(int a) {
 		super(a, 3);
-		// TODO Auto-generated constructor stub
+		this.types=this.num-3;
+		this.color=this.types/2;
 	}
-	public boolean effect(Player hero, int sel)
+	public int effect(Player hero, int sel, List<Card> gameCards)
 	{
 		switch(this.types)
 		{
 		case 0://盜墓
-			return hero.drawHeroticCard();
+			return hero.drawHeroticCard(gameCards);
 		case 1://交換
 			changeCardTwoHero();
 			break;
@@ -28,7 +31,7 @@ public class EffectCards extends Card{
 			hero.changeHealth(-sel);
 			break;
 		}
-		return true;
+		return 0;
 	}
 	private void copy() {
 		// TODO Auto-generated method stub

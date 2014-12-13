@@ -1,8 +1,8 @@
 package prog.unknown_hero.core;
 
 public class Character extends Card{
-	static int MAX_HEALTH, MAX_HAND, att, def;
-	static int types;// 0: mag, 1: sci, 2: wor
+	int MAX_HEALTH, MAX_HAND, att, def;
+	int types;// 0: mag, 1: sci, 2: wor
 	Character(int a, int b, int types) {
 		super(a, b);
 		// TODO Auto-generated constructor stub
