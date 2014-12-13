@@ -1,27 +1,38 @@
 package prog.unknown_hero.core;
 
 public class Character extends Card{
-	static int MAX_HEALTH, MAX_HAND, att, def, health, hand;
-	Character(int a, int b, int max_health, int max_hand, int att, int def) {
+	static int MAX_HEALTH, MAX_HAND, att, def;
+	static int types;// 0: mag, 1: sci, 2: wor
+	Character(int a, int b, int types) {
 		super(a, b);
 		// TODO Auto-generated constructor stub
-		this.MAX_HEALTH=max_health;
-		this.MAX_HAND=max_hand;
-		this.att=att;
-		this.def=def;
-		this.hand=max_hand;
-		this.maxHealth();
+		this.set(types);
+		this.types=types;
 	}
-	protected boolean changeHealth(int sub)
-	{
-		this.health+=sub;
-		if(this.health>this.MAX_HEALTH) this.maxHealth();
-		if(this.health>0) return false;
-		else return true;
-	}
-	private void maxHealth() {
-		this.health=this.MAX_HEALTH;
+	private void set(int types) {
+		switch(types)
+		{
+		case 0 : //magician
+			this.att=0;
+			this.def=1;
+			this.MAX_HAND=3;
+			this.MAX_HEALTH=3;
+			break;
+		case 1: //scientist
+			this.att=0;
+			this.def=0;
+			this.MAX_HAND=2;
+			this.MAX_HEALTH=3;
+			break;
+		case 2: //worker
+			this.att=1;
+			this.def=1;
+			this.MAX_HAND=3;
+			this.MAX_HEALTH=2;
+			break;
+		}
 		
 	}
+	
 
 }
