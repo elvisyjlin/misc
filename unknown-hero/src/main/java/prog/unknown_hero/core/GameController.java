@@ -220,6 +220,11 @@ public class GameController {
 		api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, obj.toString());
 		
 	}
+	
+	public static void gameStart() {
+		// set game
+		gameStage.nextStage();
+	}
 
 	/*
 	static void main() {
@@ -253,6 +258,7 @@ public class GameController {
 	 * @param ignoreSelf 傳入是否忽略自己的訊息
 	 */
 	public static void parseMessage(final JSONObject message, final boolean ignoreSelf) {
+		int waitCount = 0;
 		final String senderID = message.getString("msg_senderid");
 		final String content = message.getString("msg_content");
 		lastReceiveMessageTime = message.getLong("msg_time") + 1; //記錄最後收到訊息的時間
@@ -262,7 +268,14 @@ public class GameController {
 			}
 		}
 		if(gameStage.isWaiting()) {
-			
+			if("join".equals(content)) {
+				System.out.println(++waitCount);
+				if(waitCount == 4) {
+					gameStart();
+				}
+			} else if("start".equals(content)) {
+				gameStart();
+			}
 		} else if(gameStage.isPlaying()) {
 			
 		}
