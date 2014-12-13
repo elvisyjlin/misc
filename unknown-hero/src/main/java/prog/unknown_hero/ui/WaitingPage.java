@@ -8,6 +8,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import prog.unknown_hero.core.GameController;
+
 public class WaitingPage extends JFrame {
 
 	/**
@@ -33,6 +35,7 @@ public class WaitingPage extends JFrame {
 		}
 		setContentPane(panel);
 
+		GameController.login(false);
 		
 		setVisible(true);
 		
