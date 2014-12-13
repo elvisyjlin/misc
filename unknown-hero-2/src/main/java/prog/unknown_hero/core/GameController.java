@@ -268,6 +268,7 @@ public class GameController {
 				break;
 			case DRAW:
 				player.drawCard();
+				gamePhase = GAME_PHASE.HERO;
 				break;
 			case HERO:
 				break;
