@@ -247,9 +247,40 @@ public class GameController {
 		obj.put("msg_type", "1");
 		api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, obj.toString());
 		
+		Player player = new Player(int, int);
+		GAME_PHASE gamePhase = GAME_PHASE.IDLE;
 		stopping = false;
 		while (!stopping) {
 			final String message = "";
+			
+			switch(gamePhase) {
+			case IDLE:
+				if(Receiver.hasMessage()) {
+					String[] receive = Receiver.get().content();
+					if("end".equals(receive[0])) {
+						if(player.showStatus().equals(receive[1])) {
+							gamePhase = GAME_PHASE.DRAW;
+						}
+					}
+				}
+				break;
+			case WAIT:
+				break;
+			case DRAW:
+				player.drawCard();
+				break;
+			case HERO:
+				break;
+			case PLAY:
+				break;
+			case ATCK:
+				break;
+			case EXCH:
+				break;
+			case END:
+				break;
+			}
+			
 			if (message.length() > 0) {
 				if (":q".equals(message)) { //輸入「:q」停止
 					stopping = true;
