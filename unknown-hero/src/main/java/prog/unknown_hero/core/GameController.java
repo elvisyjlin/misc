@@ -11,12 +11,14 @@ import org.magiclen.json.JSONArray;
 import org.magiclen.json.JSONObject;
 
 public class GameController {
-
-	private final static Scanner sc = new Scanner(System.in);
+	
+	static GameStage gameStage;
 
 	private static final String GROUP_ID = "public";
 	private static final String APP_NAME = "zeroasclin@gmail.com";
 	private static final String API_KEY = "9f046a5457cc84660323d4a2ef0a5091";
+	private static final String ACCOUNT = "user1";
+	private static final String PASSWORD = "52e39fd5a80a23a96e7729af4a2d7ce3";
 	private static final int REQUEST_INITIAL_LOGIN = 0;
 	private static final int REQUEST_INITIAL_GET_SERVER_TIME = 1;
 	private static final int REQUEST_INITIAL_SET_PROFILE = 2;
@@ -46,7 +48,7 @@ public class GameController {
 					if (!json.has("profile")) { //如果沒有Profile，表示第一次登入，所以要輸入暱稱創建Profile
 						while (name.length() == 0) {
 							System.out.print("請輸入暱稱：");
-							name = sc.nextLine().trim();
+							name = "unknown_hero";
 						}
 						profile = new JSONObject();
 						profile.put("person_email", account);
@@ -158,7 +160,7 @@ public class GameController {
 						final int length = messages.length();
 						for (int i = 0; i < length; i++) {
 							final JSONObject message = messages.getJSONObject(i);
-							printMessage(message, true);
+							parseMessage(message, true);
 						}
 					}
 				} catch (final Exception ex) {
@@ -175,32 +177,10 @@ public class GameController {
 		}
 	};
 
-	/**
-	 * 程式進入點。
-	 *
-	 * @param args 傳入參數
-	 */
-	public static void main(final String[] args) {
-		// 檢查傳入參數
-		if (args.length > 0 && args[0].trim().length() > 0) {
-			account = args[0].trim();
-		} else {
-			//讓使用者輸入帳號
-			while (account.length() == 0) {
-				System.out.print("請先輸入登入帳號：");
-				account = sc.nextLine();
-			}
-		}
-		//讓使用者輸入密碼
-		String password = "";
-		while (password.length() == 0) {
-			System.out.print("請輸入密碼：");
-			password = sc.nextLine().trim();
-		}
-		System.out.println("登入中...");
-
-		//初始化Meeti物件
-		api.initial(REQUEST_INITIAL_LOGIN, APP_NAME, API_KEY, account, password, callback);
+	public static boolean login(boolean init) {
+		gameStage = new GameStage();
+		
+		api.initial(REQUEST_INITIAL_LOGIN, APP_NAME, API_KEY, ACCOUNT, PASSWORD, callback);
 		while (!available) {
 			//Busy Waiting, 直到Meeti物件初始化成功才跳出
 			try {
@@ -209,36 +189,44 @@ public class GameController {
 			}
 		}
 		System.out.println("登入成功！");
-
-		/*
-		JSONObject groupData = new JSONObject();
-		groupData.put("group_id", GROUP_ID);
-		groupData.put("group_name", "Pro.G");
-		groupData.put("group_type", "1");
-		groupData.put("group_members", "user1,user2,user3,user4,user5");
-		groupData.put("group_admins", "user1");
-		System.out.println(groupData);
-		api.setGroup(REQUEST_SET_GROUP, GROUP_ID, groupData.toString());
-		*/
-
-		//顯示歷史訊息
-		System.out.println("---歷史訊息---");
-		final int l = messages.length();System.out.println(messages);
-		for (int i = 0; i < l; i++) {
-			final JSONObject message = messages.getJSONObject(i);
-			printMessage(message);
+		
+		if(init) {
+			JSONObject groupData = new JSONObject();
+			groupData.put("group_id", GROUP_ID);
+			groupData.put("group_name", "Pro.G");
+			groupData.put("group_type", "1");
+			groupData.put("group_members", "user1,user2,user3,user4,user5");
+			groupData.put("group_admins", "user1");
+			System.out.println(groupData);
+			api.setGroup(REQUEST_SET_GROUP, GROUP_ID, groupData.toString());
 		}
-		System.out.println("--- ----- ---");
-
-		//顯示歡迎訊息
-		System.out.println(String.format("歡迎，%s，可以開始輸入訊息了。", name));
+		System.out.println("創立群組！");
+		
+		gameStage.nextStage();
+			
+		return true;
+	}
+	
+	public static void waiting() {
 
 		//開始取得系統通知
 		api.getSystemNotification(REQUEST_SYSTEM_NOTIFICATION);
+		
+		final JSONObject obj = new JSONObject();
+		obj.put("msg_groupid", GROUP_ID);
+		obj.put("msg_senderid", ACCOUNT);
+		obj.put("msg_content", "join");
+		obj.put("msg_type", "1");
+		api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, obj.toString());
+		
+	}
+
+	/*
+	static void main() {
 
 		//持續輸入直到停止
 		while (!stopping) {
-			final String message = sc.nextLine();
+			final String message = "";
 			if (message.length() > 0) {
 				if (":q".equals(message)) { //輸入「:q」停止
 					stopping = true;
@@ -256,14 +244,15 @@ public class GameController {
 			}
 		}
 	}
+	*/
 
 	/**
-	 * 印出訊息。
+	 * 分析訊息。
 	 *
 	 * @param message 傳入訊息物件
 	 * @param ignoreSelf 傳入是否忽略自己的訊息
 	 */
-	public static void printMessage(final JSONObject message, final boolean ignoreSelf) {
+	public static void parseMessage(final JSONObject message, final boolean ignoreSelf) {
 		final String senderID = message.getString("msg_senderid");
 		final String content = message.getString("msg_content");
 		lastReceiveMessageTime = message.getLong("msg_time") + 1; //記錄最後收到訊息的時間
@@ -272,20 +261,27 @@ public class GameController {
 				return;
 			}
 		}
+		if(gameStage.isWaiting()) {
+			
+		} else if(gameStage.isPlaying()) {
+			
+		}
+		/*
 		if (profileMap.containsKey(senderID)) {
 			System.out.println(String.format("%s：%s", profileMap.get(senderID).getString("person_name"), content));
 		} else {
 			System.out.println(String.format("%s：%s", senderID, content));
 		}
+		*/
 	}
 
 	/**
-	 * 印出訊息。
+	 * 分析訊息。
 	 *
 	 * @param message 傳入訊息物件
 	 */
-	public static void printMessage(final JSONObject message) {
-		printMessage(message, false);
+	public static void parseMessage(final JSONObject message) {
+		parseMessage(message, false);
 	}
 	
 }
