@@ -84,7 +84,7 @@ public class GameController {
 			else addData();
 		}
 		private void addData() {
-			boolean done=false;
+			boolean done=true;
 			while(done){
 			if(Receiver.hasMessage()){
 				if(Receiver.type().equals("PlayerID"))
@@ -104,6 +104,7 @@ public class GameController {
 						for(int j=0; j<Integer.parseInt(Revc[5]); j++){
 							PLAYER.get(j).setHand(CARD, Integer.parseInt(Revc[6+j]));
 						}
+						done=false;
 					}
 				}
 			}
@@ -393,6 +394,7 @@ public class GameController {
 		Player player=AllCards.PLAYER.get(myOrder);
 		GAME_PHASE gamePhase = GAME_PHASE.IDLE;
 		stopping = false;
+		int turns=0;
 		while (!stopping) {
 			final String message = "";
 			
@@ -414,6 +416,16 @@ public class GameController {
 				gamePhase = GAME_PHASE.HERO;
 				break;
 			case HERO:
+				if(true){
+					if(turns==myOrder){
+						player.drawHeroticCard(AllCards.CARD);
+					}else{
+						//TODO UI
+						
+					}
+				}else if(true){
+					gamePhase=GAME_PHASE.PLAY;
+				}
 				break;
 			case PLAY:
 				break;
@@ -440,6 +452,8 @@ public class GameController {
 					api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, obj.toString());
 				}
 			}
+			turns+=1;
+			turns%=4;
 		}
 		gameStage.nextStage();
 	}
