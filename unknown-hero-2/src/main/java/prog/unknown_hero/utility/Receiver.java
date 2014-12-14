@@ -25,7 +25,7 @@ public class Receiver {
 				return false;
 			}
 			return !messages.isEmpty();
-		}
+		}                                                                        
 	}
 	
 	public static BaseMessage get() {
