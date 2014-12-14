@@ -111,10 +111,9 @@ public class GameController {
 					}
 				}
 			}
-			
 		}
 		private void builtGame() { 
-			for(int i=0; i<4; i++)
+			for(int i=0; i<PLAYER_NUM; i++)
 			{
 				int ram;
 				boolean untrue=true;
@@ -138,7 +137,7 @@ public class GameController {
 					PLAYER.get(i1).drawCard(CARD);
 				//TODO draw UI
 			}
-			for(int i=0; i<4; i++)
+			for(int i=0; i<PLAYER_NUM; i++)
 			{
 				JSONObject obj = new JSONObject();
 				obj.put("PlayerId", Integer.toString(i));
@@ -390,7 +389,7 @@ public class GameController {
 		if(myOrder==0) in=false;
 		while(!Replyer.hasMessage()) {
 			try {
-				Thread.sleep(200);
+				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -504,7 +503,7 @@ public class GameController {
 				}
 			}
 			turns+=1;
-			turns%=4;
+			turns%=PLAYER_NUM;
 		}
 		gameStage.nextStage();
 	}
