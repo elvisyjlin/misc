@@ -24,6 +24,7 @@ public class place extends JFrame {
 	ImageIcon img4;
 	ImageIcon img5;
 	ImageIcon img6;
+	ImageIcon img7;
 	BufferedImage background;
 	
 	private boolean loadImages() {
@@ -34,6 +35,7 @@ public class place extends JFrame {
 			img4 = new ImageIcon("./img/WEAPON-無.jpg");
 			img5 = new ImageIcon("./img/DEF+0.jpg");
 			img6 = new ImageIcon("./img/END-BOTTON-NOT-CLICK.jpg");
+			img7 = new ImageIcon("./img/CD-3.jpg");
 			background = ImageIO.read(new File(".\\img\\BG-1.jpg"));
 		} catch(IOException ex) {
 			return false;
@@ -56,11 +58,29 @@ public class place extends JFrame {
         //=========================================================== enemy1
         JButton[] hero = new JButton[4];
         JLabel[] hp = new JLabel[4];
+        JLabel[] atk = new JLabel[4];
+        JLabel[] def = new JLabel[4];
+        JLabel[] cardnum = new JLabel[4];
+        JLabel[] weapon = new JLabel[4];
+        JLabel end_button = new JLabel();
+        
         GridBagConstraints[] heroC = new GridBagConstraints[4];
         GridBagConstraints[] hpC = new GridBagConstraints[4];
+        GridBagConstraints[] atkC = new GridBagConstraints[4];
+        GridBagConstraints[] defC = new GridBagConstraints[4];
+        GridBagConstraints[] cardnumC = new GridBagConstraints[4];
+        GridBagConstraints[] weaponC = new GridBagConstraints[4];
+        GridBagConstraints end_buttonC = new GridBagConstraints();
+        
         for(int i=0; i<4; i++) {
         	hero[i].setIcon(card_back_img);
             hp[i].setIcon(img3);
+            atk[i].setIcon(img2);
+            def[i].setIcon(img5);
+            cardnum[i].setIcon(img7);
+            weapon[i].setIcon(img4);
+            end_button.setIcon(img6);
+            
         	switch(i) {
         	case 1:
         		heroC[1].gridx = 2;
@@ -79,208 +99,199 @@ public class place extends JFrame {
                 hpC[1].weighty = 0;
                 hpC[1].fill = GridBagConstraints.NONE;
                 hpC[1].anchor = GridBagConstraints.EAST;
+                atkC[1].gridx = 1;
+                atkC[1].gridy = 2;
+                atkC[1].gridwidth = 1;
+                atkC[1].gridheight = 1;
+                atkC[1].weightx = 0;
+                atkC[1].weighty = 0;
+                atkC[1].fill = GridBagConstraints.NONE;
+                atkC[1].anchor = GridBagConstraints.EAST;
+                defC[1].gridx = 1;
+                defC[1].gridy = 3;
+                defC[1].gridwidth = 1;
+                defC[1].gridheight = 1;
+                defC[1].weightx = 0;
+                defC[1].weighty = 0;
+                defC[1].fill = GridBagConstraints.NONE;
+                defC[1].anchor = GridBagConstraints.EAST;
+                cardnumC[1].gridx = 1;
+                cardnumC[1].gridy = 1;
+                cardnumC[1].gridwidth = 1;
+                cardnumC[1].gridheight = 1;
+                cardnumC[1].weightx = 0;
+                cardnumC[1].weighty = 0;
+                cardnumC[1].fill = GridBagConstraints.NONE;
+                cardnumC[1].anchor = GridBagConstraints.EAST;
+                weaponC[1].gridx = 2;
+                weaponC[1].gridy = 4;
+                weaponC[1].gridwidth = 1;
+                weaponC[1].gridheight = 1;
+                weaponC[1].weightx = 0;
+                weaponC[1].weighty = 0;
+                weaponC[1].fill = GridBagConstraints.NONE;
+                weaponC[1].anchor = GridBagConstraints.CENTER;
         		break;
+        	case 2:
+        		heroC[2].gridx = 4;
+        		heroC[2].gridy = 0;
+        		heroC[2].gridwidth = 1;
+        		heroC[2].gridheight = 4;
+        		heroC[2].weightx = 0;
+        		heroC[2].weighty = 0;
+        		heroC[2].fill = GridBagConstraints.NONE;
+        		heroC[2].anchor = GridBagConstraints.CENTER;
+                hpC[2].gridx = 3;
+                hpC[2].gridy = 0;
+                hpC[2].gridwidth = 1;
+                hpC[2].gridheight = 1;
+                hpC[2].weightx = 0;
+                hpC[2].weighty = 0;
+                hpC[2].fill = GridBagConstraints.NONE;
+                hpC[2].anchor = GridBagConstraints.EAST;
+                atkC[2].gridx = 3;
+                atkC[2].gridy = 2;
+                atkC[2].gridwidth = 1;
+                atkC[2].gridheight = 1;
+                atkC[2].weightx = 0;
+                atkC[2].weighty = 0;
+                atkC[2].fill = GridBagConstraints.NONE;
+                atkC[2].anchor = GridBagConstraints.EAST;
+                defC[2].gridx = 3;
+                defC[2].gridy = 3;
+                defC[2].gridwidth = 1;
+                defC[2].gridheight = 1;
+                defC[2].weightx = 0;
+                defC[2].weighty = 0;
+                defC[2].fill = GridBagConstraints.NONE;
+                defC[2].anchor = GridBagConstraints.EAST;
+                cardnumC[2].gridx = 3;
+                cardnumC[2].gridy = 1;
+                cardnumC[2].gridwidth = 1;
+                cardnumC[2].gridheight = 1;
+                cardnumC[2].weightx = 0;
+                cardnumC[2].weighty = 0;
+                cardnumC[2].fill = GridBagConstraints.NONE;
+                cardnumC[2].anchor = GridBagConstraints.EAST;
+                weaponC[2].gridx = 4;
+                weaponC[2].gridy = 4;
+                weaponC[2].gridwidth = 1;
+                weaponC[2].gridheight = 1;
+                weaponC[2].weightx = 0;
+                weaponC[2].weighty = 0;
+                weaponC[2].fill = GridBagConstraints.NONE;
+                weaponC[2].anchor = GridBagConstraints.CENTER;
+                break;
+        	case 3:
+        		heroC[3].gridx = 6;
+        		heroC[3].gridy = 0;
+        		heroC[3].gridwidth = 1;
+        		heroC[3].gridheight = 4;
+        		heroC[3].weightx = 0;
+        		heroC[3].weighty = 0;
+        		heroC[3].fill = GridBagConstraints.NONE;
+        		heroC[3].anchor = GridBagConstraints.CENTER;
+                hpC[3].gridx = 5;
+                hpC[3].gridy = 0;
+                hpC[3].gridwidth = 1;
+                hpC[3].gridheight = 1;
+                hpC[3].weightx = 0;
+                hpC[3].weighty = 0;
+                hpC[3].fill = GridBagConstraints.NONE;
+                hpC[3].anchor = GridBagConstraints.EAST;
+                atkC[3].gridx = 5;
+                atkC[3].gridy = 2;
+                atkC[3].gridwidth = 1;
+                atkC[3].gridheight = 1;
+                atkC[3].weightx = 0;
+                atkC[3].weighty = 0;
+                atkC[3].fill = GridBagConstraints.NONE;
+                atkC[3].anchor = GridBagConstraints.EAST;
+                defC[3].gridx = 5;
+                defC[3].gridy = 3;
+                defC[3].gridwidth = 1;
+                defC[3].gridheight = 1;
+                defC[3].weightx = 0;
+                defC[3].weighty = 0;
+                defC[3].fill = GridBagConstraints.NONE;
+                defC[3].anchor = GridBagConstraints.EAST;
+                cardnumC[3].gridx = 5;
+                cardnumC[3].gridy = 1;
+                cardnumC[3].gridwidth = 1;
+                cardnumC[3].gridheight = 1;
+                cardnumC[3].weightx = 0;
+                cardnumC[3].weighty = 0;
+                cardnumC[3].fill = GridBagConstraints.NONE;
+                cardnumC[3].anchor = GridBagConstraints.EAST;
+                weaponC[3].gridx = 6;
+                weaponC[3].gridy = 4;
+                weaponC[3].gridwidth = 1;
+                weaponC[3].gridheight = 1;
+                weaponC[3].weightx = 0;
+                weaponC[3].weighty = 0;
+                weaponC[3].fill = GridBagConstraints.NONE;
+                weaponC[3].anchor = GridBagConstraints.CENTER;
+                break;
+        	case 0:
+        		heroC[0].gridx = 6;
+        		heroC[0].gridy = 10;
+        		heroC[0].gridwidth = 1;
+        		heroC[0].gridheight = 4;
+        		heroC[0].weightx = 0;
+        		heroC[0].weighty = 0;
+        		heroC[0].fill = GridBagConstraints.NONE;
+        		heroC[0].anchor = GridBagConstraints.CENTER;
+                hpC[0].gridx = 5;
+                hpC[0].gridy = 10;
+                hpC[0].gridwidth = 1;
+                hpC[0].gridheight = 1;
+                hpC[0].weightx = 0;
+                hpC[0].weighty = 0;
+                hpC[0].fill = GridBagConstraints.NONE;
+                hpC[0].anchor = GridBagConstraints.EAST;
+                atkC[0].gridx = 5;
+                atkC[0].gridy = 11;
+                atkC[0].gridwidth = 1;
+                atkC[0].gridheight = 1;
+                atkC[0].weightx = 0;
+                atkC[0].weighty = 0;
+                atkC[0].fill = GridBagConstraints.NONE;
+                atkC[0].anchor = GridBagConstraints.EAST;
+                defC[0].gridx = 5;
+                defC[0].gridy = 12;
+                defC[0].gridwidth = 1;
+                defC[0].gridheight = 1;
+                defC[0].weightx = 0;
+                defC[0].weighty = 0;
+                defC[0].fill = GridBagConstraints.NONE;
+                defC[0].anchor = GridBagConstraints.EAST;
+                weaponC[0].gridx = 5;
+                weaponC[0].gridy = 13;
+                weaponC[0].gridwidth = 1;
+                weaponC[0].gridheight = 1;
+                weaponC[0].weightx = 0;
+                weaponC[0].weighty = 0;
+                weaponC[0].fill = GridBagConstraints.NONE;
+                weaponC[0].anchor = GridBagConstraints.EAST;
+                end_buttonC.gridx = 6;
+                end_buttonC.gridy = 14;
+                end_buttonC.gridwidth = 1;
+                end_buttonC.gridheight = 1;
+                end_buttonC.weightx = 0;
+                end_buttonC.weighty = 0;
+                end_buttonC.fill = GridBagConstraints.NONE;
+                end_buttonC.anchor = GridBagConstraints.NORTH;
+                break;
         	}
             panel.add(hero[i], heroC[i]);
             panel.add(hp[i], hpC[i]);
+            panel.add(atk[i], atkC[i]);
+            panel.add(def[i], defC[i]);
+            panel.add(cardnum[i], cardnumC[i]);
+            panel.add(weapon[i], weaponC[i]);
+            panel.add(end_button, end_buttonC);
         }
           
-          JLabel N1card = new JLabel(img2);
-          GridBagConstraints C1card= new GridBagConstraints();
-          C1card.gridx = 1;
-          C1card.gridy = 1;
-          C1card.gridwidth = 1;
-          C1card.gridheight = 1;
-          C1card.weightx = 0;
-          C1card.weighty = 0;
-          C1card.fill = GridBagConstraints.NONE;
-          C1card.anchor = GridBagConstraints.EAST;
-          panel.add(N1card, C1card);
-          
-          JLabel N1atk = new JLabel(img2);
-          GridBagConstraints C1atk= new GridBagConstraints();
-          C1atk.gridx = 1;
-          C1atk.gridy = 2;
-          C1atk.gridwidth = 1;
-          C1atk.gridheight = 1;
-          C1atk.weightx = 0;
-          C1atk.weighty = 0;
-          C1atk.fill = GridBagConstraints.NONE;
-          C1atk.anchor = GridBagConstraints.EAST;
-          panel.add(N1atk, C1atk);     
-
-          JLabel N1def = new JLabel(img5);
-          GridBagConstraints C1def= new GridBagConstraints();
-          C1def.gridx = 1;
-          C1def.gridy = 3;
-          C1def.gridwidth = 1;
-          C1def.gridheight = 1;
-          C1def.weightx = 0;
-          C1def.weighty = 0;
-          C1def.fill = GridBagConstraints.NONE;
-          C1def.anchor = GridBagConstraints.EAST;
-          panel.add(N1def, C1def);
-
-          JLabel N1wep = new JLabel(img4);
-          GridBagConstraints C1wep= new GridBagConstraints();
-          C1wep.gridx = 2;
-          C1wep.gridy = 4;
-          C1wep.gridwidth = 1;
-          C1wep.gridheight = 1;
-          C1wep.weightx = 0;
-          C1wep.weighty = 0;
-          C1wep.fill = GridBagConstraints.NONE;
-          C1wep.anchor = GridBagConstraints.CENTER;
-          panel.add(N1wep, C1wep);   
-          
-          //=========================================================== enemy2
-              
-          JButton N2 = new JButton(card_back_img);
-          GridBagConstraints C2 = new GridBagConstraints();
-          C2.gridx = 4;
-          C2.gridy = 0;
-          C2.gridwidth = 1;
-          C2.gridheight = 4;
-          C2.weightx = 0;
-          C2.weighty = 0;
-          C2.fill = GridBagConstraints.NONE;
-          C2.anchor = GridBagConstraints.CENTER;
-          panel.add(N2, C2);
-         
-          JLabel N2hp = new JLabel(img3);
-          GridBagConstraints C2hp= new GridBagConstraints();
-          C2hp.gridx = 3;
-          C2hp.gridy = 0;
-          C2hp.gridwidth = 1;
-          C2hp.gridheight = 1;
-          C2hp.weightx = 0;
-          C2hp.weighty = 0;
-          C2hp.fill = GridBagConstraints.NONE;
-          C2hp.anchor = GridBagConstraints.EAST;
-          panel.add(N2hp, C2hp);
-          
-          JLabel N2card = new JLabel("CARD:9999");
-          GridBagConstraints C2card= new GridBagConstraints();
-          C2card.gridx = 3;
-          C2card.gridy = 1;
-          C2card.gridwidth = 1;
-          C2card.gridheight = 1;
-          C2card.weightx = 0;
-          C2card.weighty = 0;
-          C2card.fill = GridBagConstraints.NONE;
-          C2card.anchor = GridBagConstraints.EAST;
-          panel.add(N2card, C2card);
-          
-          JLabel N2atk = new JLabel(img2);
-          GridBagConstraints C2atk= new GridBagConstraints();
-          C2atk.gridx = 3;
-          C2atk.gridy = 2;
-          C2atk.gridwidth = 1;
-          C2atk.gridheight = 1;
-          C2atk.weightx = 0;
-          C2atk.weighty = 0;
-          C2atk.fill = GridBagConstraints.NONE;
-          C2atk.anchor = GridBagConstraints.EAST;
-          panel.add(N2atk, C2atk);    
-          
-          JLabel N2def = new JLabel(img5);
-          GridBagConstraints C2def= new GridBagConstraints();
-          C2def.gridx = 3;
-          C2def.gridy = 3;
-          C2def.gridwidth = 1;
-          C2def.gridheight = 1;
-          C2def.weightx = 0;
-          C2def.weighty = 0;
-          C2def.fill = GridBagConstraints.NONE;
-          C2def.anchor = GridBagConstraints.EAST;
-          panel.add(N2def, C2def);
-          
-          JLabel N2wep = new JLabel(img4);
-          GridBagConstraints C2wep= new GridBagConstraints();
-          C2wep.gridx = 4;
-          C2wep.gridy = 4;
-          C2wep.gridwidth = 1;
-          C2wep.gridheight = 1;
-          C2wep.weightx = 0;
-          C2wep.weighty = 0;
-          C2wep.fill = GridBagConstraints.NONE;
-          C2wep.anchor = GridBagConstraints.CENTER;
-          panel.add(N2wep, C2wep);  
-         
-          //=========================================================== enemy3
-          
-          
-          JButton N3 = new JButton(card_back_img);
-          GridBagConstraints C3 = new GridBagConstraints();
-          C3.gridx = 6;
-          C3.gridy = 0;
-          C3.gridwidth = 1;
-          C3.gridheight = 4;
-          C3.weightx = 0;
-          C3.weighty = 0;
-          C3.fill = GridBagConstraints.NONE;
-          C3.anchor = GridBagConstraints.CENTER;
-          panel.add(N3, C3);
-
-          JLabel N3hp = new JLabel(img3);
-          GridBagConstraints C3hp= new GridBagConstraints();
-          C3hp.gridx = 5;
-          C3hp.gridy = 0;
-          C3hp.gridwidth = 1;
-          C3hp.gridheight = 1;
-          C3hp.weightx = 0;
-          C3hp.weighty = 0;
-          C3hp.fill = GridBagConstraints.NONE;
-          C3hp.anchor = GridBagConstraints.EAST;
-          panel.add(N3hp, C3hp);
-          
-          JLabel N3card = new JLabel("CARD:9999");
-          GridBagConstraints C3card= new GridBagConstraints();
-          C3card.gridx = 5;
-          C3card.gridy = 1;
-          C3card.gridwidth = 1;
-          C3card.gridheight = 1;
-          C3card.weightx = 0;
-          C3card.weighty = 0;
-          C3card.fill = GridBagConstraints.NONE;
-          C3card.anchor = GridBagConstraints.EAST;
-          panel.add(N3card, C3card);
-          
-          JLabel N3atk = new JLabel(img2);
-          GridBagConstraints C3atk= new GridBagConstraints();
-          C3atk.gridx = 5;
-          C3atk.gridy = 2;
-          C3atk.gridwidth = 1;
-          C3atk.gridheight = 1;
-          C3atk.weightx = 0;
-          C3atk.weighty = 0;
-          C3atk.fill = GridBagConstraints.NONE;
-          C3atk.anchor = GridBagConstraints.EAST;
-          panel.add(N3atk, C3atk);
-    
-          JLabel N3def = new JLabel(img5);
-          GridBagConstraints C3def= new GridBagConstraints();
-          C3def.gridx = 5;
-          C3def.gridy = 3;
-          C3def.gridwidth = 1;
-          C3def.gridheight = 1;
-          C3def.weightx = 0;
-          C3def.weighty = 0;
-          C3def.fill = GridBagConstraints.NONE;
-          C3def.anchor = GridBagConstraints.EAST;
-          panel.add(N3def, C3def);
-          
-          JLabel N3wep = new JLabel(img4);
-          GridBagConstraints C3wep= new GridBagConstraints();
-          C3wep.gridx = 6;
-          C3wep.gridy = 4;
-          C3wep.gridwidth = 1;
-          C3wep.gridheight = 1;
-          C3wep.weightx = 0;
-          C3wep.weighty = 0;
-          C3wep.fill = GridBagConstraints.NONE;
-          C3wep.anchor = GridBagConstraints.CENTER;
-          panel.add(N3wep, C3wep);
           
           //=========================================================== YOU
 
@@ -310,78 +321,7 @@ public class place extends JFrame {
               panel.add(n5, c5);
           }
           
-          JLabel NYOU = new JLabel(card_back_img);
-          GridBagConstraints CYOU = new GridBagConstraints();
-          CYOU.gridx = 6;
-          CYOU.gridy = 10;
-          CYOU.gridwidth = 1;
-          CYOU.gridheight = 4;
-          CYOU.weightx = 0;
-          CYOU.weighty = 0;
-          CYOU.fill = GridBagConstraints.NONE;
-          CYOU.anchor = GridBagConstraints.CENTER;
-          panel.add(NYOU, CYOU);
-
-          JLabel NYOUhp = new JLabel(img3);
-          GridBagConstraints CYOUhp = new GridBagConstraints();
-          CYOUhp.gridx = 5;
-          CYOUhp.gridy = 10;
-          CYOUhp.gridwidth = 1;
-          CYOUhp.gridheight = 1;
-          CYOUhp.weightx = 0;
-          CYOUhp.weighty = 0;
-          CYOUhp.fill = GridBagConstraints.NONE;
-          CYOUhp.anchor = GridBagConstraints.EAST;
-          panel.add(NYOUhp, CYOUhp);
-
-          JLabel NYOUatk = new JLabel(img2);
-          GridBagConstraints CYOUatk = new GridBagConstraints();
-          CYOUatk.gridx = 5;
-          CYOUatk.gridy = 11;
-          CYOUatk.gridwidth = 1;
-          CYOUatk.gridheight = 1;
-          CYOUatk.weightx = 0;
-          CYOUatk.weighty = 0;
-          CYOUatk.fill = GridBagConstraints.NONE;
-          CYOUatk.anchor = GridBagConstraints.EAST;
-          panel.add(NYOUatk, CYOUatk);
-          
-          JLabel NYOUdef = new JLabel(img5);
-          GridBagConstraints CYOUdef = new GridBagConstraints();
-          CYOUdef.gridx = 5;
-          CYOUdef.gridy = 12;
-          CYOUdef.gridwidth = 1;
-          CYOUdef.gridheight = 1;
-          CYOUdef.weightx = 0;
-          CYOUdef.weighty = 0;
-          CYOUdef.fill = GridBagConstraints.NONE;
-          CYOUdef.anchor = GridBagConstraints.EAST;
-          panel.add(NYOUdef, CYOUdef);
-
-          JLabel NYOUwep = new JLabel(img4);
-          GridBagConstraints CYOUwep = new GridBagConstraints();
-          CYOUwep.gridx = 5;
-          CYOUwep.gridy = 13;
-          CYOUwep.gridwidth = 1;
-          CYOUwep.gridheight = 1;
-          CYOUwep.weightx = 0;
-          CYOUwep.weighty = 0;
-          CYOUwep.fill = GridBagConstraints.NONE;
-          CYOUwep.anchor = GridBagConstraints.EAST;
-          panel.add(NYOUwep, CYOUwep);
-          
-          JButton NYOUend = new JButton(img6);
-          GridBagConstraints CYOUend = new GridBagConstraints();
-          CYOUend.gridx = 6;
-          CYOUend.gridy = 14;
-          CYOUend.gridwidth = 1;
-          CYOUend.gridheight = 1;
-          CYOUend.weightx = 0;
-          CYOUend.weighty = 0;
-          CYOUend.fill = GridBagConstraints.NONE;
-          CYOUend.anchor = GridBagConstraints.NORTH;
-          panel.add(NYOUend, CYOUend);
-          
+                    
    
           JLabel Ninfo = new JLabel("QAQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
           GridBagConstraints Cinfo = new GridBagConstraints();
