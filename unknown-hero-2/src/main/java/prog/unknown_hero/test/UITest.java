@@ -1,6 +1,7 @@
 package prog.unknown_hero.test;
 
 import prog.unknown_hero.ui.MainPage;
+import prog.unknown_hero.ui.place;
 
 public class UITest {
 	
