@@ -82,8 +82,28 @@ public class GameController {
 			else addData();
 		}
 		private void addData() {
+			boolean done=false;
+			while(done){
 			if(Receiver.hasMessage()){
-				
+				if(Receiver.type().equals("PlayerID"))
+					{
+						String[] Revc = Receiver.get().content();
+						int i=Integer.parseInt(Revc[1]);
+						if(CARD.get(Integer.parseInt(Revc[3])*2) instanceof Character)
+						{
+							CARD.remove(Integer.parseInt(Revc[3])*2);
+							CARD.add(Integer.parseInt(Revc[3])*2, new Player(i, CARD.get(Integer.parseInt(Revc[3])*2).num));
+							PLAYER.add((Player) CARD.get(Integer.parseInt(Revc[3])*2));
+						}else if(CARD.get(Integer.parseInt(Revc[3])*2+1) instanceof Character){
+							CARD.remove(Integer.parseInt(Revc[3])*2+1);
+							CARD.add(Integer.parseInt(Revc[3])*2+1, new Player(i, CARD.get(Integer.parseInt(Revc[3])*2+1).num));
+							PLAYER.add((Player) CARD.get(Integer.parseInt(Revc[3])*2+1));
+						}
+						for(int j=0; j<Integer.parseInt(Revc[5]); j++){
+							PLAYER.get(j).setHand(CARD, Integer.parseInt(Revc[6+j]));
+						}
+					}
+				}
 			}
 			
 		}
@@ -98,13 +118,13 @@ public class GameController {
 					if(CARD.get(ram*2) instanceof Character){
 						untrue=false;
 						CARD.remove(ram*2);
-						CARD.add(ram*2, new Player(myOrder, CARD.get(ram*2).num));
+						CARD.add(ram*2, new Player(i, CARD.get(ram*2).num));
 						PLAYER.add((Player) CARD.get(ram*2));
 					}
 					else if(CARD.get(ram*2+1) instanceof Character){
 						untrue=false;
 						CARD.remove(ram*2+1);
-						CARD.add(ram*2+1, new Player(myOrder, CARD.get(ram*2+1).num));
+						CARD.add(ram*2+1, new Player(i, CARD.get(ram*2+1).num));
 						PLAYER.add((Player) CARD.get(ram*2+1));
 					}
 				}
@@ -112,7 +132,7 @@ public class GameController {
 					PLAYER.get(i1).drawCard(CARD);
 				//TODO draw UI
 			}
-			for(int i=1; i<4; i++)
+			for(int i=0; i<4; i++)
 			{
 				JSONObject obj = new JSONObject();
 				obj.put("PlayerId", Integer.toString(i));
@@ -356,6 +376,7 @@ public class GameController {
 	static enum GAME_PHASE {IDLE, WAIT, DRAW, HERO, PLAY, ATCK, EXCH, END};
 	
 	public static void gameStart() {
+			UIOperation.initialized(myOrder);
 		boolean in=true;
 		if(myOrder==0) in=false;
 		CardSet AllCards=new CardSet(in);
