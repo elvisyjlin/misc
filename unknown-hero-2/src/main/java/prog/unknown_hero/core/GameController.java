@@ -41,7 +41,7 @@ public class GameController {
 	private static final int REQUEST_GET_PROFILE = 7;
 	private static final int REQUEST_SET_GROUP = 8;
 	private static final int REQUEST_GET_GROUP = 9;
-	private static final int PLAYER_NUM = 2;
+	private static final int PLAYER_NUM = 4;
 
 	private final static MeetiAPI api = new MeetiAPI();
 	private static boolean available = false, stopping = false;
