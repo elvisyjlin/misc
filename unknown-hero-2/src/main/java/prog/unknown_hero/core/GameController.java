@@ -416,6 +416,8 @@ public class GameController {
 				gamePhase = GAME_PHASE.HERO;
 				break;
 			case HERO:
+				while(done)
+				{
 				if(true){
 					if(turns==myOrder){
 						JSONObject obj = new JSONObject();
@@ -436,11 +438,30 @@ public class GameController {
 						}
 					}
 				}
-					else if(true){
+					else if(Replyer.hasMessage()==8){
 					gamePhase=GAME_PHASE.PLAY;
 					}
+				}
 				break;
 			case PLAY:
+				if(){
+					switch(cas){
+				}
+				case 1:
+					break;
+				case 2:
+					break;
+				case 3:
+					break;
+				case 4:
+					break;
+				case 5:
+					break;
+				case 6:
+					break;
+				}
+					
+			}
 				break;
 			case ATCK:
 				break;
