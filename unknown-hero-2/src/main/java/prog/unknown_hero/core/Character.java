@@ -3,11 +3,13 @@ package prog.unknown_hero.core;
 public class Character extends Card{
 	int MAX_HEALTH, MAX_HAND, att, def;
 	int types;// 0: mag, 1: sci, 2: wor
-	Character(int a, int b, int types) {
+	int left;
+	Character(int a, int b) {
 		super(a, b);
 		// TODO Auto-generated constructor stub
-		this.set(types);
-		this.types=types;
+		this.set(b);
+		this.types=b;
+		this.left=2;
 	}
 	private void set(int types) {
 		switch(types)
