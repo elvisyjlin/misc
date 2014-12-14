@@ -385,6 +385,7 @@ public class GameController {
 		System.out.println("遊戲設置");
 		place p = new place();
 		UIOperation.initialized(myOrder);
+		System.out.println("??");
 		boolean in=true;
 		if(myOrder==0) in=false;
 		while(!Replyer.hasMessage()) {

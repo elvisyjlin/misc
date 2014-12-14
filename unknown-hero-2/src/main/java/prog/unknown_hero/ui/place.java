@@ -403,63 +403,6 @@ public class place extends JFrame {
         }
         
 
-        
-
-        heroB[0].addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Replyer.send(new BaseMessage("press", Integer.toString(0)));
-			}
-        });
-        heroB[1].addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Replyer.send(new BaseMessage("press", Integer.toString(1)));
-			}
-        });
-        heroB[2].addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Replyer.send(new BaseMessage("press", Integer.toString(2)));
-			}
-        });
-        heroB[3].addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Replyer.send(new BaseMessage("press", Integer.toString(3)));
-			}
-        });
-        hand[0].addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Replyer.send(new BaseMessage("press", Integer.toString(4)));
-			}
-        });
-        hand[1].addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Replyer.send(new BaseMessage("press", Integer.toString(5)));
-			}
-        });
-        hand[2].addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Replyer.send(new BaseMessage("press", Integer.toString(6)));
-			}
-        });
-        hand[3].addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Replyer.send(new BaseMessage("press", Integer.toString(7)));
-			}
-        });
-        end_button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Replyer.send(new BaseMessage("press", Integer.toString(8)));
-			}
-        });
-
           GridBagConstraints ce = new GridBagConstraints();
           ce.gridx = 0;
           ce.gridy = 5;
@@ -496,6 +439,63 @@ public class place extends JFrame {
           Cinfo.fill = GridBagConstraints.NONE;
           Cinfo.anchor = GridBagConstraints.CENTER;
           panel.add(Ninfo, Cinfo);
+
+          
+
+          heroB[0].addActionListener(new ActionListener() {
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				Replyer.send(new BaseMessage("press", Integer.toString(0)));
+  			}
+          });
+          heroB[1].addActionListener(new ActionListener() {
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				Replyer.send(new BaseMessage("press", Integer.toString(1)));
+  			}
+          });
+          heroB[2].addActionListener(new ActionListener() {
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				Replyer.send(new BaseMessage("press", Integer.toString(2)));
+  			}
+          });
+          heroB[3].addActionListener(new ActionListener() {
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				Replyer.send(new BaseMessage("press", Integer.toString(3)));
+  			}
+          });
+          hand[0].addActionListener(new ActionListener() {
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				Replyer.send(new BaseMessage("press", Integer.toString(4)));
+  			}
+          });
+          hand[1].addActionListener(new ActionListener() {
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				Replyer.send(new BaseMessage("press", Integer.toString(5)));
+  			}
+          });
+          hand[2].addActionListener(new ActionListener() {
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				Replyer.send(new BaseMessage("press", Integer.toString(6)));
+  			}
+          });
+          hand[3].addActionListener(new ActionListener() {
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				Replyer.send(new BaseMessage("press", Integer.toString(7)));
+  			}
+          });
+          end_button.addActionListener(new ActionListener() {
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				Replyer.send(new BaseMessage("press", Integer.toString(8)));
+  			}
+          });
           
           setVisible(true);
           
