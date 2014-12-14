@@ -19,6 +19,40 @@ public class place extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	ImageIcon card_back_img;
+	ImageIcon[] hp_img = new ImageIcon[4];
+	ImageIcon[] atk_img = new ImageIcon[14];
+	ImageIcon[] def_img = new ImageIcon[4];
+	ImageIcon[] cd_img = new ImageIcon[5];
+	ImageIcon endButton_img;
+	ImageIcon endButton_hov;
+	ImageIcon spe_img;
+	ImageIcon she_img;
+	ImageIcon noweapon_img;
+	
+	ImageIcon dead_img;
+
+	ImageIcon mag_img;
+	ImageIcon sci_img;
+	ImageIcon wor_img;
+	ImageIcon grav_img;
+	ImageIcon exg_img;
+	ImageIcon copy_img;
+	ImageIcon drug_img;
+	ImageIcon recov_img;
+	ImageIcon hback_img;
+	ImageIcon spear_img;
+	ImageIcon sheild_img;
+	ImageIcon LLLW_img;
+	ImageIcon LLWL_img;
+	ImageIcon LLWW_img;
+	ImageIcon LWLL_img;
+	ImageIcon LWLW_img;
+	ImageIcon LWWL_img;
+	ImageIcon WLLL_img;
+	ImageIcon WLLW_img;
+	ImageIcon WLWL_img;
+	ImageIcon WWLL_img;
+	
 	ImageIcon img2;
 	ImageIcon img3;
 	ImageIcon img4;
@@ -30,13 +64,59 @@ public class place extends JFrame {
 	private boolean loadImages() {
 		try {
 			card_back_img = new ImageIcon("./img/DSC04833.JPG");
+			for(int i=0; i<4; i++) {
+				hp_img[i] = new ImageIcon("./img/HP-"+i+".jpg");
+			}
+			for(int i=0; i<14; i++) {
+				atk_img[i] = new ImageIcon("./img/ATK-"+i+".jpg");
+			}
+			for(int i=0; i<4; i++) {
+				def_img[i] = new ImageIcon("./img/DEF-"+i+".jpg");
+			}
+			for(int i=0; i<5; i++) {
+				cd_img[i] = new ImageIcon("./img/CD-"+i+".jpg");
+			}
+			endButton_img = new ImageIcon("./img/END-BOTTON-NOT-CLICK.jpg");
+			endButton_hov = new ImageIcon("./img/END-BOTTON-CLICK.jpg");
+			spe_img = new ImageIcon("./img/WEAPON-長矛.jpg");
+			she_img = new ImageIcon("./img/WEAPON-盾牌.jpg");
+			noweapon_img = new ImageIcon("./img/WEAPON-無.jpg");
+
+			dead_img = new ImageIcon("./img/DEAD.jpg");
+			
+			mag_img = new ImageIcon("./img/魔法師.jpg");
+			sci_img = new ImageIcon("./img/科學家.jpg");
+			wor_img = new ImageIcon("./img/工人.jpg");
+			grav_img = new ImageIcon("./img/盜墓.jpg");
+			exg_img = new ImageIcon("./img/交換.jpg");
+			copy_img = new ImageIcon("./img/仿製.jpg");
+			drug_img = new ImageIcon("./img/禁藥.jpg");
+			recov_img = new ImageIcon("./img/回復.jpg");
+			hback_img = new ImageIcon("./img/反擊.jpg");
+			spear_img = new ImageIcon("./img/長矛.jpg");
+			sheild_img = new ImageIcon("./img/盾牌.jpg");
+
+			LLLW_img = new ImageIcon("./img/LLLW.jpg");
+			LLWL_img = new ImageIcon("./img/LLLW.jpg");
+			LLWW_img = new ImageIcon("./img/LLLW.jpg");
+			LWLL_img = new ImageIcon("./img/LLLW.jpg");
+			LWLW_img = new ImageIcon("./img/LLLW.jpg");
+			LWWL_img = new ImageIcon("./img/LLLW.jpg");
+			WLLL_img = new ImageIcon("./img/LLLW.jpg");
+			WLLW_img = new ImageIcon("./img/LLLW.jpg");
+			WLWL_img = new ImageIcon("./img/LLLW.jpg");
+			WWLL_img = new ImageIcon("./img/LLLW.jpg");
+
 			img2 = new ImageIcon("./img/ATK-13.jpg");
 			img3 = new ImageIcon("./img/HP-3.jpg");
 			img4 = new ImageIcon("./img/WEAPON-無.jpg");
 			img5 = new ImageIcon("./img/DEF+0.jpg");
 			img6 = new ImageIcon("./img/END-BOTTON-NOT-CLICK.jpg");
+
 			img7 = new ImageIcon("./img/CD-3.jpg");
-			background = ImageIO.read(new File(".\\img\\BG-1.jpg"));
+			
+			background = ImageIO.read(new File("./img/BG-1.jpg"));
+
 		} catch(IOException ex) {
 			return false;
 		}

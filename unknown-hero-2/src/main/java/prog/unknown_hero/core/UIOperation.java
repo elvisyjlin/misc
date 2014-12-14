@@ -51,6 +51,8 @@ public class UIOperation {
 		Sender.send(new BaseMessage("SETHANDN", player+","+num));
 	}
 	
-	
+	public static void useACard(int ithCard) {
+		Sender.send(new BaseMessage("USE", Integer.toString(ithCard)));
+	}
 	
 }
