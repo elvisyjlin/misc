@@ -400,63 +400,65 @@ public class place extends JFrame {
             if(i != myOrder) panel.add(cardnum[i], cardnumC[i]);
             panel.add(weapon[i], weaponC[i]);
             panel.add(end_button, end_buttonC);
-            
-
-            heroB[0].addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					Replyer.send(new BaseMessage("press", Integer.toString(0)));
-				}
-            });
-            heroB[1].addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					Replyer.send(new BaseMessage("press", Integer.toString(1)));
-				}
-            });
-            heroB[2].addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					Replyer.send(new BaseMessage("press", Integer.toString(2)));
-				}
-            });
-            heroB[3].addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					Replyer.send(new BaseMessage("press", Integer.toString(3)));
-				}
-            });
-            hand[4].addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					Replyer.send(new BaseMessage("press", Integer.toString(4)));
-				}
-            });
-            hand[5].addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					Replyer.send(new BaseMessage("press", Integer.toString(5)));
-				}
-            });
-            hand[6].addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					Replyer.send(new BaseMessage("press", Integer.toString(6)));
-				}
-            });
-            hand[7].addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					Replyer.send(new BaseMessage("press", Integer.toString(7)));
-				}
-            });
-            hand[8].addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					Replyer.send(new BaseMessage("press", Integer.toString(8)));
-				}
-            });
         }
+        
+
+        
+
+        heroB[0].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Replyer.send(new BaseMessage("press", Integer.toString(0)));
+			}
+        });
+        heroB[1].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Replyer.send(new BaseMessage("press", Integer.toString(1)));
+			}
+        });
+        heroB[2].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Replyer.send(new BaseMessage("press", Integer.toString(2)));
+			}
+        });
+        heroB[3].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Replyer.send(new BaseMessage("press", Integer.toString(3)));
+			}
+        });
+        hand[0].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Replyer.send(new BaseMessage("press", Integer.toString(4)));
+			}
+        });
+        hand[1].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Replyer.send(new BaseMessage("press", Integer.toString(5)));
+			}
+        });
+        hand[2].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Replyer.send(new BaseMessage("press", Integer.toString(6)));
+			}
+        });
+        hand[3].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Replyer.send(new BaseMessage("press", Integer.toString(7)));
+			}
+        });
+        end_button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Replyer.send(new BaseMessage("press", Integer.toString(8)));
+			}
+        });
 
           GridBagConstraints ce = new GridBagConstraints();
           ce.gridx = 0;
@@ -506,7 +508,7 @@ public class place extends JFrame {
           Thread detector = new Thread(new Runnable() {
 
         	public void run() {
-        		System.out.println("sender receiving");
+        		//System.out.println("sender receiving " + Sender.hasMessage());
         		  if(Sender.hasMessage()) {
         			  BaseMessage message = Sender.get();
         			  String type = message.type();	System.out.println(type);
@@ -596,13 +598,13 @@ public class place extends JFrame {
         				  int cn = Integer.parseInt(contents[1]);
         				  cardnum[player].setIcon(cd_img[cn]);
         			  }
-        		  }
+        		  }/*
         		  try {
-					Thread.sleep(200);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+        			  Thread.sleep(200);
+        		  } catch (InterruptedException e) {
+        			  // TODO Auto-generated catch block
+        			  e.printStackTrace();
+        		  }*/
 			}
        	  
           });

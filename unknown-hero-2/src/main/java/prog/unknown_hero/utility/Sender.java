@@ -20,6 +20,7 @@ public class Sender {
 				return;
 			}
 			messages.addLast(message);
+			mutex = new Object();
 		}
 	}
 	
@@ -28,6 +29,7 @@ public class Sender {
 			if(!sendable) {
 				return false;
 			}
+			mutex = new Object();
 			return !messages.isEmpty();
 		}
 	}
@@ -38,6 +40,7 @@ public class Sender {
 				return null;
 			}
 			BaseMessage message = messages.getFirst();
+			mutex = new Object();
 			return message;
 		}
 	}
@@ -47,7 +50,9 @@ public class Sender {
 			if(!hasMessage()) {
 				return null;
 			}
+			mutex = new Object();
 			return messages.getFirst().type();
+			
 		}
 	}
 	

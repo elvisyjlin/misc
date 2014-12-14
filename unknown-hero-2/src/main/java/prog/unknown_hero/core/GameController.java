@@ -29,8 +29,8 @@ public class GameController {
 	private static final String GROUP_ID = "public";
 	private static final String APP_NAME = "zeroasclin@gmail.com";
 	private static final String API_KEY = "9f046a5457cc84660323d4a2ef0a5091";
-	private static final String ACCOUNT = "user2";
-	private static final String PASSWORD = "994e363bd0a0a84df00f7b17a83fc286";
+	private static final String ACCOUNT = "user1";
+	private static final String PASSWORD = "52e39fd5a80a23a96e7729af4a2d7ce3";
 	private static final int REQUEST_INITIAL_LOGIN = 0;
 	private static final int REQUEST_INITIAL_GET_SERVER_TIME = 1;
 	private static final int REQUEST_INITIAL_SET_PROFILE = 2;
@@ -428,7 +428,8 @@ public class GameController {
 			case HERO:
 					if(turns==myOrder){
 						int sel;
-						if(Replyer.hasMessage()) sel=Integer.parseInt(Replyer.get().content()[0]);
+						while(!Replyer.hasMessage());
+							sel=Integer.parseInt(Replyer.get().content()[0]);
 						if(sel==myOrder)
 						{
 							JSONObject obj = new JSONObject();
@@ -542,6 +543,24 @@ public class GameController {
 				
 			}
 		}
+			case PLAY:/*
+				if(true){
+					switch(cas){
+					case 1:
+						break;
+					case 2:
+						break;
+					case 3:
+						break;
+					case 4:
+						break;
+					case 5:
+					break;
+					case 6:
+						break;
+					}
+					
+				}*/https://github.com/ZeROasc/Unknown-Hero-2.git
 				break;
 			case ATCK:
 				break;
