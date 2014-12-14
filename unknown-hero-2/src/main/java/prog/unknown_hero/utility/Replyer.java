@@ -2,7 +2,7 @@ package prog.unknown_hero.utility;
 
 import java.util.LinkedList;
 
-public class Sender {
+public class Replyer {
 
 	private static LinkedList<BaseMessage> messages;
 	private static boolean sendable = false;
@@ -38,13 +38,4 @@ public class Sender {
 		}
 	}
 	
-	public static String type() {
-		synchronized(mutex) {
-			if(!hasMessage()) {
-				return null;
-			}
-			return messages.getFirst().type();
-		}
-	}
-
 }
