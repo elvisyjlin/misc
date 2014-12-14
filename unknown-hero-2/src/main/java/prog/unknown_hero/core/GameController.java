@@ -418,7 +418,10 @@ public class GameController {
 			case HERO:
 				if(true){
 					if(turns==myOrder){
-						player.drawHeroticCard(AllCards.CARD);
+						JSONObject obj = new JSONObject();
+						obj.put("PlayerId", Integer.toString(turns));
+						obj.put("Card", player.drawHeroticCard(AllCards.CARD));
+						sendMassage(obj.toString()); 
 					}else{
 						//TODO UI
 						boolean done=true;
@@ -427,12 +430,12 @@ public class GameController {
 							if(Receiver.type().equals("PlayerID"))
 								{
 									String[] Revc = Receiver.get().content();
-									AllCards.PLAYER.get(Integer.parseInt(Revc[0])).setHand(AllCards.CARD, Integer.parseInt(Revc[1]));
+									AllCards.PLAYER.get(Integer.parseInt(Revc[1])).setHand(AllCards.CARD, Integer.parseInt(Revc[3]));
 								}
-						}
+							}
 						}
 					}
-						}
+				}
 					else if(true){
 					gamePhase=GAME_PHASE.PLAY;
 					}
