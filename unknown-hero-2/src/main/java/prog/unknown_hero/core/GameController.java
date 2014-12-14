@@ -421,11 +421,21 @@ public class GameController {
 						player.drawHeroticCard(AllCards.CARD);
 					}else{
 						//TODO UI
-						
+						boolean done=true;
+						while(done){
+						if(Receiver.hasMessage()){
+							if(Receiver.type().equals("PlayerID"))
+								{
+									String[] Revc = Receiver.get().content();
+									AllCards.PLAYER.get(Integer.parseInt(Revc[0])).setHand(AllCards.CARD, Integer.parseInt(Revc[1]));
+								}
+						}
+						}
 					}
-				}else if(true){
+						}
+					else if(true){
 					gamePhase=GAME_PHASE.PLAY;
-				}
+					}
 				break;
 			case PLAY:
 				break;
