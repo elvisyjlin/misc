@@ -12,9 +12,9 @@ public class UITest {
     public static void main( String[] args ) {
         System.out.println( "Unknown Hero started running." );
         
-        new MainPage(DEFAULT_WINDOW_TITLE, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+        //new MainPage(DEFAULT_WINDOW_TITLE, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
         
-        //new place();
+        new place();
     }
     
 }
