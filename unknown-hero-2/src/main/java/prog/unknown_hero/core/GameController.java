@@ -55,8 +55,9 @@ public class GameController {
 	private final static HashMap<String, JSONObject> profileMap = new HashMap<>();
 	
 	private static void sendMassage(String msg){
+		System.out.println("output!:"+msg);
 		api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, msg);
-	}
+	} 
 	
 	public static class CardSet{
 		List<Card> CARD = new ArrayList<Card>();
@@ -312,7 +313,7 @@ public class GameController {
 						available = true;
 					}
 				} catch (final Exception ex) {
-
+					
 				}
 				break;
 		}
@@ -426,14 +427,22 @@ public class GameController {
 				gamePhase = GAME_PHASE.HERO;
 				break;
 			case HERO:
-				while(done)
-				{
-				if(true){
 					if(turns==myOrder){
-						JSONObject obj = new JSONObject();
-						obj.put("PlayerId", Integer.toString(turns));
-						obj.put("Card", player.drawHeroticCard(AllCards.CARD));
-						sendMassage(obj.toString()); 
+						int sel;
+						if(Replyer.hasMessage()) sel=Integer.parseInt(Replyer.get().content()[0]);
+						if(sel==myOrder)
+						{
+							JSONObject obj = new JSONObject();
+							obj.put("PlayerId", Integer.toString(turns));
+							obj.put("Card", player.drawHeroticCard(AllCards.CARD));
+							sendMassage(obj.toString()); 
+						}
+						else if(sel==8)
+						{
+							JSONObject obj = new JSONObject();
+							obj.put("END", Integer.toString(turns));
+							sendMassage(obj.toString());
+						}
 					}else{
 						//TODO UI
 						boolean done=true;
@@ -444,19 +453,17 @@ public class GameController {
 									String[] Revc = Receiver.get().content();
 									AllCards.PLAYER.get(Integer.parseInt(Revc[1])).setHand(AllCards.CARD, Integer.parseInt(Revc[3]));
 								}
+							else if(Receiver.type().equals("END")){
+								gamePhase = GAME_PHASE.PLAY;
 							}
 						}
-					}
-				}
-					else if(Replyer.hasMessage()==8){
-					gamePhase=GAME_PHASE.PLAY;
+						
 					}
 				}
 				break;
 			case PLAY:
-				if(){
+				if(true){
 					switch(cas){
-				}
 				case 1:
 					break;
 				case 2:
