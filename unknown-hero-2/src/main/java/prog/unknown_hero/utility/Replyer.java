@@ -15,7 +15,10 @@ public class Replyer {
 	
 	public static void send(BaseMessage message) {
 		synchronized(mutex) {
-			messages.addLast(message);;
+			if(!sendable) {
+				return;
+			}
+			messages.addLast(message);
 		}
 	}
 	
@@ -33,6 +36,9 @@ public class Replyer {
 			if(!hasMessage()) {
 				return null;
 			}
+			if(!sendable) {
+				return null;
+			}
 			BaseMessage message = messages.getFirst();
 			return message;
 		}
@@ -43,8 +49,19 @@ public class Replyer {
 			if(!hasMessage()) {
 				return null;
 			}
+			if(!sendable) {
+				return null;
+			}
 			return messages.getFirst().type();
 		}
+	}
+	
+	public static void eable() {
+		sendable = true;
+	}
+	
+	public static void disable() {
+		sendable = false;
 	}
 	
 }

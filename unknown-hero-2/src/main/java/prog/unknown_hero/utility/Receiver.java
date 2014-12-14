@@ -11,11 +11,15 @@ public class Receiver {
 	public static void initialize() {
 		messages = new LinkedList<BaseMessage>();
 		mutex = new Object();
+		sendable = true;
 	}
 	
 	public static void send(BaseMessage message) {
 		synchronized(mutex) {
-			messages.addLast(message);;
+			if(!sendable) {
+				return;
+			}
+			messages.addLast(message);
 		}
 	}
 	
@@ -33,6 +37,9 @@ public class Receiver {
 			if(!hasMessage()) {
 				return null;
 			}
+			if(!sendable) {
+				return null;
+			}
 			BaseMessage message = messages.getFirst();
 			return message;
 		}
@@ -43,8 +50,19 @@ public class Receiver {
 			if(!hasMessage()) {
 				return null;
 			}
+			if(!sendable) {
+				return null;
+			}
 			return messages.getFirst().type();
 		}
+	}
+	
+	public static void eable() {
+		sendable = true;
+	}
+	
+	public static void disable() {
+		sendable = false;
 	}
 
 }

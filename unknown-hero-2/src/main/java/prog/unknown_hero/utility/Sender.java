@@ -15,7 +15,10 @@ public class Sender {
 	
 	public static void send(BaseMessage message) {
 		synchronized(mutex) {
-			messages.addLast(message);;
+			if(!sendable) {
+				return;
+			}
+			messages.addLast(message);
 		}
 	}
 	
@@ -45,6 +48,14 @@ public class Sender {
 			}
 			return messages.getFirst().type();
 		}
+	}
+	
+	public static void eable() {
+		sendable = true;
+	}
+	
+	public static void disable() {
+		sendable = false;
 	}
 
 }

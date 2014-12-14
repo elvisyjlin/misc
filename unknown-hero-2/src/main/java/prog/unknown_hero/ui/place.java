@@ -66,6 +66,17 @@ public class place extends JFrame {
 	ImageIcon img7;
 	BufferedImage background;
 	
+    JButton[] heroB = new JButton[4];
+    JLabel[] hpB = new JLabel[4];
+    JLabel[] atkB = new JLabel[4];
+    JLabel[] defB = new JLabel[4];
+    JLabel[] cardnum = new JLabel[4];
+    JLabel[] weapon = new JLabel[4];
+    JButton end_button = new JButton(img6);
+    JLabel ne = new JLabel();
+    JButton[] hand = new JButton[4];
+    JLabel Ninfo = new JLabel("QAQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+	
 	private boolean loadImages() {
 		try {
 			card_back_img = new ImageIcon("./img/BACK.jpg");
@@ -127,9 +138,8 @@ public class place extends JFrame {
 		}
 		return true;
 	}
-
-	public place() {
-		myOrder = 0;
+	
+	public void init() {
 		
 		if(!loadImages()) {
 			return;
@@ -142,15 +152,6 @@ public class place extends JFrame {
         setContentPane(panel);
 		setResizable(false);
         panel.setLayout(new GridBagLayout());
-
-        //=========================================================== enemy1
-        JButton[] heroB = new JButton[4];
-        JLabel[] hpB = new JLabel[4];
-        JLabel[] atkB = new JLabel[4];
-        JLabel[] defB = new JLabel[4];
-        JLabel[] cardnum = new JLabel[4];
-        JLabel[] weapon = new JLabel[4];
-        JButton end_button = new JButton(img6);
         
         GridBagConstraints[] heroC = new GridBagConstraints[4];
         GridBagConstraints[] hpC = new GridBagConstraints[4];
@@ -406,7 +407,6 @@ public class place extends JFrame {
             panel.add(end_button, end_buttonC);
         }
 
-          JLabel ne = new JLabel();
           GridBagConstraints ce = new GridBagConstraints();
           ce.gridx = 0;
           ce.gridy = 5;
@@ -418,7 +418,6 @@ public class place extends JFrame {
           ce.anchor = GridBagConstraints.SOUTH;
           panel.add(ne, ce);
           
-          JButton[] hand = new JButton[4];
           GridBagConstraints[] handC = new GridBagConstraints[4];
           for(int i=0; i<4; i++){
         	  hand[i] = new JButton(card_back_img);
@@ -433,8 +432,7 @@ public class place extends JFrame {
         	  handC[i].anchor = GridBagConstraints.CENTER;
               panel.add(hand[i], handC[i]);
           }
-   
-          JLabel Ninfo = new JLabel("QAQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+
           GridBagConstraints Cinfo = new GridBagConstraints();
           Cinfo.gridx = 2;
           Cinfo.gridy = 5;
@@ -447,6 +445,10 @@ public class place extends JFrame {
           panel.add(Ninfo, Cinfo);
           
           setVisible(true);
+	}
+
+	public place() {
+		myOrder = 0;
           
           Thread detector = new Thread(new Runnable() {
 
@@ -458,6 +460,7 @@ public class place extends JFrame {
         			  int i, j;
         			  if("INITED".equals(type)) {
         				  myOrder = Integer.parseInt(contents[0]);
+        				  init();
         		  	  } else if("SETHAND".equals(type)) {
         				  for(i=0; i<contents.length; i++) {
         					  switch(Integer.parseInt(contents[i])) {

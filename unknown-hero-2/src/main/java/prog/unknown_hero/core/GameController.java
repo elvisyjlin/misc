@@ -6,13 +6,14 @@ import com.mobagel.meeti.api.java.MeetiCallback;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 
 import org.magiclen.json.JSONArray;
 import org.magiclen.json.JSONObject;
 
 import prog.unknown_hero.utility.BaseMessage;
 import prog.unknown_hero.utility.Receiver;
+import prog.unknown_hero.utility.Replyer;
+import prog.unknown_hero.utility.Sender;
 
 public class GameController {
 	
@@ -54,8 +55,8 @@ public class GameController {
 	}
 	
 	public static class CardSet{
-		List<Card> CARD = new ArrayList();
-		List<Player> PLAYER =new ArrayList(); 
+		List<Card> CARD = new ArrayList<Card>();
+		List<Player> PLAYER =new ArrayList<Player>(); 
 		boolean start=false;
 		CardSet(boolean in){
 			start=in;
@@ -294,6 +295,10 @@ public class GameController {
 
 	public static boolean login(boolean init) {
 		gameStage = new GameStage();
+		
+		Sender.initialize();
+		Receiver.initialize();
+		Replyer.initialize();
 		
 		api.initial(REQUEST_INITIAL_LOGIN, APP_NAME, API_KEY, ACCOUNT, PASSWORD, callback);
 		while (!available) {
