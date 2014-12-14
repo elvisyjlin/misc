@@ -27,8 +27,8 @@ public class GameController {
 	private static final String GROUP_ID = "public";
 	private static final String APP_NAME = "zeroasclin@gmail.com";
 	private static final String API_KEY = "9f046a5457cc84660323d4a2ef0a5091";
-	private static final String ACCOUNT = "user2";
-	private static final String PASSWORD = "994e363bd0a0a84df00f7b17a83fc286";
+	private static final String ACCOUNT = "user5";
+	private static final String PASSWORD = "9c3c48a2b31a9abd26a44189e8569b54";
 	private static final int REQUEST_INITIAL_LOGIN = 0;
 	private static final int REQUEST_INITIAL_GET_SERVER_TIME = 1;
 	private static final int REQUEST_INITIAL_SET_PROFILE = 2;
