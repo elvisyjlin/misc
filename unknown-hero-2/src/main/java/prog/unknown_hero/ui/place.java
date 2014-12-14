@@ -28,7 +28,7 @@ public class place extends JFrame {
 	ImageIcon[] hp_img = new ImageIcon[4];
 	ImageIcon[] atk_img = new ImageIcon[14];
 	ImageIcon[] def_img = new ImageIcon[4];
-	ImageIcon[] cd_img = new ImageIcon[5];
+	ImageIcon[] cd_img = new ImageIcon[4];
 	ImageIcon endButton_img;
 	ImageIcon endButton_hov;
 	ImageIcon spe_img;
@@ -91,7 +91,7 @@ public class place extends JFrame {
 			for(int i=0; i<4; i++) {
 				def_img[i] = new ImageIcon("./img/DEF-"+i+".jpg");
 			}
-			for(int i=0; i<5; i++) {
+			for(int i=0; i<4; i++) {
 				cd_img[i] = new ImageIcon("./img/CD-"+i+".jpg");
 			}
 			endButton_img = new ImageIcon("./img/END-BOTTON-NOT-CLICK.jpg");
@@ -170,17 +170,8 @@ public class place extends JFrame {
             hpB[i] = new JLabel(img3);
             atkB[i] = new JLabel(img2);
             defB[i] = new JLabel(img5);
-            cardnum[i] = new JLabel(img7);
+            if(i != myOrder) cardnum[i] = new JLabel(img7);
             weapon[i] = new JLabel(img4);
-            heroB[i].addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					
-				}
-            	
-            });
             
         	if(i == myOrder) {	//me
         		heroC[i] = new GridBagConstraints();
@@ -406,9 +397,65 @@ public class place extends JFrame {
             panel.add(hpB[i], hpC[i]);
             panel.add(atkB[i], atkC[i]);
             panel.add(defB[i], defC[i]);
-            panel.add(cardnum[i], cardnumC[i]);
+            if(i != myOrder) panel.add(cardnum[i], cardnumC[i]);
             panel.add(weapon[i], weaponC[i]);
             panel.add(end_button, end_buttonC);
+            
+
+            heroB[0].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Replyer.send(new BaseMessage("press", Integer.toString(0)));
+				}
+            });
+            heroB[1].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Replyer.send(new BaseMessage("press", Integer.toString(1)));
+				}
+            });
+            heroB[2].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Replyer.send(new BaseMessage("press", Integer.toString(2)));
+				}
+            });
+            heroB[3].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Replyer.send(new BaseMessage("press", Integer.toString(3)));
+				}
+            });
+            hand[4].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Replyer.send(new BaseMessage("press", Integer.toString(4)));
+				}
+            });
+            hand[5].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Replyer.send(new BaseMessage("press", Integer.toString(5)));
+				}
+            });
+            hand[6].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Replyer.send(new BaseMessage("press", Integer.toString(6)));
+				}
+            });
+            hand[7].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Replyer.send(new BaseMessage("press", Integer.toString(7)));
+				}
+            });
+            hand[8].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Replyer.send(new BaseMessage("press", Integer.toString(8)));
+				}
+            });
         }
 
           GridBagConstraints ce = new GridBagConstraints();
@@ -426,7 +473,7 @@ public class place extends JFrame {
           for(int i=0; i<4; i++){
         	  hand[i] = new JButton(card_back_img);
         	  handC[i] = new GridBagConstraints();
-        	  handC[i].gridx = i;
+        	  handC[i].gridx = i+1;
         	  handC[i].gridy = 11;
         	  handC[i].gridwidth = 1;
         	  handC[i].gridheight = 3;

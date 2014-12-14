@@ -61,15 +61,15 @@ public class MainPage extends JFrame {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				WaitingPage w = new WaitingPage(title, width, height);
 				Thread t = new Thread(new Runnable() {
 
 					public void run() {
-						GameController.login(false);
+						GameController.login(false, w);
 					}
 					
 				});
 				t.start();
-				new WaitingPage(title, width, height);
 				dispose();
 			}
 		});

@@ -10,6 +10,7 @@ import java.util.List;
 import org.magiclen.json.JSONArray;
 import org.magiclen.json.JSONObject;
 
+import prog.unknown_hero.ui.WaitingPage;
 import prog.unknown_hero.ui.place;
 import prog.unknown_hero.utility.BaseMessage;
 import prog.unknown_hero.utility.Receiver;
@@ -23,6 +24,7 @@ public class GameController {
 	static long startTime = 0;
 	static String[] playerOrder = new String[4];
 	static int myOrder;
+	static WaitingPage waitingPage;
 
 	private static final String GROUP_ID = "public";
 	private static final String APP_NAME = "zeroasclin@gmail.com";
@@ -316,8 +318,9 @@ public class GameController {
 		}
 	};
 
-	public static boolean login(boolean init) {
+	public static boolean login(boolean init, WaitingPage w) {
 		gameStage = new GameStage();
+		waitingPage = w;
 		
 		Sender.initialize();
 		Receiver.initialize();
@@ -380,15 +383,22 @@ public class GameController {
 	
 	public static void gameStart() {
 		System.out.println("遊戲設置");
-		new place();
+		place p = new place();
 		UIOperation.initialized(myOrder);
 		boolean in=true;
 		if(myOrder==0) in=false;
 		while(!Replyer.hasMessage()) {
-			if(Replyer.get().type().equals("INITED")) {
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(!Replyer.get().type().equals("INITED")) {
 				continue;
 			}
 		}
+		waitingPage.setVisible(false);;
 		System.out.println("Cards setting start.");
 		CardSet AllCards=new CardSet(in);
 		Player player=AllCards.PLAYER.get(myOrder);
