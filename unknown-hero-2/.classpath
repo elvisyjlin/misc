@@ -22,6 +22,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Elvis/git/Unknown-Hero-2/unknown-hero-2/ext/MeetiAPI(N).jar"/>
+	<classpathentry kind="lib" path="C:/Users/ISC/Downloads/MeetiAPI(N).jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
