@@ -1,22 +1,57 @@
 package prog.unknown_hero.ui;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import prog.unknown_hero.utility.BaseMessage;
+import prog.unknown_hero.utility.Sender;
 
 public class place extends JFrame {
     	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	ImageIcon img1;
+	ImageIcon img2;
+	ImageIcon img3;
+	ImageIcon img4;
+	ImageIcon img5;
+	ImageIcon img6;
+	BufferedImage background;
+	
+	private boolean loadImages() {
+		try {
+			img1 = new ImageIcon("./img/DSC04833.JPG");
+			img2 = new ImageIcon("./img/ATK-13.jpg");
+			img3 = new ImageIcon("./img/HP-3.jpg");
+			img4 = new ImageIcon("./img/WEAPON-無.jpg");
+			img5 = new ImageIcon("./img/DEF+0.jpg");
+			img6 = new ImageIcon("./img/END-BOTTON-NOT-CLICK.jpg");
+			background = ImageIO.read(new File(".\\img\\BG-1.jpg"));
+		} catch(IOException ex) {
+			return false;
+		}
+		return true;
+	}
+
 	public place() {
-        ImageIcon img1 = new ImageIcon("./img/DSC04833.JPG");
-        ImageIcon img2 = new ImageIcon("./img/ATK-13.jpg");
-        ImageIcon img3 = new ImageIcon("./img/HP-3.jpg");
-        ImageIcon img4 = new ImageIcon("./img/WEAPON-無.jpg");
-        ImageIcon img5 = new ImageIcon("./img/DEF+0.jpg");
-        ImageIcon img6 = new ImageIcon("./img/END-BOTTON-NOT-CLICK.jpg");
+		if(!loadImages()) {
+			return;
+		}
         
-        setSize(805, 635);
-        setLayout(new GridBagLayout());
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        JPanel panel = new ImagePanel(background);
+        setContentPane(panel);
+        panel.setLayout(new GridBagLayout());
 
         //=========================================================== enemy1
           JButton N1 = new JButton(img1);
@@ -29,7 +64,7 @@ public class place extends JFrame {
           C1.weighty = 0;
           C1.fill = GridBagConstraints.NONE;
           C1.anchor = GridBagConstraints.CENTER;
-          add(N1, C1);
+          panel.add(N1, C1);
           
           JLabel N1hp = new JLabel(img3);
           GridBagConstraints C1hp= new GridBagConstraints();
@@ -41,7 +76,7 @@ public class place extends JFrame {
           C1hp.weighty = 0;
           C1hp.fill = GridBagConstraints.NONE;
           C1hp.anchor = GridBagConstraints.EAST;
-          add(N1hp, C1hp);
+          panel.add(N1hp, C1hp);
           
           JLabel N1card = new JLabel(img2);
           GridBagConstraints C1card= new GridBagConstraints();
@@ -53,7 +88,7 @@ public class place extends JFrame {
           C1card.weighty = 0;
           C1card.fill = GridBagConstraints.NONE;
           C1card.anchor = GridBagConstraints.EAST;
-          add(N1card, C1card);
+          panel.add(N1card, C1card);
           
           JLabel N1atk = new JLabel(img2);
           GridBagConstraints C1atk= new GridBagConstraints();
@@ -65,7 +100,7 @@ public class place extends JFrame {
           C1atk.weighty = 0;
           C1atk.fill = GridBagConstraints.NONE;
           C1atk.anchor = GridBagConstraints.EAST;
-          add(N1atk, C1atk);     
+          panel.add(N1atk, C1atk);     
 
           JLabel N1def = new JLabel(img5);
           GridBagConstraints C1def= new GridBagConstraints();
@@ -77,7 +112,7 @@ public class place extends JFrame {
           C1def.weighty = 0;
           C1def.fill = GridBagConstraints.NONE;
           C1def.anchor = GridBagConstraints.EAST;
-          add(N1def, C1def);
+          panel.add(N1def, C1def);
 
           JLabel N1wep = new JLabel(img4);
           GridBagConstraints C1wep= new GridBagConstraints();
@@ -89,7 +124,7 @@ public class place extends JFrame {
           C1wep.weighty = 0;
           C1wep.fill = GridBagConstraints.NONE;
           C1wep.anchor = GridBagConstraints.CENTER;
-          add(N1wep, C1wep);   
+          panel.add(N1wep, C1wep);   
           
           //=========================================================== enemy2
               
@@ -103,7 +138,7 @@ public class place extends JFrame {
           C2.weighty = 0;
           C2.fill = GridBagConstraints.NONE;
           C2.anchor = GridBagConstraints.CENTER;
-          add(N2, C2);
+          panel.add(N2, C2);
          
           JLabel N2hp = new JLabel(img3);
           GridBagConstraints C2hp= new GridBagConstraints();
@@ -115,7 +150,7 @@ public class place extends JFrame {
           C2hp.weighty = 0;
           C2hp.fill = GridBagConstraints.NONE;
           C2hp.anchor = GridBagConstraints.EAST;
-          add(N2hp, C2hp);
+          panel.add(N2hp, C2hp);
           
           JLabel N2card = new JLabel("CARD:9999");
           GridBagConstraints C2card= new GridBagConstraints();
@@ -127,7 +162,7 @@ public class place extends JFrame {
           C2card.weighty = 0;
           C2card.fill = GridBagConstraints.NONE;
           C2card.anchor = GridBagConstraints.EAST;
-          add(N2card, C2card);
+          panel.add(N2card, C2card);
           
           JLabel N2atk = new JLabel(img2);
           GridBagConstraints C2atk= new GridBagConstraints();
@@ -139,7 +174,7 @@ public class place extends JFrame {
           C2atk.weighty = 0;
           C2atk.fill = GridBagConstraints.NONE;
           C2atk.anchor = GridBagConstraints.EAST;
-          add(N2atk, C2atk);    
+          panel.add(N2atk, C2atk);    
           
           JLabel N2def = new JLabel(img5);
           GridBagConstraints C2def= new GridBagConstraints();
@@ -151,7 +186,7 @@ public class place extends JFrame {
           C2def.weighty = 0;
           C2def.fill = GridBagConstraints.NONE;
           C2def.anchor = GridBagConstraints.EAST;
-          add(N2def, C2def);
+          panel.add(N2def, C2def);
           
           JLabel N2wep = new JLabel(img4);
           GridBagConstraints C2wep= new GridBagConstraints();
@@ -163,7 +198,7 @@ public class place extends JFrame {
           C2wep.weighty = 0;
           C2wep.fill = GridBagConstraints.NONE;
           C2wep.anchor = GridBagConstraints.CENTER;
-          add(N2wep, C2wep);  
+          panel.add(N2wep, C2wep);  
          
           //=========================================================== enemy3
           
@@ -178,7 +213,7 @@ public class place extends JFrame {
           C3.weighty = 0;
           C3.fill = GridBagConstraints.NONE;
           C3.anchor = GridBagConstraints.CENTER;
-          add(N3, C3);
+          panel.add(N3, C3);
 
           JLabel N3hp = new JLabel(img3);
           GridBagConstraints C3hp= new GridBagConstraints();
@@ -190,7 +225,7 @@ public class place extends JFrame {
           C3hp.weighty = 0;
           C3hp.fill = GridBagConstraints.NONE;
           C3hp.anchor = GridBagConstraints.EAST;
-          add(N3hp, C3hp);
+          panel.add(N3hp, C3hp);
           
           JLabel N3card = new JLabel("CARD:9999");
           GridBagConstraints C3card= new GridBagConstraints();
@@ -202,7 +237,7 @@ public class place extends JFrame {
           C3card.weighty = 0;
           C3card.fill = GridBagConstraints.NONE;
           C3card.anchor = GridBagConstraints.EAST;
-          add(N3card, C3card);
+          panel.add(N3card, C3card);
           
           JLabel N3atk = new JLabel(img2);
           GridBagConstraints C3atk= new GridBagConstraints();
@@ -214,7 +249,7 @@ public class place extends JFrame {
           C3atk.weighty = 0;
           C3atk.fill = GridBagConstraints.NONE;
           C3atk.anchor = GridBagConstraints.EAST;
-          add(N3atk, C3atk);       
+          panel.add(N3atk, C3atk);
     
           JLabel N3def = new JLabel(img5);
           GridBagConstraints C3def= new GridBagConstraints();
@@ -226,7 +261,7 @@ public class place extends JFrame {
           C3def.weighty = 0;
           C3def.fill = GridBagConstraints.NONE;
           C3def.anchor = GridBagConstraints.EAST;
-          add(N3def, C3def);
+          panel.add(N3def, C3def);
           
           JLabel N3wep = new JLabel(img4);
           GridBagConstraints C3wep= new GridBagConstraints();
@@ -238,7 +273,7 @@ public class place extends JFrame {
           C3wep.weighty = 0;
           C3wep.fill = GridBagConstraints.NONE;
           C3wep.anchor = GridBagConstraints.CENTER;
-          add(N3wep, C3wep);
+          panel.add(N3wep, C3wep);
           
           //=========================================================== YOU
 
@@ -252,7 +287,7 @@ public class place extends JFrame {
           ce.weighty = 1;
           ce.fill = GridBagConstraints.NONE;
           ce.anchor = GridBagConstraints.SOUTH;
-          add(ne, ce);
+          panel.add(ne, ce);
           
           for(int i=1; i<5; i++){
               JButton n5 = new JButton(img1);
@@ -265,7 +300,7 @@ public class place extends JFrame {
               c5.weighty = 0;
               c5.fill = GridBagConstraints.NONE;
               c5.anchor = GridBagConstraints.CENTER;
-              add(n5, c5);
+              panel.add(n5, c5);
           }
           
           JLabel NYOU = new JLabel(img1);
@@ -278,7 +313,7 @@ public class place extends JFrame {
           CYOU.weighty = 0;
           CYOU.fill = GridBagConstraints.NONE;
           CYOU.anchor = GridBagConstraints.CENTER;
-          add(NYOU, CYOU);
+          panel.add(NYOU, CYOU);
 
           JLabel NYOUhp = new JLabel(img3);
           GridBagConstraints CYOUhp = new GridBagConstraints();
@@ -290,7 +325,7 @@ public class place extends JFrame {
           CYOUhp.weighty = 0;
           CYOUhp.fill = GridBagConstraints.NONE;
           CYOUhp.anchor = GridBagConstraints.EAST;
-          add(NYOUhp, CYOUhp);
+          panel.add(NYOUhp, CYOUhp);
 
           JLabel NYOUatk = new JLabel(img2);
           GridBagConstraints CYOUatk = new GridBagConstraints();
@@ -302,7 +337,7 @@ public class place extends JFrame {
           CYOUatk.weighty = 0;
           CYOUatk.fill = GridBagConstraints.NONE;
           CYOUatk.anchor = GridBagConstraints.EAST;
-          add(NYOUatk, CYOUatk);
+          panel.add(NYOUatk, CYOUatk);
           
           JLabel NYOUdef = new JLabel(img5);
           GridBagConstraints CYOUdef = new GridBagConstraints();
@@ -314,7 +349,7 @@ public class place extends JFrame {
           CYOUdef.weighty = 0;
           CYOUdef.fill = GridBagConstraints.NONE;
           CYOUdef.anchor = GridBagConstraints.EAST;
-          add(NYOUdef, CYOUdef);
+          panel.add(NYOUdef, CYOUdef);
 
           JLabel NYOUwep = new JLabel(img4);
           GridBagConstraints CYOUwep = new GridBagConstraints();
@@ -326,7 +361,7 @@ public class place extends JFrame {
           CYOUwep.weighty = 0;
           CYOUwep.fill = GridBagConstraints.NONE;
           CYOUwep.anchor = GridBagConstraints.EAST;
-          add(NYOUwep, CYOUwep);
+          panel.add(NYOUwep, CYOUwep);
           
           JButton NYOUend = new JButton(img6);
           GridBagConstraints CYOUend = new GridBagConstraints();
@@ -338,7 +373,7 @@ public class place extends JFrame {
           CYOUend.weighty = 0;
           CYOUend.fill = GridBagConstraints.NONE;
           CYOUend.anchor = GridBagConstraints.NORTH;
-          add(NYOUend, CYOUend);
+          panel.add(NYOUend, CYOUend);
           
    
           JLabel Ninfo = new JLabel("QAQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
@@ -351,9 +386,30 @@ public class place extends JFrame {
           Cinfo.weighty = 0;
           Cinfo.fill = GridBagConstraints.NONE;
           Cinfo.anchor = GridBagConstraints.CENTER;
-          add(Ninfo, Cinfo);
+          panel.add(Ninfo, Cinfo);
           
           setVisible(true);
+          
+          Thread detector = new Thread(new Runnable() {
+
+        	public void run() {
+        		  if(Sender.hasMessage()) {
+        			  BaseMessage message = Sender.get();
+        			  String type = message.type();
+        			  String[] contents = message.content();
+        			  if("setPlayerHandCards".equals(message.type())) {
+        				  
+        			  }
+        		  }
+        		  try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+       	  
+          });
 	}
 
 }

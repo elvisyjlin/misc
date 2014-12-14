@@ -20,7 +20,7 @@ public class MainPage extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public MainPage(String title, int width, int height) {
+	public MainPage(final String title,final int width,final int height) {
 		setTitle(title);
 		setSize(width, height);
 		setResizable(false);
@@ -38,11 +38,11 @@ public class MainPage extends JFrame {
 		}
 		setContentPane(panel);
 
-		ImageIcon buttonImage_def = new ImageIcon(".\\img\\B-NOT CLICK.jpg");
-		ImageIcon buttonImage_hov = new ImageIcon(".\\img\\B-CLICK.jpg");
+		final ImageIcon buttonImage_def = new ImageIcon(".\\img\\B-NOT CLICK.jpg");
+		final ImageIcon buttonImage_hov = new ImageIcon(".\\img\\B-CLICK.jpg");
 		
 		panel.setLayout(null);
-		JButton button = new JButton(buttonImage_def);
+		final JButton button = new JButton(buttonImage_def);
 		button.setSize(322, 300);
 		button.setBounds(239, 300, 322, 300);
 		panel.add(button);
