@@ -10,6 +10,7 @@ import java.util.List;
 import org.magiclen.json.JSONArray;
 import org.magiclen.json.JSONObject;
 
+import prog.unknown_hero.ui.place;
 import prog.unknown_hero.utility.BaseMessage;
 import prog.unknown_hero.utility.Receiver;
 import prog.unknown_hero.utility.Replyer;
@@ -376,7 +377,8 @@ public class GameController {
 	static enum GAME_PHASE {IDLE, WAIT, DRAW, HERO, PLAY, ATCK, EXCH, END};
 	
 	public static void gameStart() {
-			UIOperation.initialized(myOrder);
+		new place();
+		UIOperation.initialized(myOrder);
 		boolean in=true;
 		if(myOrder==0) in=false;
 		CardSet AllCards=new CardSet(in);
