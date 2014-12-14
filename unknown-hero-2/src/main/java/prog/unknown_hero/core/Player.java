@@ -7,12 +7,17 @@ public class Player extends Character{
 	int health, hand;
 	Weapon wp=null;
 	public boolean poi=false;
-	List<Card> handcards= new ArrayList(); 
+	List<Card> handcards= new ArrayList<Card>(); 
 	Player(int a, int b) {
 		super(a, b);
 		this.maxHealth();
 		this.hand=0;
 		handcards.clear();
+		UIOperation.setPlayerHero(this.status, this.types);
+		UIOperation.setPlayerAP(this.status, this.att);
+		UIOperation.setPlayerDP(this.status, this.def);
+		UIOperation.setPlayerHandCardsNum(this.status, 0);
+		UIOperation.setPlayerHP(this.status, this.health);
 	}
 	
 	public void changeHealth(int sub)
@@ -38,6 +43,11 @@ public class Player extends Character{
 		this.hand++;
 		this.handcards.add(gameCard.get(tmpCdNum));
 		}
+		int[] sent_out_card=new int[this.hand];
+		for(int i=0; i<this.hand; i++){
+			sent_out_card[i]=this.handcards.get(i).num;
+		}
+		UIOperation.setPlayerHandCards(sent_out_card);
 		return tmpCdNum;
 		}
 		return -1;
@@ -62,6 +72,11 @@ public class Player extends Character{
 				gameCard.get(tmpCdNum).changeStatus(this.showStatus());
 				this.hand++;
 				this.handcards.add(gameCard.get(tmpCdNum));
+				int[] sent_out_card=new int[this.hand];
+				for(int i=0; i<this.hand; i++){
+					sent_out_card[i]=this.handcards.get(i).num;
+				}
+				UIOperation.setPlayerHandCards(sent_out_card);
 				return tmpCdNum;
 				}
 		}
@@ -94,5 +109,65 @@ public class Player extends Character{
 			this.handcards.remove(num);
 			this.hand--;
 		}
+		int[] sent_out_card=new int[this.hand];
+		for(int i=0; i<this.hand; i++){
+			sent_out_card[i]=this.handcards.get(i).num;
+		}
+		UIOperation.setPlayerHandCards(sent_out_card);
+	}
+
+	public void setHand(List<Card> gameCards, int cardNum) {
+		this.hand++;
+		if(cardNum<6){
+			if(gameCards.get(cardNum*2) instanceof Character)
+			{
+				this.handcards.add(gameCards.get(cardNum*2));
+				gameCards.get(cardNum*2).changeStatus(this.types);
+			}
+			else if(gameCards.get(cardNum*2+1) instanceof Character)
+			{
+				this.handcards.add(gameCards.get(cardNum*2+1));
+				gameCards.get(cardNum*2+1).changeStatus(this.types);
+			}
+			else System.out.println("Add_handcard_Wrong!");
+		}
+		else if(cardNum<24){
+			if(gameCards.get((cardNum-1)*3) instanceof EffectCards&&gameCards.get((cardNum-1)*3).status==4)
+			{
+				this.handcards.add(gameCards.get((cardNum-1)*3));
+				gameCards.get((cardNum-1)*3).changeStatus(this.types);
+			}
+			else if(gameCards.get((cardNum-1)*3+1) instanceof EffectCards&&gameCards.get((cardNum-1)*3+1).status==4)
+			{
+				this.handcards.add(gameCards.get((cardNum-1)*3+1));
+				gameCards.get((cardNum-1)*3+1).changeStatus(this.types);
+			}
+			else if(gameCards.get((cardNum-1)*3+2) instanceof EffectCards&&gameCards.get((cardNum-1)*3+2).status==4)
+			{
+				this.handcards.add(gameCards.get((cardNum-1)*3+2));
+				gameCards.get((cardNum-1)*3+2).changeStatus(this.types);
+			}
+			else System.out.println("Add_handcard_Wrong!");
+		}
+		else{
+
+			if(gameCards.get(cardNum*2+6) instanceof Weapon&&gameCards.get(cardNum*2+6).status==4)
+			{
+				this.handcards.add(gameCards.get(cardNum*2+6));
+				gameCards.get(cardNum*2+6).changeStatus(this.types);
+			}
+			else if(gameCards.get(cardNum*2+6+1) instanceof Weapon&&gameCards.get(cardNum*2+6+1).status==4)
+			{
+				this.handcards.add(gameCards.get(cardNum*2+6+1));
+				gameCards.get(cardNum*2+6+1).changeStatus(this.types);
+			}
+			else System.out.println("Add_handcard_Wrong!");
+			
+		}
+		int[] sent_out_card=new int[this.hand];
+		for(int i=0; i<this.hand; i++){
+			sent_out_card[i]=this.handcards.get(i).num;
+		}
+		UIOperation.setPlayerHandCards(sent_out_card);
 	}
 }
