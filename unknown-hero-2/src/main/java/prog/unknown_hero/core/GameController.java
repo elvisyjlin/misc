@@ -487,9 +487,7 @@ public class GameController {
 					obj.put("msg_senderid", ACCOUNT);
 					StringBuffer s = new StringBuffer("start");
 					for(int i=0; i<PLAYER_NUM; i++) {
-						if(i!=0) {
-							s.append(",");
-						}
+						s.append(",");
 						s.append(playerOrder[i]);
 					}
 					obj.put("msg_content", s);
