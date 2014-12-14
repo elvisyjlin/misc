@@ -29,8 +29,8 @@ public class GameController {
 	private static final String GROUP_ID = "public";
 	private static final String APP_NAME = "zeroasclin@gmail.com";
 	private static final String API_KEY = "9f046a5457cc84660323d4a2ef0a5091";
-	private static final String ACCOUNT = "user1";
-	private static final String PASSWORD = "52e39fd5a80a23a96e7729af4a2d7ce3";
+	private static final String ACCOUNT = "user2";
+	private static final String PASSWORD = "994e363bd0a0a84df00f7b17a83fc286";
 	private static final int REQUEST_INITIAL_LOGIN = 0;
 	private static final int REQUEST_INITIAL_GET_SERVER_TIME = 1;
 	private static final int REQUEST_INITIAL_SET_PROFILE = 2;
@@ -431,11 +431,21 @@ public class GameController {
 						player.drawHeroticCard(AllCards.CARD);
 					}else{
 						//TODO UI
-						
+						boolean done=true;
+						while(done){
+						if(Receiver.hasMessage()){
+							if(Receiver.type().equals("PlayerID"))
+								{
+									String[] Revc = Receiver.get().content();
+									AllCards.PLAYER.get(Integer.parseInt(Revc[0])).setHand(AllCards.CARD, Integer.parseInt(Revc[1]));
+								}
+						}
+						}
 					}
-				}else if(true){
+						}
+					else if(true){
 					gamePhase=GAME_PHASE.PLAY;
-				}
+					}
 				break;
 			case PLAY:
 				break;
