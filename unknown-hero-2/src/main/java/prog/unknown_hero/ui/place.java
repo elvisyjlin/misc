@@ -1,9 +1,12 @@
 package prog.unknown_hero.ui;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.EventListener;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -166,6 +169,15 @@ public class place extends JFrame {
             defB[i] = new JLabel(img5);
             cardnum[i] = new JLabel(img7);
             weapon[i] = new JLabel(img4);
+            heroB[i].addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					
+				}
+            	
+            });
             
         	if(i == playersList[myOrder]) {	//me
         		heroC[i] = new GridBagConstraints();
@@ -497,16 +509,20 @@ public class place extends JFrame {
         			  } else if("SETHERO".equals(type)) {
         				  int player = Integer.parseInt(contents[0]);
         				  int card = Integer.parseInt(contents[1]);
-        				  switch(card) {
-        				  case 0:
-            				  heroB[player].setIcon(mag_img);
-        					  break;
-        				  case 1:
-            				  heroB[player].setIcon(sci_img);
-        					  break;
-        				  case 2:
-            				  heroB[player].setIcon(wor_img);
-        					  break;
+        				  if(player == 4) {
+        					  System.out.println("The hero is still in the deck.");
+        				  } else {
+        					  switch(card) {
+        					  case 0:
+        						  heroB[player].setIcon(mag_img);
+        						  break;
+        					  case 1:
+        						  heroB[player].setIcon(sci_img);
+        						  break;
+        					  case 2:
+        						  heroB[player].setIcon(wor_img);
+        						  break;
+        					  }
         				  }
         			  } else if("SETHP".equals(type)) {
         				  int player = Integer.parseInt(contents[0]);
@@ -526,7 +542,9 @@ public class place extends JFrame {
         			  } else if("SETINFO".equals(type)) {
         				  Ninfo.setText(contents[0]);
         			  } else if("SETHANDN".equals(type)) {
-        				  
+        				  int player = Integer.parseInt(contents[0]);
+        				  int cn = Integer.parseInt(contents[1]);
+        				  cardnum[player].setIcon(cd_img[cn]);
         			  }
         		  }
         		  try {

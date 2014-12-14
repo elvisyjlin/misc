@@ -8,17 +8,6 @@ public class UIOperation {
 	public static void initialized(int myOrder) {
 		Sender.send(new BaseMessage("INITED", Integer.toString(myOrder)));
 	}
-	
-	public static void setPlayerList(int[] playerList) {
-		StringBuffer s = new StringBuffer("");
-		for(int i=0; i<4; i++) {
-			if(i != 0) {
-				s.append(",");
-			}
-			s.append(playerList[i]);
-		}
-		Sender.send(new BaseMessage("LIST", s.toString()));
-	}
 
 	public static void setPlayerHandCards(int[] cards) {
 		StringBuffer s = new StringBuffer("");
@@ -62,8 +51,8 @@ public class UIOperation {
 		Sender.send(new BaseMessage("SETHANDN", player+","+num));
 	}
 	
-	public static void useACard(int ithCard) {
-		Sender.send(new BaseMessage("USE", Integer.toString(ithCard)));
+	public static void useACard() {
+		Sender.send(new BaseMessage("USE", "null"));
 	}
 	
 }
