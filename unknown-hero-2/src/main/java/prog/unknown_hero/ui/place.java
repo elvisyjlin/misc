@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import prog.unknown_hero.utility.BaseMessage;
+import prog.unknown_hero.utility.Replyer;
 import prog.unknown_hero.utility.Sender;
 
 public class place extends JFrame {
@@ -27,7 +28,7 @@ public class place extends JFrame {
 	ImageIcon[] hp_img = new ImageIcon[4];
 	ImageIcon[] atk_img = new ImageIcon[14];
 	ImageIcon[] def_img = new ImageIcon[4];
-	ImageIcon[] cd_img = new ImageIcon[5];
+	ImageIcon[] cd_img = new ImageIcon[4];
 	ImageIcon endButton_img;
 	ImageIcon endButton_hov;
 	ImageIcon spe_img;
@@ -78,6 +79,7 @@ public class place extends JFrame {
     JLabel Ninfo = new JLabel("QAQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
 	
 	private boolean loadImages() {
+		System.out.println("讀取圖片");
 		try {
 			card_back_img = new ImageIcon("./img/BACK.jpg");
 			for(int i=0; i<4; i++) {
@@ -89,7 +91,7 @@ public class place extends JFrame {
 			for(int i=0; i<4; i++) {
 				def_img[i] = new ImageIcon("./img/DEF-"+i+".jpg");
 			}
-			for(int i=0; i<5; i++) {
+			for(int i=0; i<4; i++) {
 				cd_img[i] = new ImageIcon("./img/CD-"+i+".jpg");
 			}
 			endButton_img = new ImageIcon("./img/END-BOTTON-NOT-CLICK.jpg");
@@ -141,6 +143,8 @@ public class place extends JFrame {
 	
 	public void init() {
 		
+		System.out.println("初始化");
+		
 		if(!loadImages()) {
 			return;
 		}
@@ -166,17 +170,8 @@ public class place extends JFrame {
             hpB[i] = new JLabel(img3);
             atkB[i] = new JLabel(img2);
             defB[i] = new JLabel(img5);
-            cardnum[i] = new JLabel(img7);
+            if(i != myOrder) cardnum[i] = new JLabel(img7);
             weapon[i] = new JLabel(img4);
-            heroB[i].addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					
-				}
-            	
-            });
             
         	if(i == myOrder) {	//me
         		heroC[i] = new GridBagConstraints();
@@ -402,10 +397,11 @@ public class place extends JFrame {
             panel.add(hpB[i], hpC[i]);
             panel.add(atkB[i], atkC[i]);
             panel.add(defB[i], defC[i]);
-            panel.add(cardnum[i], cardnumC[i]);
+            if(i != myOrder) panel.add(cardnum[i], cardnumC[i]);
             panel.add(weapon[i], weaponC[i]);
             panel.add(end_button, end_buttonC);
         }
+        
 
           GridBagConstraints ce = new GridBagConstraints();
           ce.gridx = 0;
@@ -422,7 +418,7 @@ public class place extends JFrame {
           for(int i=0; i<4; i++){
         	  hand[i] = new JButton(card_back_img);
         	  handC[i] = new GridBagConstraints();
-        	  handC[i].gridx = i;
+        	  handC[i].gridx = i+1;
         	  handC[i].gridy = 11;
         	  handC[i].gridwidth = 1;
         	  handC[i].gridheight = 3;
@@ -443,8 +439,67 @@ public class place extends JFrame {
           Cinfo.fill = GridBagConstraints.NONE;
           Cinfo.anchor = GridBagConstraints.CENTER;
           panel.add(Ninfo, Cinfo);
+
+          
+
+          heroB[0].addActionListener(new ActionListener() {
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				Replyer.send(new BaseMessage("press", Integer.toString(0)));
+  			}
+          });
+          heroB[1].addActionListener(new ActionListener() {
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				Replyer.send(new BaseMessage("press", Integer.toString(1)));
+  			}
+          });
+          heroB[2].addActionListener(new ActionListener() {
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				Replyer.send(new BaseMessage("press", Integer.toString(2)));
+  			}
+          });
+          heroB[3].addActionListener(new ActionListener() {
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				Replyer.send(new BaseMessage("press", Integer.toString(3)));
+  			}
+          });
+          hand[0].addActionListener(new ActionListener() {
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				Replyer.send(new BaseMessage("press", Integer.toString(4)));
+  			}
+          });
+          hand[1].addActionListener(new ActionListener() {
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				Replyer.send(new BaseMessage("press", Integer.toString(5)));
+  			}
+          });
+          hand[2].addActionListener(new ActionListener() {
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				Replyer.send(new BaseMessage("press", Integer.toString(6)));
+  			}
+          });
+          hand[3].addActionListener(new ActionListener() {
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				Replyer.send(new BaseMessage("press", Integer.toString(7)));
+  			}
+          });
+          end_button.addActionListener(new ActionListener() {
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				Replyer.send(new BaseMessage("press", Integer.toString(8)));
+  			}
+          });
           
           setVisible(true);
+          
+          Replyer.send(new BaseMessage("INITED", "OK"));
 	}
 
 	public place() {
@@ -453,10 +508,11 @@ public class place extends JFrame {
           Thread detector = new Thread(new Runnable() {
 
         	public void run() {
+        		//System.out.println("sender receiving " + Sender.hasMessage());
         		  if(Sender.hasMessage()) {
         			  BaseMessage message = Sender.get();
-        			  String type = message.type();
-        			  String[] contents = message.content();
+        			  String type = message.type();	System.out.println(type);
+        			  String[] contents = message.content(); System.out.println(contents);
         			  int i, j;
         			  if("INITED".equals(type)) {
         				  myOrder = Integer.parseInt(contents[0]);
@@ -542,13 +598,13 @@ public class place extends JFrame {
         				  int cn = Integer.parseInt(contents[1]);
         				  cardnum[player].setIcon(cd_img[cn]);
         			  }
-        		  }
+        		  }/*
         		  try {
-					Thread.sleep(200);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+        			  Thread.sleep(200);
+        		  } catch (InterruptedException e) {
+        			  // TODO Auto-generated catch block
+        			  e.printStackTrace();
+        		  }*/
 			}
        	  
           });

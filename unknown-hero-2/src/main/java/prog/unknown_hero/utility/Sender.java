@@ -11,6 +11,7 @@ public class Sender {
 	public static void initialize() {
 		messages = new LinkedList<BaseMessage>();
 		mutex = new Object();
+		enable();
 	}
 	
 	public static void send(BaseMessage message) {
@@ -19,6 +20,7 @@ public class Sender {
 				return;
 			}
 			messages.addLast(message);
+			mutex = new Object();
 		}
 	}
 	
@@ -27,6 +29,7 @@ public class Sender {
 			if(!sendable) {
 				return false;
 			}
+			mutex = new Object();
 			return !messages.isEmpty();
 		}
 	}
@@ -37,6 +40,7 @@ public class Sender {
 				return null;
 			}
 			BaseMessage message = messages.getFirst();
+			mutex = new Object();
 			return message;
 		}
 	}
@@ -46,11 +50,13 @@ public class Sender {
 			if(!hasMessage()) {
 				return null;
 			}
+			mutex = new Object();
 			return messages.getFirst().type();
+			
 		}
 	}
 	
-	public static void eable() {
+	public static void enable() {
 		sendable = true;
 	}
 	

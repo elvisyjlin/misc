@@ -10,6 +10,8 @@ import java.util.List;
 import org.magiclen.json.JSONArray;
 import org.magiclen.json.JSONObject;
 
+import prog.unknown_hero.core.GameStage;
+import prog.unknown_hero.ui.WaitingPage;
 import prog.unknown_hero.ui.place;
 import prog.unknown_hero.utility.BaseMessage;
 import prog.unknown_hero.utility.Receiver;
@@ -23,6 +25,7 @@ public class GameController {
 	static long startTime = 0;
 	static String[] playerOrder = new String[4];
 	static int myOrder;
+	static WaitingPage waitingPage;
 
 	private static final String GROUP_ID = "public";
 	private static final String APP_NAME = "zeroasclin@gmail.com";
@@ -39,6 +42,7 @@ public class GameController {
 	private static final int REQUEST_GET_PROFILE = 7;
 	private static final int REQUEST_SET_GROUP = 8;
 	private static final int REQUEST_GET_GROUP = 9;
+	private static final int PLAYER_NUM = 4;
 
 	private final static MeetiAPI api = new MeetiAPI();
 	private static boolean available = false, stopping = false;
@@ -52,8 +56,9 @@ public class GameController {
 	private final static HashMap<String, JSONObject> profileMap = new HashMap<>();
 	
 	private static void sendMassage(String msg){
+		System.out.println("output!:"+msg);
 		api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, msg);
-	}
+	} 
 	
 	public static class CardSet{
 		List<Card> CARD = new ArrayList<Card>();
@@ -83,7 +88,7 @@ public class GameController {
 			else addData();
 		}
 		private void addData() {
-			boolean done=false;
+			boolean done=true;
 			while(done){
 			if(Receiver.hasMessage()){
 				if(Receiver.type().equals("PlayerID"))
@@ -103,13 +108,13 @@ public class GameController {
 						for(int j=0; j<Integer.parseInt(Revc[5]); j++){
 							PLAYER.get(j).setHand(CARD, Integer.parseInt(Revc[6+j]));
 						}
+						done=false;
 					}
 				}
 			}
-			
 		}
 		private void builtGame() { 
-			for(int i=0; i<4; i++)
+			for(int i=0; i<PLAYER_NUM; i++)
 			{
 				int ram;
 				boolean untrue=true;
@@ -133,7 +138,7 @@ public class GameController {
 					PLAYER.get(i1).drawCard(CARD);
 				//TODO draw UI
 			}
-			for(int i=0; i<4; i++)
+			for(int i=0; i<PLAYER_NUM; i++)
 			{
 				JSONObject obj = new JSONObject();
 				obj.put("PlayerId", Integer.toString(i));
@@ -308,14 +313,15 @@ public class GameController {
 						available = true;
 					}
 				} catch (final Exception ex) {
-
+					
 				}
 				break;
 		}
 	};
 
-	public static boolean login(boolean init) {
+	public static boolean login(boolean init, WaitingPage w) {
 		gameStage = new GameStage();
+		waitingPage = w;
 		
 		Sender.initialize();
 		Receiver.initialize();
@@ -377,14 +383,29 @@ public class GameController {
 	static enum GAME_PHASE {IDLE, WAIT, DRAW, HERO, PLAY, ATCK, EXCH, END};
 	
 	public static void gameStart() {
-		new place();
+		System.out.println("遊戲設置");
+		place p = new place();
 		UIOperation.initialized(myOrder);
 		boolean in=true;
 		if(myOrder==0) in=false;
+		while(!Replyer.hasMessage()) {
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(!Replyer.get().type().equals("INITED")) {
+				continue;
+			}
+		}
+		waitingPage.setVisible(false);;
+		System.out.println("Cards setting start.");
 		CardSet AllCards=new CardSet(in);
 		Player player=AllCards.PLAYER.get(myOrder);
 		GAME_PHASE gamePhase = GAME_PHASE.IDLE;
 		stopping = false;
+		int turns=0;
 		while (!stopping) {
 			final String message = "";
 			
@@ -406,9 +427,123 @@ public class GameController {
 				gamePhase = GAME_PHASE.HERO;
 				break;
 			case HERO:
+					if(turns==myOrder){
+						int sel;
+						while(!Replyer.hasMessage());
+							sel=Integer.parseInt(Replyer.get().content()[0]);
+						if(sel==myOrder)
+						{
+							JSONObject obj = new JSONObject();
+							obj.put("PlayerId", Integer.toString(turns));
+							obj.put("Card", player.drawHeroticCard(AllCards.CARD));
+							sendMassage(obj.toString()); 
+						}
+						else if(sel==8)
+						{
+							JSONObject obj = new JSONObject();
+							obj.put("END", Integer.toString(turns));
+							sendMassage(obj.toString());
+						}
+					}else{
+						//TODO UI
+						boolean done=true;
+						while(done){
+						if(Receiver.hasMessage()){
+							if(Receiver.type().equals("PlayerID"))
+								{
+									String[] Revc = Receiver.get().content();
+									AllCards.PLAYER.get(Integer.parseInt(Revc[1])).setHand(AllCards.CARD, Integer.parseInt(Revc[3]));
+								}
+							else if(Receiver.type().equals("END")){
+								gamePhase = GAME_PHASE.PLAY;
+							}
+						}
+						
+					}
+				}
 				break;
-			case PLAY:
-				break;
+			case PLAY:if(turns==myOrder){
+				int sel = 0;
+				if(Replyer.hasMessage()) sel=Integer.parseInt(Replyer.get().content()[0]);
+				if(sel>3&&sel<8)
+				{
+					boolean touched=false;
+					int ks=AllCards.PLAYER.get(turns).handcards.get(sel).num;
+					switch(ks){
+					case 3:
+						touched=true;
+						break;
+					case 4:
+						touched=true;
+						break;
+					case 5:
+						touched=true;
+						break;
+						
+					case 6:
+						touched=true;
+						break;
+					case 9:
+						touched=true;
+						break;
+					case 10:
+						touched=true;
+						break;
+					}
+					JSONObject obj = new JSONObject();
+					if(touched==true){
+						player.removeHand(sel);
+					obj.put("Card", Integer.toString(sel));
+					}
+					sendMassage(obj.toString()); 
+				}
+				else if(sel==8)
+				{
+					JSONObject obj = new JSONObject();
+					obj.put("END", Integer.toString(turns));
+					sendMassage(obj.toString());
+				}
+			}else{
+				//TODO UI
+				boolean done=true;
+				while(done){
+				if(Receiver.hasMessage()){
+					boolean touched=false;
+					if(Receiver.type().equals("Card"))
+						{
+						String[] Revc = Receiver.get().content();
+						int sel=Integer.parseInt(Revc[1]);
+						int ks=AllCards.PLAYER.get(turns).handcards.get(sel).num;
+						switch(ks){
+						case 3:
+							touched=true;
+							break;
+						case 4:
+							touched=true;
+							break;
+						case 5:
+							touched=true;
+							break;
+							
+						case 6:
+							touched=true;
+							break;
+						case 9:
+							touched=true;
+							break;
+						case 10:
+							touched=true;
+							break;
+						}
+							AllCards.PLAYER.get(Integer.parseInt(Revc[1])).setHand(AllCards.CARD, Integer.parseInt(Revc[3]));
+						}
+					else if(Receiver.type().equals("END")){
+						gamePhase = GAME_PHASE.PLAY;
+					}
+				}
+				
+			}
+		}
 			case ATCK:
 				break;
 			case EXCH:
@@ -432,6 +567,8 @@ public class GameController {
 					api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, obj.toString());
 				}
 			}
+			turns+=1;
+			turns%=PLAYER_NUM;
 		}
 		gameStage.nextStage();
 	}
@@ -458,12 +595,17 @@ public class GameController {
 			if("join".equals(subContent[0])) {
 				System.out.println(++waitCount);
 				playerOrder[waitCount] = senderID;
-				if(waitCount == 3) {
+				if(waitCount == PLAYER_NUM-1) {
 
 					final JSONObject obj = new JSONObject();
 					obj.put("msg_groupid", GROUP_ID);
 					obj.put("msg_senderid", ACCOUNT);
-					obj.put("msg_content", "start,"+playerOrder[0]+","+playerOrder[1]+","+playerOrder[2]+","+playerOrder[3]);
+					StringBuffer s = new StringBuffer("start");
+					for(int i=0; i<PLAYER_NUM; i++) {
+						s.append(",");
+						s.append(playerOrder[i]);
+					}
+					obj.put("msg_content", s);
 					obj.put("msg_type", "1");
 					api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, obj.toString());
 					
@@ -471,7 +613,7 @@ public class GameController {
 					gameStart();
 				}
 			} else if("start".equals(subContent[0])) {
-				for(int i=0; i<4; i++) {
+				for(int i=0; i<PLAYER_NUM; i++) {
 					playerOrder[i] = subContent[i+1];
 					if(playerOrder[i].equals(ACCOUNT)) {
 						myOrder = i;
