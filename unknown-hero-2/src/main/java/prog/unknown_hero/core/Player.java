@@ -24,12 +24,42 @@ public class Player extends Character{
 		this.health=this.MAX_HEALTH;
 		
 	}
-	public void drawCard(){
-		// TODO undone
+	public int drawCard(List<Card> gameCard){
+		boolean no=true;
+		int tmpCdNum=0;
+		while(no){
+			tmpCdNum=(int) Math.abs(Math.random())%28;
+			if(gameCard.get(tmpCdNum).showStatus()==4){
+				no=false;
+			}
+		gameCard.get(tmpCdNum).changeStatus(this.showStatus());
+		this.hand++;
+		}
+		return tmpCdNum;
 	}
-	public boolean drawHeroticCard(){
-		// TODO undone
-		return false;
+	public int drawHeroticCard(List<Card> gameCard){
+		if(this.hand<4&&this.health>0)
+		{
+			this.health--;
+			int ct=0;
+			for(int i=0; i<gameCard.size(); i++)
+				if(gameCard.get(i) instanceof EffectCards) ct++;
+			if(ct>0) {
+				boolean no=true;
+				int tmpCdNum = 0;
+				while(no){
+					tmpCdNum=(int) Math.abs(Math.random())%28;
+					if(gameCard.get(tmpCdNum).showStatus()==4&&gameCard.get(tmpCdNum).
+							num>2&&(gameCard.get(tmpCdNum).num-3)%2==this.types){
+						no=false;
+					}
+				}
+				gameCard.get(tmpCdNum).changeStatus(this.showStatus());
+				this.hand++;
+				return tmpCdNum;
+				}
+		}
+		return -1;
 	}
 	public void drug(){
 		this.att+=5;

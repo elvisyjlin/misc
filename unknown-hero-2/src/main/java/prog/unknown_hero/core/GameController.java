@@ -5,10 +5,14 @@ import com.mobagel.meeti.api.java.MeetiCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 import org.magiclen.json.JSONArray;
 import org.magiclen.json.JSONObject;
+
+import prog.unknown_hero.utility.BaseMessage;
+import prog.unknown_hero.utility.Receiver;
 
 public class GameController {
 	
@@ -19,8 +23,8 @@ public class GameController {
 	private static final String GROUP_ID = "public";
 	private static final String APP_NAME = "zeroasclin@gmail.com";
 	private static final String API_KEY = "9f046a5457cc84660323d4a2ef0a5091";
-	private static final String ACCOUNT = "user1";
-	private static final String PASSWORD = "52e39fd5a80a23a96e7729af4a2d7ce3";
+	private static final String ACCOUNT = "user2";
+	private static final String PASSWORD = "994e363bd0a0a84df00f7b17a83fc286";
 	private static final int REQUEST_INITIAL_LOGIN = 0;
 	private static final int REQUEST_INITIAL_GET_SERVER_TIME = 1;
 	private static final int REQUEST_INITIAL_SET_PROFILE = 2;
@@ -38,7 +42,20 @@ public class GameController {
 	private static String name = "";
 	private static JSONArray messages = new JSONArray();
 	private static long lastReceiveMessageTime = 0;
+	
+	private static boolean inGroup=false;
+	
 	private final static HashMap<String, JSONObject> profileMap = new HashMap<>();
+	
+	private static class cardSet{
+		List<Card> CARD = new ArrayList();
+		cardSet(){
+			
+		}
+		
+	}
+	
+	
 	private final static MeetiCallback callback = (final int requestCode, final String result) -> {
 		switch (requestCode) {
 			case REQUEST_INITIAL_LOGIN: //System.out.println("REQUEST_INITIAL_LOGIN");
@@ -174,8 +191,32 @@ public class GameController {
 				api.setGroupJoin(REQUEST_INITIAL_JOIN_GROUP, GROUP_ID);
 				break;
 			case REQUEST_GET_GROUP: //System.out.println("REQUEST_GET_GROUP");
-				final JSONObject groups = new JSONObject(result);
-				System.out.println(groups);
+				try {
+					System.out.println();
+					if (result != null && result.length() > 0) {
+						final JSONObject messagesObj = new JSONObject(result);
+						messages = messagesObj.getJSONArray("groups");
+						final int l = messages.length();
+						if(l>0) inGroup=true;
+						//將傳送者的使用者ID暫存到ArrayList中
+						final ArrayList<String> idList = new ArrayList<>();
+						for (int i = 0; i < l; i++) {
+							final JSONObject message = messages.getJSONObject(i);
+							final String userID = message.getString("group_members");
+							if (!idList.contains(userID)) {
+								idList.add(userID);
+							}
+						}
+						//轉成陣列
+						final String[] idArray = new String[idList.size()];
+						idList.toArray(idArray);
+						
+					} else {
+						available = true;
+					}
+				} catch (final Exception ex) {
+
+				}
 				break;
 		}
 	};
@@ -234,10 +275,51 @@ public class GameController {
 		
 	}
 	
+	static enum GAME_PHASE {IDLE, WAIT, DRAW, HERO, PLAY, ATCK, EXCH, END};
+	
 	public static void gameStart() {
+		final JSONObject obj = new JSONObject();
+		obj.put("msg_groupid", GROUP_ID);
+		obj.put("msg_senderid", ACCOUNT);
+		obj.put("msg_content", "start");
+		obj.put("msg_type", "1");
+		api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, obj.toString());
+		
+		int plyNum;
+		GAME_PHASE gamePhase = GAME_PHASE.IDLE;
 		stopping = false;
 		while (!stopping) {
 			final String message = "";
+			
+			switch(gamePhase) {
+			case IDLE:
+				if(Receiver.hasMessage()) {
+					String[] receive = Receiver.get().content();
+					if("end".equals(receive[0])) {
+						if(player.showStatus().equals(receive[1])) {
+							gamePhase = GAME_PHASE.DRAW;
+						}
+					}
+				}
+				break;
+			case WAIT:
+				break;
+			case DRAW:
+				player.drawCard();
+				gamePhase = GAME_PHASE.HERO;
+				break;
+			case HERO:
+				break;
+			case PLAY:
+				break;
+			case ATCK:
+				break;
+			case EXCH:
+				break;
+			case END:
+				break;
+			}
+			
 			if (message.length() > 0) {
 				if (":q".equals(message)) { //輸入「:q」停止
 					stopping = true;
@@ -257,30 +339,6 @@ public class GameController {
 		gameStage.nextStage();
 	}
 
-	/*
-	static void main() {
-
-		//持續輸入直到停止
-		while (!stopping) {
-			final String message = "";
-			if (message.length() > 0) {
-				if (":q".equals(message)) { //輸入「:q」停止
-					stopping = true;
-					System.out.println("掰掰");
-				} else if (":g".equals(message)) {
-					api.getGroups(REQUEST_GET_GROUP);
-				} else {
-					final JSONObject obj = new JSONObject();
-					obj.put("msg_groupid", GROUP_ID);
-					obj.put("msg_senderid", account);
-					obj.put("msg_content", message);
-					obj.put("msg_type", "1");
-					api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, obj.toString());
-				}
-			}
-		}
-	}
-	*/
 
 	/**
 	 * 分析訊息。
@@ -301,14 +359,14 @@ public class GameController {
 		if(gameStage.isWaiting()) {
 			if("join".equals(content)) {
 				System.out.println(++waitCount);
-				if(waitCount == 4) {
+				if(waitCount == 3) {
 					gameStart();
 				}
 			} else if("start".equals(content)) {
 				gameStart();
 			}
 		} else if(gameStage.isPlaying()) {
-			
+			Receiver.send(new BaseMessage(message.getString("msg_senderid"), message.getString("msg_content")));
 		}
 		/*
 		if (profileMap.containsKey(senderID)) {
@@ -324,8 +382,20 @@ public class GameController {
 	 *
 	 * @param message 傳入訊息物件
 	 */
+	public static void printMessage(final JSONObject message, final boolean ignoreSelf) {
+			final String senderID = message.getString("msg_senderid");
+			final String content = message.getString("msg_content");
+			lastReceiveMessageTime = message.getLong("msg_time") + 1; //記錄最後收到訊息的時間
+			if (ignoreSelf) {
+				if (ACCOUNT.equals(senderID)) {
+					return;
+				}
+			}
+				System.out.println(String.format("%s：%s", senderID, content));
+		}
 	public static void parseMessage(final JSONObject message) {
 		parseMessage(message, false);
 	}
+	
 	
 }
