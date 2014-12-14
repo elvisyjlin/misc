@@ -37,5 +37,14 @@ public class Sender {
 			return message;
 		}
 	}
+	
+	public static String type() {
+		synchronized(mutex) {
+			if(!hasMessage()) {
+				return null;
+			}
+			return messages.getFirst().type();
+		}
+	}
 
 }
