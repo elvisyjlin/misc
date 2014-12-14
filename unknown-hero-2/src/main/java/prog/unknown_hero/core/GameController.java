@@ -543,25 +543,6 @@ public class GameController {
 				
 			}
 		}
-			case PLAY:/*
-				if(true){
-					switch(cas){
-					case 1:
-						break;
-					case 2:
-						break;
-					case 3:
-						break;
-					case 4:
-						break;
-					case 5:
-					break;
-					case 6:
-						break;
-					}
-					
-				}*/https://github.com/ZeROasc/Unknown-Hero-2.git
-				break;
 			case ATCK:
 				break;
 			case EXCH:
