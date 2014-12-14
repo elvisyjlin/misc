@@ -1,6 +1,7 @@
 package prog.unknown_hero.test;
 
 import prog.unknown_hero.ui.MainPage;
+import prog.unknown_hero.ui.place;
 
 public class UITest {
 	
@@ -11,9 +12,9 @@ public class UITest {
     public static void main( String[] args ) {
         System.out.println( "Unknown Hero started running." );
         
-        //new MainPage(DEFAULT_WINDOW_TITLE, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+        new MainPage(DEFAULT_WINDOW_TITLE, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
         
-        new place();
+        //new place();
     }
     
 }
