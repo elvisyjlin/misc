@@ -5,8 +5,8 @@ import prog.unknown_hero.utility.Sender;
 
 public class UIOperation {
 	
-	public static void setPlayersOrder(int[] order) {
-		Sender.send(new BaseMessage("ORDER", order[0]+","+order[1]+","+order[2]+","+order[3]));
+	public static void initialized(int myOrder) {
+		Sender.send(new BaseMessage("INITED", Integer.toString(myOrder)));
 	}
 
 	public static void setPlayerHandCards(int[] cards) {
@@ -51,8 +51,8 @@ public class UIOperation {
 		Sender.send(new BaseMessage("SETHANDN", player+","+num));
 	}
 	
-	public static void useACard(int ithCard) {
-		Sender.send(new BaseMessage("USE", Integer.toString(ithCard)));
+	public static void useACard() {
+		Sender.send(new BaseMessage("USE", "null"));
 	}
 	
 }

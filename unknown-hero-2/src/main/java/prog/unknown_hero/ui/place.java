@@ -1,9 +1,12 @@
 package prog.unknown_hero.ui;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.EventListener;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,6 +20,9 @@ public class place extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	int myOrder;
+	int[] playersList;
 
 	ImageIcon card_back_img;
 	ImageIcon[] hp_img = new ImageIcon[4];
@@ -63,7 +69,7 @@ public class place extends JFrame {
 	
 	private boolean loadImages() {
 		try {
-			card_back_img = new ImageIcon("./img/DSC04833.JPG");
+			card_back_img = new ImageIcon("./img/BACK.jpg");
 			for(int i=0; i<4; i++) {
 				hp_img[i] = new ImageIcon("./img/HP-"+i+".jpg");
 			}
@@ -124,25 +130,29 @@ public class place extends JFrame {
 	}
 
 	public place() {
+		myOrder = 0;
+		playersList = new int[4];
+		
 		if(!loadImages()) {
 			return;
 		}
         
-        setSize(800, 600);
+        setSize(805, 635);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         JPanel panel = new ImagePanel(background);
         setContentPane(panel);
+		setResizable(false);
         panel.setLayout(new GridBagLayout());
 
         //=========================================================== enemy1
-        JButton[] hero = new JButton[4];
-        JLabel[] hp = new JLabel[4];
-        JLabel[] atk = new JLabel[4];
-        JLabel[] def = new JLabel[4];
+        JButton[] heroB = new JButton[4];
+        JLabel[] hpB = new JLabel[4];
+        JLabel[] atkB = new JLabel[4];
+        JLabel[] defB = new JLabel[4];
         JLabel[] cardnum = new JLabel[4];
         JLabel[] weapon = new JLabel[4];
-        JLabel end_button = new JLabel();
+        JButton end_button = new JButton(img6);
         
         GridBagConstraints[] heroC = new GridBagConstraints[4];
         GridBagConstraints[] hpC = new GridBagConstraints[4];
@@ -153,206 +163,68 @@ public class place extends JFrame {
         GridBagConstraints end_buttonC = new GridBagConstraints();
         
         for(int i=0; i<4; i++) {
-        	hero[i].setIcon(card_back_img);
-            hp[i].setIcon(img3);
-            atk[i].setIcon(img2);
-            def[i].setIcon(img5);
-            cardnum[i].setIcon(img7);
-            weapon[i].setIcon(img4);
-            end_button.setIcon(img6);
+        	heroB[i] = new JButton(card_back_img);
+            hpB[i] = new JLabel(img3);
+            atkB[i] = new JLabel(img2);
+            defB[i] = new JLabel(img5);
+            cardnum[i] = new JLabel(img7);
+            weapon[i] = new JLabel(img4);
+            heroB[i].addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					
+				}
+            	
+            });
             
-        	switch(i) {
-        	case 1:
-        		heroC[1].gridx = 2;
-        		heroC[1].gridy = 0;
-        		heroC[1].gridwidth = 1;
-        		heroC[1].gridheight = 4;
-        		heroC[1].weightx = 0;
-        		heroC[1].weighty = 0;
-        		heroC[1].fill = GridBagConstraints.NONE;
-        		heroC[1].anchor = GridBagConstraints.CENTER;
-                hpC[1].gridx = 1;
-                hpC[1].gridy = 0;
-                hpC[1].gridwidth = 1;
-                hpC[1].gridheight = 1;
-                hpC[1].weightx = 0;
-                hpC[1].weighty = 0;
-                hpC[1].fill = GridBagConstraints.NONE;
-                hpC[1].anchor = GridBagConstraints.EAST;
-                atkC[1].gridx = 1;
-                atkC[1].gridy = 2;
-                atkC[1].gridwidth = 1;
-                atkC[1].gridheight = 1;
-                atkC[1].weightx = 0;
-                atkC[1].weighty = 0;
-                atkC[1].fill = GridBagConstraints.NONE;
-                atkC[1].anchor = GridBagConstraints.EAST;
-                defC[1].gridx = 1;
-                defC[1].gridy = 3;
-                defC[1].gridwidth = 1;
-                defC[1].gridheight = 1;
-                defC[1].weightx = 0;
-                defC[1].weighty = 0;
-                defC[1].fill = GridBagConstraints.NONE;
-                defC[1].anchor = GridBagConstraints.EAST;
-                cardnumC[1].gridx = 1;
-                cardnumC[1].gridy = 1;
-                cardnumC[1].gridwidth = 1;
-                cardnumC[1].gridheight = 1;
-                cardnumC[1].weightx = 0;
-                cardnumC[1].weighty = 0;
-                cardnumC[1].fill = GridBagConstraints.NONE;
-                cardnumC[1].anchor = GridBagConstraints.EAST;
-                weaponC[1].gridx = 2;
-                weaponC[1].gridy = 4;
-                weaponC[1].gridwidth = 1;
-                weaponC[1].gridheight = 1;
-                weaponC[1].weightx = 0;
-                weaponC[1].weighty = 0;
-                weaponC[1].fill = GridBagConstraints.NONE;
-                weaponC[1].anchor = GridBagConstraints.CENTER;
-        		break;
-        	case 2:
-        		heroC[2].gridx = 4;
-        		heroC[2].gridy = 0;
-        		heroC[2].gridwidth = 1;
-        		heroC[2].gridheight = 4;
-        		heroC[2].weightx = 0;
-        		heroC[2].weighty = 0;
-        		heroC[2].fill = GridBagConstraints.NONE;
-        		heroC[2].anchor = GridBagConstraints.CENTER;
-                hpC[2].gridx = 3;
-                hpC[2].gridy = 0;
-                hpC[2].gridwidth = 1;
-                hpC[2].gridheight = 1;
-                hpC[2].weightx = 0;
-                hpC[2].weighty = 0;
-                hpC[2].fill = GridBagConstraints.NONE;
-                hpC[2].anchor = GridBagConstraints.EAST;
-                atkC[2].gridx = 3;
-                atkC[2].gridy = 2;
-                atkC[2].gridwidth = 1;
-                atkC[2].gridheight = 1;
-                atkC[2].weightx = 0;
-                atkC[2].weighty = 0;
-                atkC[2].fill = GridBagConstraints.NONE;
-                atkC[2].anchor = GridBagConstraints.EAST;
-                defC[2].gridx = 3;
-                defC[2].gridy = 3;
-                defC[2].gridwidth = 1;
-                defC[2].gridheight = 1;
-                defC[2].weightx = 0;
-                defC[2].weighty = 0;
-                defC[2].fill = GridBagConstraints.NONE;
-                defC[2].anchor = GridBagConstraints.EAST;
-                cardnumC[2].gridx = 3;
-                cardnumC[2].gridy = 1;
-                cardnumC[2].gridwidth = 1;
-                cardnumC[2].gridheight = 1;
-                cardnumC[2].weightx = 0;
-                cardnumC[2].weighty = 0;
-                cardnumC[2].fill = GridBagConstraints.NONE;
-                cardnumC[2].anchor = GridBagConstraints.EAST;
-                weaponC[2].gridx = 4;
-                weaponC[2].gridy = 4;
-                weaponC[2].gridwidth = 1;
-                weaponC[2].gridheight = 1;
-                weaponC[2].weightx = 0;
-                weaponC[2].weighty = 0;
-                weaponC[2].fill = GridBagConstraints.NONE;
-                weaponC[2].anchor = GridBagConstraints.CENTER;
-                break;
-        	case 3:
-        		heroC[3].gridx = 6;
-        		heroC[3].gridy = 0;
-        		heroC[3].gridwidth = 1;
-        		heroC[3].gridheight = 4;
-        		heroC[3].weightx = 0;
-        		heroC[3].weighty = 0;
-        		heroC[3].fill = GridBagConstraints.NONE;
-        		heroC[3].anchor = GridBagConstraints.CENTER;
-                hpC[3].gridx = 5;
-                hpC[3].gridy = 0;
-                hpC[3].gridwidth = 1;
-                hpC[3].gridheight = 1;
-                hpC[3].weightx = 0;
-                hpC[3].weighty = 0;
-                hpC[3].fill = GridBagConstraints.NONE;
-                hpC[3].anchor = GridBagConstraints.EAST;
-                atkC[3].gridx = 5;
-                atkC[3].gridy = 2;
-                atkC[3].gridwidth = 1;
-                atkC[3].gridheight = 1;
-                atkC[3].weightx = 0;
-                atkC[3].weighty = 0;
-                atkC[3].fill = GridBagConstraints.NONE;
-                atkC[3].anchor = GridBagConstraints.EAST;
-                defC[3].gridx = 5;
-                defC[3].gridy = 3;
-                defC[3].gridwidth = 1;
-                defC[3].gridheight = 1;
-                defC[3].weightx = 0;
-                defC[3].weighty = 0;
-                defC[3].fill = GridBagConstraints.NONE;
-                defC[3].anchor = GridBagConstraints.EAST;
-                cardnumC[3].gridx = 5;
-                cardnumC[3].gridy = 1;
-                cardnumC[3].gridwidth = 1;
-                cardnumC[3].gridheight = 1;
-                cardnumC[3].weightx = 0;
-                cardnumC[3].weighty = 0;
-                cardnumC[3].fill = GridBagConstraints.NONE;
-                cardnumC[3].anchor = GridBagConstraints.EAST;
-                weaponC[3].gridx = 6;
-                weaponC[3].gridy = 4;
-                weaponC[3].gridwidth = 1;
-                weaponC[3].gridheight = 1;
-                weaponC[3].weightx = 0;
-                weaponC[3].weighty = 0;
-                weaponC[3].fill = GridBagConstraints.NONE;
-                weaponC[3].anchor = GridBagConstraints.CENTER;
-                break;
-        	case 0:
-        		heroC[0].gridx = 6;
-        		heroC[0].gridy = 10;
-        		heroC[0].gridwidth = 1;
-        		heroC[0].gridheight = 4;
-        		heroC[0].weightx = 0;
-        		heroC[0].weighty = 0;
-        		heroC[0].fill = GridBagConstraints.NONE;
-        		heroC[0].anchor = GridBagConstraints.CENTER;
-                hpC[0].gridx = 5;
-                hpC[0].gridy = 10;
-                hpC[0].gridwidth = 1;
-                hpC[0].gridheight = 1;
-                hpC[0].weightx = 0;
-                hpC[0].weighty = 0;
-                hpC[0].fill = GridBagConstraints.NONE;
-                hpC[0].anchor = GridBagConstraints.EAST;
-                atkC[0].gridx = 5;
-                atkC[0].gridy = 11;
-                atkC[0].gridwidth = 1;
-                atkC[0].gridheight = 1;
-                atkC[0].weightx = 0;
-                atkC[0].weighty = 0;
-                atkC[0].fill = GridBagConstraints.NONE;
-                atkC[0].anchor = GridBagConstraints.EAST;
-                defC[0].gridx = 5;
-                defC[0].gridy = 12;
-                defC[0].gridwidth = 1;
-                defC[0].gridheight = 1;
-                defC[0].weightx = 0;
-                defC[0].weighty = 0;
-                defC[0].fill = GridBagConstraints.NONE;
-                defC[0].anchor = GridBagConstraints.EAST;
-                weaponC[0].gridx = 5;
-                weaponC[0].gridy = 13;
-                weaponC[0].gridwidth = 1;
-                weaponC[0].gridheight = 1;
-                weaponC[0].weightx = 0;
-                weaponC[0].weighty = 0;
-                weaponC[0].fill = GridBagConstraints.NONE;
-                weaponC[0].anchor = GridBagConstraints.EAST;
+        	if(i == playersList[myOrder]) {	//me
+        		heroC[i] = new GridBagConstraints();
+        		heroC[i].gridx = 6;
+        		heroC[i].gridy = 10;
+        		heroC[i].gridwidth = 1;
+        		heroC[i].gridheight = 4;
+        		heroC[i].weightx = 0;
+        		heroC[i].weighty = 0;
+        		heroC[i].fill = GridBagConstraints.NONE;
+        		heroC[i].anchor = GridBagConstraints.CENTER;
+        		hpC[i] = new GridBagConstraints();
+                hpC[i].gridx = 5;
+                hpC[i].gridy = 10;
+                hpC[i].gridwidth = 1;
+                hpC[i].gridheight = 1;
+                hpC[i].weightx = 0;
+                hpC[i].weighty = 0;
+                hpC[i].fill = GridBagConstraints.NONE;
+                hpC[i].anchor = GridBagConstraints.EAST;
+                atkC[i] = new GridBagConstraints();
+                atkC[i].gridx = 5;
+                atkC[i].gridy = 11;
+                atkC[i].gridwidth = 1;
+                atkC[i].gridheight = 1;
+                atkC[i].weightx = 0;
+                atkC[i].weighty = 0;
+                atkC[i].fill = GridBagConstraints.NONE;
+                atkC[i].anchor = GridBagConstraints.EAST;
+                defC[i] = new GridBagConstraints();
+                defC[i].gridx = 5;
+                defC[i].gridy = 12;
+                defC[i].gridwidth = 1;
+                defC[i].gridheight = 1;
+                defC[i].weightx = 0;
+                defC[i].weighty = 0;
+                defC[i].fill = GridBagConstraints.NONE;
+                defC[i].anchor = GridBagConstraints.EAST;
+                weaponC[i] = new GridBagConstraints();
+                weaponC[i].gridx = 5;
+                weaponC[i].gridy = 13;
+                weaponC[i].gridwidth = 1;
+                weaponC[i].gridheight = 1;
+                weaponC[i].weightx = 0;
+                weaponC[i].weighty = 0;
+                weaponC[i].fill = GridBagConstraints.NONE;
+                weaponC[i].anchor = GridBagConstraints.EAST;
                 end_buttonC.gridx = 6;
                 end_buttonC.gridy = 14;
                 end_buttonC.gridwidth = 1;
@@ -361,19 +233,180 @@ public class place extends JFrame {
                 end_buttonC.weighty = 0;
                 end_buttonC.fill = GridBagConstraints.NONE;
                 end_buttonC.anchor = GridBagConstraints.NORTH;
-                break;
+        	} else if(i == (playersList[myOrder]+1)%4) {
+        		heroC[i] = new GridBagConstraints();
+        		heroC[i].gridx = 2;
+        		heroC[i].gridy = 0;
+        		heroC[i].gridwidth = 1;
+        		heroC[i].gridheight = 4;
+        		heroC[i].weightx = 0;
+        		heroC[i].weighty = 0;
+        		heroC[i].fill = GridBagConstraints.NONE;
+        		heroC[i].anchor = GridBagConstraints.CENTER;
+        		hpC[i] = new GridBagConstraints();
+                hpC[i].gridx = 1;
+                hpC[i].gridy = 0;
+                hpC[i].gridwidth = 1;
+                hpC[i].gridheight = 1;
+                hpC[i].weightx = 0;
+                hpC[i].weighty = 0;
+                hpC[i].fill = GridBagConstraints.NONE;
+                hpC[i].anchor = GridBagConstraints.EAST;
+                atkC[i] = new GridBagConstraints();
+                atkC[i].gridx = 1;
+                atkC[i].gridy = 2;
+                atkC[i].gridwidth = 1;
+                atkC[i].gridheight = 1;
+                atkC[i].weightx = 0;
+                atkC[i].weighty = 0;
+                atkC[i].fill = GridBagConstraints.NONE;
+                atkC[i].anchor = GridBagConstraints.EAST;
+                defC[i] = new GridBagConstraints();
+                defC[i].gridx = 1;
+                defC[i].gridy = 3;
+                defC[i].gridwidth = 1;
+                defC[i].gridheight = 1;
+                defC[i].weightx = 0;
+                defC[i].weighty = 0;
+                defC[i].fill = GridBagConstraints.NONE;
+                defC[i].anchor = GridBagConstraints.EAST;
+                cardnumC[i] = new GridBagConstraints();
+                cardnumC[i].gridx = 1;
+                cardnumC[i].gridy = 1;
+                cardnumC[i].gridwidth = 1;
+                cardnumC[i].gridheight = 1;
+                cardnumC[i].weightx = 0;
+                cardnumC[i].weighty = 0;
+                cardnumC[i].fill = GridBagConstraints.NONE;
+                cardnumC[i].anchor = GridBagConstraints.EAST;
+                weaponC[i] = new GridBagConstraints();
+                weaponC[i].gridx = 2;
+                weaponC[i].gridy = 4;
+                weaponC[i].gridwidth = 1;
+                weaponC[i].gridheight = 1;
+                weaponC[i].weightx = 0;
+                weaponC[i].weighty = 0;
+                weaponC[i].fill = GridBagConstraints.NONE;
+                weaponC[i].anchor = GridBagConstraints.CENTER;
+        	} else if(i == (playersList[myOrder]+2)%4) {
+        		heroC[i] = new GridBagConstraints();
+        		heroC[i].gridx = 4;
+        		heroC[i].gridy = 0;
+        		heroC[i].gridwidth = 1;
+        		heroC[i].gridheight = 4;
+        		heroC[i].weightx = 0;
+        		heroC[i].weighty = 0;
+        		heroC[i].fill = GridBagConstraints.NONE;
+        		heroC[i].anchor = GridBagConstraints.CENTER;
+        		hpC[i] = new GridBagConstraints();
+                hpC[i].gridx = 3;
+                hpC[i].gridy = 0;
+                hpC[i].gridwidth = 1;
+                hpC[i].gridheight = 1;
+                hpC[i].weightx = 0;
+                hpC[i].weighty = 0;
+                hpC[i].fill = GridBagConstraints.NONE;
+                hpC[i].anchor = GridBagConstraints.EAST;
+                atkC[i] = new GridBagConstraints();
+                atkC[i].gridx = 3;
+                atkC[i].gridy = 2;
+                atkC[i].gridwidth = 1;
+                atkC[i].gridheight = 1;
+                atkC[i].weightx = 0;
+                atkC[i].weighty = 0;
+                atkC[i].fill = GridBagConstraints.NONE;
+                atkC[i].anchor = GridBagConstraints.EAST;
+                defC[i] = new GridBagConstraints();
+                defC[i].gridx = 3;
+                defC[i].gridy = 3;
+                defC[i].gridwidth = 1;
+                defC[i].gridheight = 1;
+                defC[i].weightx = 0;
+                defC[i].weighty = 0;
+                defC[i].fill = GridBagConstraints.NONE;
+                defC[i].anchor = GridBagConstraints.EAST;
+                cardnumC[i] = new GridBagConstraints();
+                cardnumC[i].gridx = 3;
+                cardnumC[i].gridy = 1;
+                cardnumC[i].gridwidth = 1;
+                cardnumC[i].gridheight = 1;
+                cardnumC[i].weightx = 0;
+                cardnumC[i].weighty = 0;
+                cardnumC[i].fill = GridBagConstraints.NONE;
+                cardnumC[i].anchor = GridBagConstraints.EAST;
+                weaponC[i] = new GridBagConstraints();
+                weaponC[i].gridx = 4;
+                weaponC[i].gridy = 4;
+                weaponC[i].gridwidth = 1;
+                weaponC[i].gridheight = 1;
+                weaponC[i].weightx = 0;
+                weaponC[i].weighty = 0;
+                weaponC[i].fill = GridBagConstraints.NONE;
+                weaponC[i].anchor = GridBagConstraints.CENTER;
+        	} else if(i == (playersList[myOrder]+3)%4) {
+        		heroC[i] = new GridBagConstraints();
+        		heroC[i].gridx = 6;
+        		heroC[i].gridy = 0;
+        		heroC[i].gridwidth = 1;
+        		heroC[i].gridheight = 4;
+        		heroC[i].weightx = 0;
+        		heroC[i].weighty = 0;
+        		heroC[i].fill = GridBagConstraints.NONE;
+        		heroC[i].anchor = GridBagConstraints.CENTER;
+        		hpC[i] = new GridBagConstraints();
+                hpC[i].gridx = 5;
+                hpC[i].gridy = 0;
+                hpC[i].gridwidth = 1;
+                hpC[i].gridheight = 1;
+                hpC[i].weightx = 0;
+                hpC[i].weighty = 0;
+                hpC[i].fill = GridBagConstraints.NONE;
+                hpC[i].anchor = GridBagConstraints.EAST;
+                atkC[i] = new GridBagConstraints();
+                atkC[i].gridx = 5;
+                atkC[i].gridy = 2;
+                atkC[i].gridwidth = 1;
+                atkC[i].gridheight = 1;
+                atkC[i].weightx = 0;
+                atkC[i].weighty = 0;
+                atkC[i].fill = GridBagConstraints.NONE;
+                atkC[i].anchor = GridBagConstraints.EAST;
+                defC[i] = new GridBagConstraints();
+                defC[i].gridx = 5;
+                defC[i].gridy = 3;
+                defC[i].gridwidth = 1;
+                defC[i].gridheight = 1;
+                defC[i].weightx = 0;
+                defC[i].weighty = 0;
+                defC[i].fill = GridBagConstraints.NONE;
+                defC[i].anchor = GridBagConstraints.EAST;
+                cardnumC[i] = new GridBagConstraints();
+                cardnumC[i].gridx = 5;
+                cardnumC[i].gridy = 1;
+                cardnumC[i].gridwidth = 1;
+                cardnumC[i].gridheight = 1;
+                cardnumC[i].weightx = 0;
+                cardnumC[i].weighty = 0;
+                cardnumC[i].fill = GridBagConstraints.NONE;
+                cardnumC[i].anchor = GridBagConstraints.EAST;
+                weaponC[i] = new GridBagConstraints();
+                weaponC[i].gridx = 6;
+                weaponC[i].gridy = 4;
+                weaponC[i].gridwidth = 1;
+                weaponC[i].gridheight = 1;
+                weaponC[i].weightx = 0;
+                weaponC[i].weighty = 0;
+                weaponC[i].fill = GridBagConstraints.NONE;
+                weaponC[i].anchor = GridBagConstraints.CENTER;
         	}
-            panel.add(hero[i], heroC[i]);
-            panel.add(hp[i], hpC[i]);
-            panel.add(atk[i], atkC[i]);
-            panel.add(def[i], defC[i]);
+            panel.add(heroB[i], heroC[i]);
+            panel.add(hpB[i], hpC[i]);
+            panel.add(atkB[i], atkC[i]);
+            panel.add(defB[i], defC[i]);
             panel.add(cardnum[i], cardnumC[i]);
             panel.add(weapon[i], weaponC[i]);
             panel.add(end_button, end_buttonC);
         }
-          
-          
-          //=========================================================== YOU
 
           JLabel ne = new JLabel();
           GridBagConstraints ce = new GridBagConstraints();
@@ -387,21 +420,21 @@ public class place extends JFrame {
           ce.anchor = GridBagConstraints.SOUTH;
           panel.add(ne, ce);
           
-          for(int i=1; i<5; i++){
-              JButton n5 = new JButton(card_back_img);
-              GridBagConstraints c5 = new GridBagConstraints();
-              c5.gridx = i;
-              c5.gridy = 11;
-              c5.gridwidth = 1;
-              c5.gridheight = 3;
-              c5.weightx = 0;
-              c5.weighty = 0;
-              c5.fill = GridBagConstraints.NONE;
-              c5.anchor = GridBagConstraints.CENTER;
-              panel.add(n5, c5);
+          JButton[] hand = new JButton[4];
+          GridBagConstraints[] handC = new GridBagConstraints[4];
+          for(int i=0; i<4; i++){
+        	  hand[i] = new JButton(card_back_img);
+        	  handC[i] = new GridBagConstraints();
+        	  handC[i].gridx = i;
+        	  handC[i].gridy = 11;
+        	  handC[i].gridwidth = 1;
+        	  handC[i].gridheight = 3;
+        	  handC[i].weightx = 0;
+        	  handC[i].weighty = 0;
+        	  handC[i].fill = GridBagConstraints.NONE;
+        	  handC[i].anchor = GridBagConstraints.CENTER;
+              panel.add(hand[i], handC[i]);
           }
-          
-                    
    
           JLabel Ninfo = new JLabel("QAQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
           GridBagConstraints Cinfo = new GridBagConstraints();
@@ -424,24 +457,94 @@ public class place extends JFrame {
         			  BaseMessage message = Sender.get();
         			  String type = message.type();
         			  String[] contents = message.content();
-        			  if("ORDER".equals(message.type())) {
-        				  
-        			  } else if("SETHAND".equals(message.type())) {
-        				  
-        			  } else if("SETHERO".equals(message.type())) {
-        				  
-        			  } else if("SETAP".equals(message.type())) {
-        				  
-        			  } else if("SETDP".equals(message.type())) {
-        				  
-        			  } else if("SETWP".equals(message.type())) {
-        				  
-        			  } else if("DELWP".equals(message.type())) {
-        				  
-        			  } else if("SETINFO".equals(message.type())) {
-        				  
-        			  } else if("SETHANDN".equals(message.type())) {
-        				  
+        			  int i, j;
+        			  if("INITED".equals(type)) {
+        				  myOrder = Integer.parseInt(contents[0]);
+        		  	  } else if("LIST".equals(type)) {
+        				  i = 0;
+        				  for(String s : contents) {
+        					  playersList[i++] = Integer.parseInt(s);
+        				  }
+        			  } else if("SETHAND".equals(type)) {
+        				  for(i=0; i<contents.length; i++) {
+        					  switch(Integer.parseInt(contents[i])) {
+        					  case 0:
+        						  hand[i].setIcon(mag_img);
+        						  break;
+        					  case 1:
+        						  hand[i].setIcon(sci_img);
+        						  break;
+        					  case 2:
+        						  hand[i].setIcon(wor_img);
+        						  break;
+        					  case 3:
+        						  hand[i].setIcon(grav_img);
+        						  break;
+        					  case 4:
+        						  hand[i].setIcon(exg_img);
+        						  break;
+        					  case 5:
+        						  hand[i].setIcon(copy_img);
+        						  break;
+        					  case 6:
+        						  hand[i].setIcon(drug_img);
+        						  break;
+        					  case 7:
+        						  hand[i].setIcon(recov_img);
+        						  break;
+        					  case 8:
+        						  hand[i].setIcon(hback_img);
+        						  break;
+        					  case 9:
+        						  hand[i].setIcon(spear_img);
+        						  break;
+        					  case 10:
+        						  hand[i].setIcon(sheild_img);
+        						  break;
+        					  }
+        				  }
+        				  for(j = i; j<4; j++) {
+        					  hand[i].setIcon(card_back_img);
+        				  }
+        			  } else if("SETHERO".equals(type)) {
+        				  int player = Integer.parseInt(contents[0]);
+        				  int card = Integer.parseInt(contents[1]);
+        				  if(player == 4) {
+        					  System.out.println("The hero is still in the deck.");
+        				  } else {
+        					  switch(card) {
+        					  case 0:
+        						  heroB[player].setIcon(mag_img);
+        						  break;
+        					  case 1:
+        						  heroB[player].setIcon(sci_img);
+        						  break;
+        					  case 2:
+        						  heroB[player].setIcon(wor_img);
+        						  break;
+        					  }
+        				  }
+        			  } else if("SETHP".equals(type)) {
+        				  int player = Integer.parseInt(contents[0]);
+        				  int hp = Integer.parseInt(contents[1]);
+    					  hpB[player].setIcon(hp_img[hp]);
+        			  } else if("SETAP".equals(type)) {
+        				  int player = Integer.parseInt(contents[0]);
+        				  int atk = Integer.parseInt(contents[1]);
+        				  atkB[player].setIcon(hp_img[atk]);
+        			  } else if("SETDP".equals(type)) {
+        				  int player = Integer.parseInt(contents[0]);
+        				  int def = Integer.parseInt(contents[1]);
+    					  defB[player].setIcon(hp_img[def]);
+        			  } else if("DELWP".equals(type)) {
+        				  int player = Integer.parseInt(contents[0]);
+    					  weapon[player].setIcon(noweapon_img);
+        			  } else if("SETINFO".equals(type)) {
+        				  Ninfo.setText(contents[0]);
+        			  } else if("SETHANDN".equals(type)) {
+        				  int player = Integer.parseInt(contents[0]);
+        				  int cn = Integer.parseInt(contents[1]);
+        				  cardnum[player].setIcon(cd_img[cn]);
         			  }
         		  }
         		  try {
@@ -453,6 +556,8 @@ public class place extends JFrame {
 			}
        	  
           });
+          
+          detector.start();
 	}
 
 }
