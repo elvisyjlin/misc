@@ -42,6 +42,16 @@ public class place extends JFrame {
 	ImageIcon hback_img;
 	ImageIcon spear_img;
 	ImageIcon sheild_img;
+	ImageIcon LLLW_img;
+	ImageIcon LLWL_img;
+	ImageIcon LLWW_img;
+	ImageIcon LWLL_img;
+	ImageIcon LWLW_img;
+	ImageIcon LWWL_img;
+	ImageIcon WLLL_img;
+	ImageIcon WLLW_img;
+	ImageIcon WLWL_img;
+	ImageIcon WWLL_img;
 	
 	ImageIcon img2;
 	ImageIcon img3;
@@ -84,6 +94,17 @@ public class place extends JFrame {
 			hback_img = new ImageIcon("./img/反擊.jpg");
 			spear_img = new ImageIcon("./img/長矛.jpg");
 			sheild_img = new ImageIcon("./img/盾牌.jpg");
+
+			LLLW_img = new ImageIcon("./img/LLLW.jpg");
+			LLWL_img = new ImageIcon("./img/LLLW.jpg");
+			LLWW_img = new ImageIcon("./img/LLLW.jpg");
+			LWLL_img = new ImageIcon("./img/LLLW.jpg");
+			LWLW_img = new ImageIcon("./img/LLLW.jpg");
+			LWWL_img = new ImageIcon("./img/LLLW.jpg");
+			WLLL_img = new ImageIcon("./img/LLLW.jpg");
+			WLLW_img = new ImageIcon("./img/LLLW.jpg");
+			WLWL_img = new ImageIcon("./img/LLLW.jpg");
+			WWLL_img = new ImageIcon("./img/LLLW.jpg");
 
 			img2 = new ImageIcon("./img/ATK-13.jpg");
 			img3 = new ImageIcon("./img/HP-3.jpg");
