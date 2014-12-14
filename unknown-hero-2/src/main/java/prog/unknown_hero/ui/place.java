@@ -22,7 +22,6 @@ public class place extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	int myOrder;
-	int[] playersList;
 
 	ImageIcon card_back_img;
 	ImageIcon[] hp_img = new ImageIcon[4];
@@ -131,7 +130,6 @@ public class place extends JFrame {
 
 	public place() {
 		myOrder = 0;
-		playersList = new int[4];
 		
 		if(!loadImages()) {
 			return;
@@ -179,7 +177,7 @@ public class place extends JFrame {
             	
             });
             
-        	if(i == playersList[myOrder]) {	//me
+        	if(i == myOrder) {	//me
         		heroC[i] = new GridBagConstraints();
         		heroC[i].gridx = 6;
         		heroC[i].gridy = 10;
@@ -233,7 +231,7 @@ public class place extends JFrame {
                 end_buttonC.weighty = 0;
                 end_buttonC.fill = GridBagConstraints.NONE;
                 end_buttonC.anchor = GridBagConstraints.NORTH;
-        	} else if(i == (playersList[myOrder]+1)%4) {
+        	} else if(i == (myOrder+1)%4) {
         		heroC[i] = new GridBagConstraints();
         		heroC[i].gridx = 2;
         		heroC[i].gridy = 0;
@@ -288,7 +286,7 @@ public class place extends JFrame {
                 weaponC[i].weighty = 0;
                 weaponC[i].fill = GridBagConstraints.NONE;
                 weaponC[i].anchor = GridBagConstraints.CENTER;
-        	} else if(i == (playersList[myOrder]+2)%4) {
+        	} else if(i == (myOrder+2)%4) {
         		heroC[i] = new GridBagConstraints();
         		heroC[i].gridx = 4;
         		heroC[i].gridy = 0;
@@ -343,7 +341,7 @@ public class place extends JFrame {
                 weaponC[i].weighty = 0;
                 weaponC[i].fill = GridBagConstraints.NONE;
                 weaponC[i].anchor = GridBagConstraints.CENTER;
-        	} else if(i == (playersList[myOrder]+3)%4) {
+        	} else if(i == (myOrder+3)%4) {
         		heroC[i] = new GridBagConstraints();
         		heroC[i].gridx = 6;
         		heroC[i].gridy = 0;
@@ -460,12 +458,7 @@ public class place extends JFrame {
         			  int i, j;
         			  if("INITED".equals(type)) {
         				  myOrder = Integer.parseInt(contents[0]);
-        		  	  } else if("LIST".equals(type)) {
-        				  i = 0;
-        				  for(String s : contents) {
-        					  playersList[i++] = Integer.parseInt(s);
-        				  }
-        			  } else if("SETHAND".equals(type)) {
+        		  	  } else if("SETHAND".equals(type)) {
         				  for(i=0; i<contents.length; i++) {
         					  switch(Integer.parseInt(contents[i])) {
         					  case 0:
