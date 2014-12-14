@@ -1,4 +1,4 @@
-package prog.unknown_hero.core;
+ package prog.unknown_hero.core;
 
 import prog.unknown_hero.utility.BaseMessage;
 import prog.unknown_hero.utility.Sender;

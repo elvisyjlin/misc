@@ -8,8 +8,8 @@ public class Player extends Character{
 	Weapon wp=null;
 	public boolean poi=false;
 	List<Card> handcards= new ArrayList(); 
-	Player(int a, int types) {
-		super(a, 2, types);
+	Player(int a, int b) {
+		super(a, b);
 		this.maxHealth();
 		this.hand=0;
 		handcards.clear();
@@ -25,6 +25,8 @@ public class Player extends Character{
 		
 	}
 	public int drawCard(List<Card> gameCard){
+		if(this.hand<4)
+		{
 		boolean no=true;
 		int tmpCdNum=0;
 		while(no){
@@ -36,6 +38,8 @@ public class Player extends Character{
 		this.hand++;
 		}
 		return tmpCdNum;
+		}
+		return -1;
 	}
 	public int drawHeroticCard(List<Card> gameCard){
 		if(this.hand<4&&this.health>0)

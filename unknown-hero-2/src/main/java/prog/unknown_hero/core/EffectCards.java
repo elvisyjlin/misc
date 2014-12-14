@@ -4,8 +4,8 @@ import java.util.List;
 
 public class EffectCards extends Card{
 	int types, color;
-	protected EffectCards(int a) {
-		super(a, 3);
+	protected EffectCards(int a, int b) {
+		super(a, b);
 		this.types=this.num-3;
 		this.color=this.types/2;
 	}

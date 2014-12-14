@@ -19,6 +19,8 @@ public class GameController {
 	static GameStage gameStage;
 	static int waitCount = 0;
 	static long startTime = 0;
+	static String[] playerOrder = new String[4];
+	static int myOrder;
 
 	private static final String GROUP_ID = "public";
 	private static final String APP_NAME = "zeroasclin@gmail.com";
@@ -49,10 +51,59 @@ public class GameController {
 	
 	private static class cardSet{
 		List<Card> CARD = new ArrayList();
-		cardSet(){
-			
+		List<Player> PLAYER =new ArrayList();
+		boolean start=false;
+		void init(boolean in){
+			start=in;
+			this.CARD.clear();
+			this.PLAYER.clear();
+			for(int i=0; i<28; i++)
+			{
+				Card tmp;
+				if(i<2)			tmp=new Character(4,0);
+				else if(i<4)	tmp=new Character(4,1);
+				else if(i<6)	tmp=new Character(4,2);
+				else if(i<9)	tmp=new EffectCards(4,3);
+				else if(i<12)	tmp=new EffectCards(4,4);
+				else if(i<15)	tmp=new EffectCards(4,5);
+				else if(i<18)	tmp=new EffectCards(4,6);
+				else if(i<21)	tmp=new EffectCards(4,7);
+				else if(i<24)	tmp=new EffectCards(4,8);
+				else if(i<26)	tmp=new Weapon(4, 9);
+				else			tmp=new Weapon(4, 10);
+				CARD.add(tmp); 
+			}
+			if(!start) builtGame();
 		}
+		private void builtGame() { 
+			for(int i=0; i<4; i++)
+			{
+				int ram;
+				boolean untrue=true;
+				while(untrue)
+				{
+					ram=(int) (Math.random()%3);
+					if(CARD.get(ram*2) instanceof Character){
+						untrue=false;
+						CARD.remove(ram*2);
+						CARD.add(ram*2, new Player(myOrder, CARD.get(ram*2).num));
+						PLAYER.add((Player) CARD.get(ram*2));
+					}
+					else if(CARD.get(ram*2+1) instanceof Character){
+						untrue=false;
+						CARD.remove(ram*2+1);
+						CARD.add(ram*2+1, new Player(myOrder, CARD.get(ram*2+1).num));
+						PLAYER.add((Player) CARD.get(ram*2+1));
+					}
+				}
+			
+			}
+			for(int i=1; i<4; i++)
+			{
+				
+			}
 		
+		}
 	}
 	
 	
@@ -273,18 +324,13 @@ public class GameController {
 		obj.put("msg_type", "1");
 		api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, obj.toString());
 		
+		playerOrder[0] = ACCOUNT;
+		
 	}
 	
 	static enum GAME_PHASE {IDLE, WAIT, DRAW, HERO, PLAY, ATCK, EXCH, END};
 	
 	public static void gameStart() {
-		final JSONObject obj = new JSONObject();
-		obj.put("msg_groupid", GROUP_ID);
-		obj.put("msg_senderid", ACCOUNT);
-		obj.put("msg_content", "start");
-		obj.put("msg_type", "1");
-		api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, obj.toString());
-		
 		int plyNum;
 		GAME_PHASE gamePhase = GAME_PHASE.IDLE;
 		stopping = false;
@@ -349,6 +395,7 @@ public class GameController {
 	public static void parseMessage(final JSONObject message, final boolean ignoreSelf) {
 		final String senderID = message.getString("msg_senderid");
 		final String content = message.getString("msg_content");
+		final String[] subContent = content.split(",");
 		lastReceiveMessageTime = message.getLong("msg_time") + 1; //記錄最後收到訊息的時間
 		if (ignoreSelf || startTime > message.getLong("msg_time")) {
 			if (ACCOUNT.equals(senderID)) {
@@ -357,12 +404,28 @@ public class GameController {
 		}
 		System.out.println(message);
 		if(gameStage.isWaiting()) {
-			if("join".equals(content)) {
+			if("join".equals(subContent[0])) {
 				System.out.println(++waitCount);
+				playerOrder[waitCount] = senderID;
 				if(waitCount == 3) {
+
+					final JSONObject obj = new JSONObject();
+					obj.put("msg_groupid", GROUP_ID);
+					obj.put("msg_senderid", ACCOUNT);
+					obj.put("msg_content", "start,"+playerOrder[0]+","+playerOrder[1]+","+playerOrder[2]+","+playerOrder[3]);
+					obj.put("msg_type", "1");
+					api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, obj.toString());
+					
+					myOrder = 0;
 					gameStart();
 				}
-			} else if("start".equals(content)) {
+			} else if("start".equals(subContent[0])) {
+				for(int i=0; i<4; i++) {
+					playerOrder[i] = subContent[i+1];
+					if(playerOrder[i].equals(ACCOUNT)) {
+						myOrder = i;
+					}
+				}
 				gameStart();
 			}
 		} else if(gameStage.isPlaying()) {
@@ -382,17 +445,6 @@ public class GameController {
 	 *
 	 * @param message 傳入訊息物件
 	 */
-	public static void printMessage(final JSONObject message, final boolean ignoreSelf) {
-			final String senderID = message.getString("msg_senderid");
-			final String content = message.getString("msg_content");
-			lastReceiveMessageTime = message.getLong("msg_time") + 1; //記錄最後收到訊息的時間
-			if (ignoreSelf) {
-				if (ACCOUNT.equals(senderID)) {
-					return;
-				}
-			}
-				System.out.println(String.format("%s：%s", senderID, content));
-		}
 	public static void parseMessage(final JSONObject message) {
 		parseMessage(message, false);
 	}

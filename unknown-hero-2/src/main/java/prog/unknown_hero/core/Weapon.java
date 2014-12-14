@@ -2,10 +2,10 @@ package prog.unknown_hero.core;
 
 public class Weapon extends Card{
 	int types;
-	protected Weapon(int a, int types) {
-		super(a, 2);
+	protected Weapon(int a, int b) {
+		super(a, b);
 		// TODO Auto-generated constructor stub
-		this.types=types;
+		this.types=b-9;
 	}
 	public void active(Player hero){
 		hero.getWeapon(this);
