@@ -35,8 +35,6 @@ public class WaitingPage extends JFrame {
 		}
 		setContentPane(panel);
 
-		GameController.login(false);
-		
 		setVisible(true);
 		
         System.out.println( "Waiting page created." );

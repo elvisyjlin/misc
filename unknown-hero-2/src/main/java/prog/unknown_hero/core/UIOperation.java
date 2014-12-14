@@ -28,11 +28,11 @@ public class UIOperation {
 	}
 	
 	public static void setPlayerAP(int player, int ap) {
-		Sender.send(new BaseMessage("SETHP", player+","+ap));
+		Sender.send(new BaseMessage("SETAP", player+","+ap));
 	}
 	
 	public static void setPlayerDP(int player, int dp) {
-		Sender.send(new BaseMessage("SETHP", player+","+dp));
+		Sender.send(new BaseMessage("SETDP", player+","+dp));
 	}
 	
 	public static void setPlayerWeapon(int player, int card) {
@@ -51,6 +51,8 @@ public class UIOperation {
 		Sender.send(new BaseMessage("SETHANDN", player+","+num));
 	}
 	
-	
+	public static void useACard(int ithCard) {
+		Sender.send(new BaseMessage("USE", Integer.toString(ithCard)));
+	}
 	
 }
