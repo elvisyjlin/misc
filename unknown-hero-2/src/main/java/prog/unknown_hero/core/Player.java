@@ -103,9 +103,11 @@ public class Player extends Character{
 		if(this.health<=0)return true;
 		return false;
 	}
-	public void removeHand(int num){
+	public int removeHand(int num){
+		int ans=-1;
 		if(this.hand>0)
 		{
+			ans=this.handcards.get(num).num;
 			this.handcards.remove(num);
 			this.hand--;
 		}
@@ -114,6 +116,7 @@ public class Player extends Character{
 			sent_out_card[i]=this.handcards.get(i).num;
 		}
 		UIOperation.setPlayerHandCards(sent_out_card);
+		return ans;
 	}
 
 	public void setHand(List<Card> gameCards, int cardNum) {
@@ -170,4 +173,5 @@ public class Player extends Character{
 		}
 		UIOperation.setPlayerHandCards(sent_out_card);
 	}
+
 }

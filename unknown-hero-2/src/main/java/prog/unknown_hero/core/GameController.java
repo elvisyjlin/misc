@@ -460,24 +460,88 @@ public class GameController {
 					}
 				}
 				break;
-			case PLAY:
-				if(true){
-					switch(cas){
-				case 1:
-					break;
-				case 2:
-					break;
-				case 3:
-					break;
-				case 4:
-					break;
-				case 5:
-					break;
-				case 6:
-					break;
+			case PLAY:if(turns==myOrder){
+				int sel = 0;
+				if(Replyer.hasMessage()) sel=Integer.parseInt(Replyer.get().content()[0]);
+				if(sel>3&&sel<8)
+				{
+					boolean touched=false;
+					int ks=AllCards.PLAYER.get(turns).handcards.get(sel).num;
+					switch(ks){
+					case 3:
+						touched=true;
+						break;
+					case 4:
+						touched=true;
+						break;
+					case 5:
+						touched=true;
+						break;
+						
+					case 6:
+						touched=true;
+						break;
+					case 9:
+						touched=true;
+						break;
+					case 10:
+						touched=true;
+						break;
+					}
+					JSONObject obj = new JSONObject();
+					if(touched==true){
+						player.removeHand(sel);
+					obj.put("Card", Integer.toString(sel));
+					}
+					sendMassage(obj.toString()); 
 				}
-					
+				else if(sel==8)
+				{
+					JSONObject obj = new JSONObject();
+					obj.put("END", Integer.toString(turns));
+					sendMassage(obj.toString());
+				}
+			}else{
+				//TODO UI
+				boolean done=true;
+				while(done){
+				if(Receiver.hasMessage()){
+					boolean touched=false;
+					if(Receiver.type().equals("Card"))
+						{
+						String[] Revc = Receiver.get().content();
+						int sel=Integer.parseInt(Revc[1]);
+						int ks=AllCards.PLAYER.get(turns).handcards.get(sel).num;
+						switch(ks){
+						case 3:
+							touched=true;
+							break;
+						case 4:
+							touched=true;
+							break;
+						case 5:
+							touched=true;
+							break;
+							
+						case 6:
+							touched=true;
+							break;
+						case 9:
+							touched=true;
+							break;
+						case 10:
+							touched=true;
+							break;
+						}
+							AllCards.PLAYER.get(Integer.parseInt(Revc[1])).setHand(AllCards.CARD, Integer.parseInt(Revc[3]));
+						}
+					else if(Receiver.type().equals("END")){
+						gamePhase = GAME_PHASE.PLAY;
+					}
+				}
+				
 			}
+		}
 				break;
 			case ATCK:
 				break;
