@@ -49,11 +49,15 @@ public class GameController {
 	
 	private final static HashMap<String, JSONObject> profileMap = new HashMap<>();
 	
-	private static class cardSet{
+	private static void sendMassage(String msg){
+		api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, msg);
+	}
+	
+	public static class CardSet{
 		List<Card> CARD = new ArrayList();
-		List<Player> PLAYER =new ArrayList();
+		List<Player> PLAYER =new ArrayList(); 
 		boolean start=false;
-		void init(boolean in){
+		CardSet(boolean in){
 			start=in;
 			this.CARD.clear();
 			this.PLAYER.clear();
@@ -74,6 +78,13 @@ public class GameController {
 				CARD.add(tmp); 
 			}
 			if(!start) builtGame();
+			else addData();
+		}
+		private void addData() {
+			if(Receiver.hasMessage()){
+				
+			}
+			
 		}
 		private void builtGame() { 
 			for(int i=0; i<4; i++)
@@ -96,11 +107,20 @@ public class GameController {
 						PLAYER.add((Player) CARD.get(ram*2+1));
 					}
 				}
-			
+				for(int i1=0; i1<PLAYER.get(i1).MAX_HAND; i1++)
+					PLAYER.get(i1).drawCard(CARD);
+				//TODO draw UI
 			}
 			for(int i=1; i<4; i++)
 			{
-				
+				JSONObject obj = new JSONObject();
+				obj.put("PlayerId", Integer.toString(i));
+				obj.put("Character", PLAYER.get(i).types);
+				JSONArray jsonArray = new JSONArray();
+				for(int j=0; j<PLAYER.get(i).MAX_HAND;j++)
+					jsonArray.put(j, PLAYER.get(i).handcards.get(j).num);
+				obj.put("Hand", jsonArray.toString());
+				sendMassage(obj.toString()); 
 			}
 		
 		}
@@ -331,7 +351,10 @@ public class GameController {
 	static enum GAME_PHASE {IDLE, WAIT, DRAW, HERO, PLAY, ATCK, EXCH, END};
 	
 	public static void gameStart() {
-		int plyNum;
+		boolean in=true;
+		if(myOrder==0) in=false;
+		CardSet AllCards=new CardSet(in);
+		Player player=AllCards.PLAYER.get(myOrder);
 		GAME_PHASE gamePhase = GAME_PHASE.IDLE;
 		stopping = false;
 		while (!stopping) {
@@ -342,7 +365,7 @@ public class GameController {
 				if(Receiver.hasMessage()) {
 					String[] receive = Receiver.get().content();
 					if("end".equals(receive[0])) {
-						if(player.showStatus().equals(receive[1])) {
+						if(player.showStatus()==Integer.parseInt(receive[1])) {
 							gamePhase = GAME_PHASE.DRAW;
 						}
 					}
@@ -351,7 +374,7 @@ public class GameController {
 			case WAIT:
 				break;
 			case DRAW:
-				player.drawCard();
+				player.drawCard(AllCards.CARD);
 				gamePhase = GAME_PHASE.HERO;
 				break;
 			case HERO:

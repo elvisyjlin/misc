@@ -36,6 +36,7 @@ public class Player extends Character{
 			}
 		gameCard.get(tmpCdNum).changeStatus(this.showStatus());
 		this.hand++;
+		this.handcards.add(gameCard.get(tmpCdNum));
 		}
 		return tmpCdNum;
 		}
@@ -60,6 +61,7 @@ public class Player extends Character{
 				}
 				gameCard.get(tmpCdNum).changeStatus(this.showStatus());
 				this.hand++;
+				this.handcards.add(gameCard.get(tmpCdNum));
 				return tmpCdNum;
 				}
 		}
@@ -85,5 +87,12 @@ public class Player extends Character{
 	public boolean checkDeath(){
 		if(this.health<=0)return true;
 		return false;
+	}
+	public void removeHand(int num){
+		if(this.hand>0)
+		{
+			this.handcards.remove(num);
+			this.hand--;
+		}
 	}
 }
