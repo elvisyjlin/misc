@@ -11,7 +11,7 @@ public class Receiver {
 	public static void initialize() {
 		messages = new LinkedList<BaseMessage>();
 		mutex = new Object();
-		sendable = true;
+		enable();
 	}
 	
 	public static void send(BaseMessage message) {
@@ -57,7 +57,7 @@ public class Receiver {
 		}
 	}
 	
-	public static void eable() {
+	public static void enable() {
 		sendable = true;
 	}
 	

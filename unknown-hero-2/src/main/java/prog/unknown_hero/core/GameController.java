@@ -27,8 +27,8 @@ public class GameController {
 	private static final String GROUP_ID = "public";
 	private static final String APP_NAME = "zeroasclin@gmail.com";
 	private static final String API_KEY = "9f046a5457cc84660323d4a2ef0a5091";
-	private static final String ACCOUNT = "user2";
-	private static final String PASSWORD = "994e363bd0a0a84df00f7b17a83fc286";
+	private static final String ACCOUNT = "user1";
+	private static final String PASSWORD = "52e39fd5a80a23a96e7729af4a2d7ce3";
 	private static final int REQUEST_INITIAL_LOGIN = 0;
 	private static final int REQUEST_INITIAL_GET_SERVER_TIME = 1;
 	private static final int REQUEST_INITIAL_SET_PROFILE = 2;
@@ -39,6 +39,7 @@ public class GameController {
 	private static final int REQUEST_GET_PROFILE = 7;
 	private static final int REQUEST_SET_GROUP = 8;
 	private static final int REQUEST_GET_GROUP = 9;
+	private static final int PLAYER_NUM = 2;
 
 	private final static MeetiAPI api = new MeetiAPI();
 	private static boolean available = false, stopping = false;
@@ -377,10 +378,17 @@ public class GameController {
 	static enum GAME_PHASE {IDLE, WAIT, DRAW, HERO, PLAY, ATCK, EXCH, END};
 	
 	public static void gameStart() {
+		System.out.println("遊戲設置");
 		new place();
 		UIOperation.initialized(myOrder);
 		boolean in=true;
 		if(myOrder==0) in=false;
+		while(!Replyer.hasMessage()) {
+			if(Replyer.get().type().equals("INITED")) {
+				continue;
+			}
+		}
+		System.out.println("Cards setting start.");
 		CardSet AllCards=new CardSet(in);
 		Player player=AllCards.PLAYER.get(myOrder);
 		GAME_PHASE gamePhase = GAME_PHASE.IDLE;
@@ -458,12 +466,16 @@ public class GameController {
 			if("join".equals(subContent[0])) {
 				System.out.println(++waitCount);
 				playerOrder[waitCount] = senderID;
-				if(waitCount == 3) {
+				if(waitCount == PLAYER_NUM-1) {
 
 					final JSONObject obj = new JSONObject();
 					obj.put("msg_groupid", GROUP_ID);
 					obj.put("msg_senderid", ACCOUNT);
-					obj.put("msg_content", "start,"+playerOrder[0]+","+playerOrder[1]+","+playerOrder[2]+","+playerOrder[3]);
+					StringBuffer s = new StringBuffer("start");
+					for(int i=0; i<PLAYER_NUM; i++) {
+						s.append(playerOrder[i]);
+					}
+					obj.put("msg_content", s);
 					obj.put("msg_type", "1");
 					api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, obj.toString());
 					
@@ -471,7 +483,7 @@ public class GameController {
 					gameStart();
 				}
 			} else if("start".equals(subContent[0])) {
-				for(int i=0; i<4; i++) {
+				for(int i=0; i<PLAYER_NUM; i++) {
 					playerOrder[i] = subContent[i+1];
 					if(playerOrder[i].equals(ACCOUNT)) {
 						myOrder = i;

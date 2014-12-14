@@ -11,6 +11,7 @@ public class Replyer {
 	public static void initialize() {
 		messages = new LinkedList<BaseMessage>();
 		mutex = new Object();
+		enable();
 	}
 	
 	public static void send(BaseMessage message) {
@@ -56,7 +57,7 @@ public class Replyer {
 		}
 	}
 	
-	public static void eable() {
+	public static void enable() {
 		sendable = true;
 	}
 	

@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import prog.unknown_hero.utility.BaseMessage;
+import prog.unknown_hero.utility.Replyer;
 import prog.unknown_hero.utility.Sender;
 
 public class place extends JFrame {
@@ -78,6 +79,7 @@ public class place extends JFrame {
     JLabel Ninfo = new JLabel("QAQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
 	
 	private boolean loadImages() {
+		System.out.println("讀取圖片");
 		try {
 			card_back_img = new ImageIcon("./img/BACK.jpg");
 			for(int i=0; i<4; i++) {
@@ -140,6 +142,8 @@ public class place extends JFrame {
 	}
 	
 	public void init() {
+		
+		System.out.println("初始化");
 		
 		if(!loadImages()) {
 			return;
@@ -445,6 +449,8 @@ public class place extends JFrame {
           panel.add(Ninfo, Cinfo);
           
           setVisible(true);
+          
+          Replyer.send(new BaseMessage("INITED", "OK"));
 	}
 
 	public place() {
@@ -453,10 +459,11 @@ public class place extends JFrame {
           Thread detector = new Thread(new Runnable() {
 
         	public void run() {
+        		System.out.println("sender receiving");
         		  if(Sender.hasMessage()) {
         			  BaseMessage message = Sender.get();
-        			  String type = message.type();
-        			  String[] contents = message.content();
+        			  String type = message.type();	System.out.println(type);
+        			  String[] contents = message.content(); System.out.println(contents);
         			  int i, j;
         			  if("INITED".equals(type)) {
         				  myOrder = Integer.parseInt(contents[0]);
