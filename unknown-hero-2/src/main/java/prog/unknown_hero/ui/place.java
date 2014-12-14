@@ -18,7 +18,7 @@ public class place extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	ImageIcon img1;
+	ImageIcon card_back_img;
 	ImageIcon img2;
 	ImageIcon img3;
 	ImageIcon img4;
@@ -28,7 +28,7 @@ public class place extends JFrame {
 	
 	private boolean loadImages() {
 		try {
-			img1 = new ImageIcon("./img/DSC04833.JPG");
+			card_back_img = new ImageIcon("./img/DSC04833.JPG");
 			img2 = new ImageIcon("./img/ATK-13.jpg");
 			img3 = new ImageIcon("./img/HP-3.jpg");
 			img4 = new ImageIcon("./img/WEAPON-無.jpg");
@@ -54,29 +54,36 @@ public class place extends JFrame {
         panel.setLayout(new GridBagLayout());
 
         //=========================================================== enemy1
-          JButton N1 = new JButton(img1);
-          GridBagConstraints C1 = new GridBagConstraints();
-          C1.gridx = 2;
-          C1.gridy = 0;
-          C1.gridwidth = 1;
-          C1.gridheight = 4;
-          C1.weightx = 0;
-          C1.weighty = 0;
-          C1.fill = GridBagConstraints.NONE;
-          C1.anchor = GridBagConstraints.CENTER;
-          panel.add(N1, C1);
-          
-          JLabel N1hp = new JLabel(img3);
-          GridBagConstraints C1hp= new GridBagConstraints();
-          C1hp.gridx = 1;
-          C1hp.gridy = 0;
-          C1hp.gridwidth = 1;
-          C1hp.gridheight = 1;
-          C1hp.weightx = 0;
-          C1hp.weighty = 0;
-          C1hp.fill = GridBagConstraints.NONE;
-          C1hp.anchor = GridBagConstraints.EAST;
-          panel.add(N1hp, C1hp);
+        JButton[] hero = new JButton[4];
+        JLabel[] hp = new JLabel[4];
+        GridBagConstraints[] heroC = new GridBagConstraints[4];
+        GridBagConstraints[] hpC = new GridBagConstraints[4];
+        for(int i=0; i<4; i++) {
+        	hero[i].setIcon(card_back_img);
+            hp[i].setIcon(img3);
+        	switch(i) {
+        	case 1:
+        		heroC[1].gridx = 2;
+        		heroC[1].gridy = 0;
+        		heroC[1].gridwidth = 1;
+        		heroC[1].gridheight = 4;
+        		heroC[1].weightx = 0;
+        		heroC[1].weighty = 0;
+        		heroC[1].fill = GridBagConstraints.NONE;
+        		heroC[1].anchor = GridBagConstraints.CENTER;
+                hpC[1].gridx = 1;
+                hpC[1].gridy = 0;
+                hpC[1].gridwidth = 1;
+                hpC[1].gridheight = 1;
+                hpC[1].weightx = 0;
+                hpC[1].weighty = 0;
+                hpC[1].fill = GridBagConstraints.NONE;
+                hpC[1].anchor = GridBagConstraints.EAST;
+        		break;
+        	}
+            panel.add(hero[i], heroC[i]);
+            panel.add(hp[i], hpC[i]);
+        }
           
           JLabel N1card = new JLabel(img2);
           GridBagConstraints C1card= new GridBagConstraints();
@@ -128,7 +135,7 @@ public class place extends JFrame {
           
           //=========================================================== enemy2
               
-          JButton N2 = new JButton(img1);
+          JButton N2 = new JButton(card_back_img);
           GridBagConstraints C2 = new GridBagConstraints();
           C2.gridx = 4;
           C2.gridy = 0;
@@ -203,7 +210,7 @@ public class place extends JFrame {
           //=========================================================== enemy3
           
           
-          JButton N3 = new JButton(img1);
+          JButton N3 = new JButton(card_back_img);
           GridBagConstraints C3 = new GridBagConstraints();
           C3.gridx = 6;
           C3.gridy = 0;
@@ -290,7 +297,7 @@ public class place extends JFrame {
           panel.add(ne, ce);
           
           for(int i=1; i<5; i++){
-              JButton n5 = new JButton(img1);
+              JButton n5 = new JButton(card_back_img);
               GridBagConstraints c5 = new GridBagConstraints();
               c5.gridx = i;
               c5.gridy = 11;
@@ -303,7 +310,7 @@ public class place extends JFrame {
               panel.add(n5, c5);
           }
           
-          JLabel NYOU = new JLabel(img1);
+          JLabel NYOU = new JLabel(card_back_img);
           GridBagConstraints CYOU = new GridBagConstraints();
           CYOU.gridx = 6;
           CYOU.gridy = 10;
@@ -397,7 +404,23 @@ public class place extends JFrame {
         			  BaseMessage message = Sender.get();
         			  String type = message.type();
         			  String[] contents = message.content();
-        			  if("setPlayerHandCards".equals(message.type())) {
+        			  if("ORDER".equals(message.type())) {
+        				  
+        			  } else if("SETHAND".equals(message.type())) {
+        				  
+        			  } else if("SETHERO".equals(message.type())) {
+        				  
+        			  } else if("SETAP".equals(message.type())) {
+        				  
+        			  } else if("SETDP".equals(message.type())) {
+        				  
+        			  } else if("SETWP".equals(message.type())) {
+        				  
+        			  } else if("DELWP".equals(message.type())) {
+        				  
+        			  } else if("SETINFO".equals(message.type())) {
+        				  
+        			  } else if("SETHANDN".equals(message.type())) {
         				  
         			  }
         		  }

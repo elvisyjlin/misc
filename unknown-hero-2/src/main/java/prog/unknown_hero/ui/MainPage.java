@@ -10,8 +10,11 @@ import java.io.IOException;
 
 
 
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import prog.unknown_hero.core.GameController;
 
 public class MainPage extends JFrame {
 	
@@ -58,6 +61,14 @@ public class MainPage extends JFrame {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				Thread t = new Thread(new Runnable() {
+
+					public void run() {
+						GameController.login(false);
+					}
+					
+				});
+				t.start();
 				new WaitingPage(title, width, height);
 				dispose();
 			}
