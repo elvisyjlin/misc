@@ -371,7 +371,7 @@ public class GameController {
 	static enum GAME_PHASE {IDLE, WAIT, DRAW, HERO, PLAY, ATCK, EXCH, END};
 	
 	public static void gameStart() {
-			UIOperation.setPlayersOrder(myOrder);
+			UIOperation.initialized(myOrder);
 		boolean in=true;
 		if(myOrder==0) in=false;
 		CardSet AllCards=new CardSet(in);
