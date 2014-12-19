@@ -83,53 +83,54 @@ public class place extends JFrame {
 		try {
 			card_back_img = new ImageIcon("./img/BACK.jpg");
 			for(int i=0; i<4; i++) {
-				hp_img[i] = new ImageIcon("./img/HP-"+i+".jpg");
+				hp_img[i] = new ImageIcon("./img/HP/HP-"+i+".jpg");
 			}
 			for(int i=0; i<14; i++) {
-				atk_img[i] = new ImageIcon("./img/ATK-"+i+".jpg");
+				atk_img[i] = new ImageIcon("./img/ATK/ATK-"+i+".jpg");
 			}
 			for(int i=0; i<4; i++) {
-				def_img[i] = new ImageIcon("./img/DEF-"+i+".jpg");
+				def_img[i] = new ImageIcon("./img/DEF/DEF+"+i+".jpg");
 			}
 			for(int i=0; i<4; i++) {
-				cd_img[i] = new ImageIcon("./img/CD-"+i+".jpg");
+				cd_img[i] = new ImageIcon("./img/CD/CD-"+i+".jpg");
 			}
 			endButton_img = new ImageIcon("./img/END-BOTTON-NOT-CLICK.jpg");
 			endButton_hov = new ImageIcon("./img/END-BOTTON-CLICK.jpg");
-			spe_img = new ImageIcon("./img/WEAPON-長矛.jpg");
-			she_img = new ImageIcon("./img/WEAPON-盾牌.jpg");
-			noweapon_img = new ImageIcon("./img/WEAPON-無.jpg");
+			spe_img = new ImageIcon("./img/WEAPON/WEAPON-長矛.jpg");
+			she_img = new ImageIcon("./img/WEAPON/WEAPON-盾牌.jpg");
+			noweapon_img = new ImageIcon("./img/WEAPON/WEAPON-無.jpg");
 
 			dead_img = new ImageIcon("./img/DEAD.jpg");
 			
-			mag_img = new ImageIcon("./img/魔法師.jpg");
-			sci_img = new ImageIcon("./img/科學家.jpg");
-			wor_img = new ImageIcon("./img/工人.jpg");
-			grav_img = new ImageIcon("./img/盜墓.jpg");
-			exg_img = new ImageIcon("./img/交換.jpg");
-			copy_img = new ImageIcon("./img/仿製.jpg");
-			drug_img = new ImageIcon("./img/禁藥.jpg");
-			recov_img = new ImageIcon("./img/回復.jpg");
-			hback_img = new ImageIcon("./img/反擊.jpg");
-			spear_img = new ImageIcon("./img/長矛.jpg");
-			sheild_img = new ImageIcon("./img/盾牌.jpg");
+			mag_img = new ImageIcon("./img/CARD/魔法師.jpg");
+			sci_img = new ImageIcon("./img/CARD/科學家.jpg");
+			wor_img = new ImageIcon("./img/CARD/工人.jpg");
+			grav_img = new ImageIcon("./img/CARD/盜墓.jpg");
+			exg_img = new ImageIcon("./img/CARD/交換.jpg");//TODO pic error
+			copy_img = new ImageIcon("./img/CARD/仿製.jpg");
+			drug_img = new ImageIcon("./img/CARD/禁藥.jpg");
+			recov_img = new ImageIcon("./img/CARD/回復.jpg");
+			hback_img = new ImageIcon("./img/CARD/反擊.jpg");
+			spear_img = new ImageIcon("./img/CARD/長矛.jpg");
+			sheild_img = new ImageIcon("./img/CARD/盾牌.jpg");
 
-			LLLW_img = new ImageIcon("./img/LLLW.jpg");
-			LLWL_img = new ImageIcon("./img/LLLW.jpg");
-			LLWW_img = new ImageIcon("./img/LLLW.jpg");
-			LWLL_img = new ImageIcon("./img/LLLW.jpg");
-			LWLW_img = new ImageIcon("./img/LLLW.jpg");
-			LWWL_img = new ImageIcon("./img/LLLW.jpg");
-			WLLL_img = new ImageIcon("./img/LLLW.jpg");
-			WLLW_img = new ImageIcon("./img/LLLW.jpg");
-			WLWL_img = new ImageIcon("./img/LLLW.jpg");
-			WWLL_img = new ImageIcon("./img/LLLW.jpg");
+			LLLW_img = new ImageIcon("./img/WINNER/LLLW.jpg");
+			LLWL_img = new ImageIcon("./img/WINNER/LLWL.jpg");
+			LLWW_img = new ImageIcon("./img/WINNER/LLWW.jpg");
+			LWLL_img = new ImageIcon("./img/WINNER/LWLL.jpg");
+			LWLW_img = new ImageIcon("./img/WINNER/LWLW.jpg");
+			LWWL_img = new ImageIcon("./img/WINNER/LWWL.jpg");
+			WLLL_img = new ImageIcon("./img/WINNER/WLLL.jpg");
+			WLLW_img = new ImageIcon("./img/WINNER/WLLW.jpg");
+			WLWL_img = new ImageIcon("./img/WINNER/WLWL.jpg");
+			WWLL_img = new ImageIcon("./img/WINNER/WWLL.jpg");
 
-			img2 = new ImageIcon("./img/ATK-13.jpg");
+			//img2 = new ImageIcon("./img/ATK-13.jpg");
+			img2 = atk_img[13];
 			img3 = new ImageIcon("./img/HP-3.jpg");
 			img4 = new ImageIcon("./img/WEAPON-無.jpg");
-			img5 = new ImageIcon("./img/DEF+0.jpg");
-			img6 = new ImageIcon("./img/END-BOTTON-NOT-CLICK.jpg");
+			img5 = new ImageIcon("./img/DEF/DEF+0.jpg");
+			img6 = new ImageIcon("./img/END-BOTTON/END-BOTTON-NOT-CLICK.jpg");
 
 			img7 = new ImageIcon("./img/CD-3.jpg");
 			
@@ -499,7 +500,7 @@ public class place extends JFrame {
           
           setVisible(true);
           
-          Replyer.send(new BaseMessage("INITED", "OK"));
+         // while(!Replyer.send(new BaseMessage("INITED", "OK"))) continue;
 	}
 
 	public place() {
@@ -508,11 +509,18 @@ public class place extends JFrame {
           Thread detector = new Thread(new Runnable() {
 
         	public void run() {
-        		//System.out.println("sender receiving " + Sender.hasMessage());
-        		  if(Sender.hasMessage()) {
-        			  BaseMessage message = Sender.get();
+        		boolean run_en=true;
+        		while(run_en){
+        		Sender.enable();
+        		while(Sender.messages.isEmpty())continue;
+        		Sender.disable();
+        		  if(!Sender.messages.isEmpty()) {
+              		BaseMessage message=Sender.messages.getFirst();
         			  String type = message.type();	System.out.println(type);
         			  String[] contents = message.content(); System.out.println(contents);
+        			  for(int i=0; i<contents.length; i++){
+        				  System.out.println("~contents#"+(i+1)+": "+contents[i]);
+        			  }
         			  int i, j;
         			  if("INITED".equals(type)) {
         				  myOrder = Integer.parseInt(contents[0]);
@@ -554,6 +562,12 @@ public class place extends JFrame {
         						  hand[i].setIcon(sheild_img);
         						  break;
         					  }
+        					  try {
+								Thread.sleep(100);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
         				  }
         				  for(j = i; j<4; j++) {
         					  hand[i].setIcon(card_back_img);
@@ -580,31 +594,43 @@ public class place extends JFrame {
         				  int player = Integer.parseInt(contents[0]);
         				  int hp = Integer.parseInt(contents[1]);
     					  hpB[player].setIcon(hp_img[hp]);
+    					  System.out.println("Hp: "+hp);
         			  } else if("SETAP".equals(type)) {
         				  int player = Integer.parseInt(contents[0]);
         				  int atk = Integer.parseInt(contents[1]);
-        				  atkB[player].setIcon(hp_img[atk]);
+        				  atkB[player].setIcon(atk_img[atk]);
         			  } else if("SETDP".equals(type)) {
         				  int player = Integer.parseInt(contents[0]);
         				  int def = Integer.parseInt(contents[1]);
-    					  defB[player].setIcon(hp_img[def]);
+    					  defB[player].setIcon(def_img[def]);
         			  } else if("DELWP".equals(type)) {
         				  int player = Integer.parseInt(contents[0]);
     					  weapon[player].setIcon(noweapon_img);
+        			  }  else if("SETWP".equals(type)) {
+        				  int player = Integer.parseInt(contents[0]);
+        				  if(Integer.parseInt(contents[1])==0)
+        					  weapon[player].setIcon(spe_img);
+        				  else if(Integer.parseInt(contents[1])==1)
+        					  weapon[player].setIcon(she_img);
         			  } else if("SETINFO".equals(type)) {
         				  Ninfo.setText(contents[0]);
         			  } else if("SETHANDN".equals(type)) {
         				  int player = Integer.parseInt(contents[0]);
+        				  if(player!=myOrder){
         				  int cn = Integer.parseInt(contents[1]);
         				  cardnum[player].setIcon(cd_img[cn]);
+        				  }
         			  }
-        		  }/*
-        		  try {
-        			  Thread.sleep(200);
-        		  } catch (InterruptedException e) {
-        			  // TODO Auto-generated catch block
-        			  e.printStackTrace();
-        		  }*/
+        			  while(!Replyer.send(new BaseMessage("OK","")))continue;
+        			  Sender.clear();
+        			  try {
+        					Thread.sleep(100);
+        				} catch (InterruptedException e) {
+        					// TODO Auto-generated catch block
+        					e.printStackTrace();
+        				}
+        		  }
+        		}
 			}
        	  
           });

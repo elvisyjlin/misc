@@ -15,6 +15,7 @@ public class Card {
 	}
 	
 	protected int showStatus(){
+		System.out.println("this status: "+this.status);
 		return this.status;
 	}
 }

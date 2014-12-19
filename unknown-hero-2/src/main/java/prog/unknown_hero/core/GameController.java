@@ -29,8 +29,8 @@ public class GameController {
 	private static final String GROUP_ID = "public";
 	private static final String APP_NAME = "zeroasclin@gmail.com";
 	private static final String API_KEY = "9f046a5457cc84660323d4a2ef0a5091";
-	private static final String ACCOUNT = "user2";
-	private static final String PASSWORD = "994e363bd0a0a84df00f7b17a83fc286";
+	private static final String ACCOUNT = "user5";
+	private static final String PASSWORD = "9c3c48a2b31a9abd26a44189e8569b54";
 	private static final int REQUEST_INITIAL_LOGIN = 0;
 	private static final int REQUEST_INITIAL_GET_SERVER_TIME = 1;
 	private static final int REQUEST_INITIAL_SET_PROFILE = 2;
@@ -41,7 +41,8 @@ public class GameController {
 	private static final int REQUEST_GET_PROFILE = 7;
 	private static final int REQUEST_SET_GROUP = 8;
 	private static final int REQUEST_GET_GROUP = 9;
-	private static final int PLAYER_NUM = 4;
+	private static final int PLAYER_NUM = 2;//TODO changed
+	private static boolean first_game=false;
 
 	private final static MeetiAPI api = new MeetiAPI();
 	private static boolean available = false, stopping = false;
@@ -56,14 +57,21 @@ public class GameController {
 	
 	private static void sendMassage(String msg){
 		System.out.println("output!:"+msg);
-		api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, msg);
+		System.out.println(api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, msg));
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	} 
 	
 	public static class CardSet{
 		List<Card> CARD = new ArrayList<Card>();
-		List<Player> PLAYER =new ArrayList<Player>(); 
+		List<Player> PLAYER =new ArrayList<Player>();
+		boolean done=false;
 		boolean start=false;
-		CardSet(boolean in){
+		public void init(boolean in){
 			start=in;
 			this.CARD.clear();
 			this.PLAYER.clear();
@@ -82,9 +90,12 @@ public class GameController {
 				else if(i<26)	tmp=new Weapon(4, 9);
 				else			tmp=new Weapon(4, 10);
 				CARD.add(tmp); 
-			}
+			}/*
+			for(int i=0; i<CARD.size(); i++)
+				System.out.println("Card #"+i+", Status: "+CARD.get(i).status);*/
 			if(!start) builtGame();
 			else addData();
+			done=true;
 		}
 		private void addData() {
 			boolean done=true;
@@ -105,7 +116,7 @@ public class GameController {
 							PLAYER.add((Player) CARD.get(Integer.parseInt(Revc[3])*2+1));
 						}
 						for(int j=0; j<Integer.parseInt(Revc[5]); j++){
-							PLAYER.get(j).setHand(CARD, Integer.parseInt(Revc[6+j]));
+							PLAYER.get(j).setHand(CARD, Integer.parseInt(Revc[6+j]), j==myOrder);
 						}
 						done=false;
 					}
@@ -119,23 +130,31 @@ public class GameController {
 				boolean untrue=true;
 				while(untrue)
 				{
-					ram=(int) (Math.random()%3);
+					ram=(int) (Math.random()*3);
 					if(CARD.get(ram*2) instanceof Character){
 						untrue=false;
 						CARD.remove(ram*2);
 						CARD.add(ram*2, new Player(i, CARD.get(ram*2).num));
+						//UIOperation.checkUIready();
 						PLAYER.add((Player) CARD.get(ram*2));
 					}
 					else if(CARD.get(ram*2+1) instanceof Character){
 						untrue=false;
 						CARD.remove(ram*2+1);
 						CARD.add(ram*2+1, new Player(i, CARD.get(ram*2+1).num));
+						//UIOperation.checkUIready();
 						PLAYER.add((Player) CARD.get(ram*2+1));
 					}
 				}
-				for(int i1=0; i1<PLAYER.get(i1).MAX_HAND; i1++)
-					PLAYER.get(i1).drawCard(CARD);
-				//TODO draw UI
+				System.out.println("~~~~~Round "+(i+1)+" DONE~~~~~~~~~~~~~");
+			}
+			System.out.println("Done!_Hand_now!");
+			for(int i=0; i<PLAYER_NUM; i++){
+				System.out.println("max_hand: "+PLAYER.get(i).MAX_HAND);
+				for(int i1=0; i1<PLAYER.get(i).MAX_HAND; i1++){
+					System.out.println("card_phase#: "+i1);
+					PLAYER.get(i).drawCard(CARD, i==myOrder);
+				}
 			}
 			for(int i=0; i<PLAYER_NUM; i++)
 			{
@@ -385,25 +404,37 @@ public class GameController {
 		System.out.println("遊戲設置");
 		place p = new place();
 		UIOperation.initialized(myOrder);
-		System.out.println("??");
 		boolean in=true;
 		if(myOrder==0) in=false;
-		while(!Replyer.hasMessage()) {
+		System.out.println("??");
+		while(Replyer.messages.isEmpty()) {
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if(!Replyer.get().type().equals("INITED")) {
+			System.out.println(Replyer.messages.isEmpty());
+			if(!Replyer.hasMessage()) {				
 				continue;
+			}else{
+				System.out.println("yes: "+Replyer.messages.getFirst().type());
 			}
 		}
-		waitingPage.setVisible(false);;
+		Replyer.messages.clear();
+		System.out.println("初始化完畢");
+		waitingPage.setVisible(false);
+		if(gameStage.isWaiting()) gameStage.nextStage();
 		System.out.println("Cards setting start.");
-		CardSet AllCards=new CardSet(in);
+		if(!Sender.messages.isEmpty())
+			System.out.println("?2: "+Sender.messages.getFirst().type());
+		CardSet AllCards=new CardSet();
+		AllCards.init(in);
+		while(!AllCards.done) continue;
+		System.out.println("Set_done: "+AllCards.done);
 		Player player=AllCards.PLAYER.get(myOrder);
-		GAME_PHASE gamePhase = GAME_PHASE.IDLE;
+		GAME_PHASE gamePhase = GAME_PHASE.DRAW;
+		System.out.println("player: "+player.status);
 		stopping = false;
 		int turns=0;
 		while (!stopping) {
@@ -411,11 +442,13 @@ public class GameController {
 			
 			switch(gamePhase) {
 			case IDLE:
-				if(Receiver.hasMessage()) {
+				if(Receiver.hasMessage()||first_game) {
 					String[] receive = Receiver.get().content();
-					if("end".equals(receive[0])) {
-						if(player.showStatus()==Integer.parseInt(receive[1])) {
+					if("end".equals(receive[0])||first_game) {
+						if(player.showStatus()==Integer.parseInt(receive[1])||first_game) {
+							System.out.println("Draw!");
 							gamePhase = GAME_PHASE.DRAW;
+							first_game=false;
 						}
 					}
 				}
@@ -423,19 +456,29 @@ public class GameController {
 			case WAIT:
 				break;
 			case DRAW:
-				player.drawCard(AllCards.CARD);
+				player.drawCard(AllCards.CARD, true);//TODO undone
 				gamePhase = GAME_PHASE.HERO;
 				break;
 			case HERO:
+				System.out.println("HERO_stage, player "+(turns+1)+"'s turns");
 					if(turns==myOrder){
+						if(player.hand>=4)
+						{
+							JSONObject obj = new JSONObject();
+							obj.put("END", Integer.toString(turns));
+							sendMassage(obj.toString());
+							gamePhase = GAME_PHASE.PLAY;
+							continue;
+						}
 						int sel;
-						while(!Replyer.hasMessage());
+						while(!Replyer.hasMessage()) continue;
 							sel=Integer.parseInt(Replyer.get().content()[0]);
+						Replyer.clear();
 						if(sel==myOrder)
 						{
 							JSONObject obj = new JSONObject();
 							obj.put("PlayerId", Integer.toString(turns));
-							obj.put("Card", player.drawHeroticCard(AllCards.CARD));
+							obj.put("Card", player.drawHeroticCard(AllCards.CARD, true));
 							sendMassage(obj.toString()); 
 						}
 						else if(sel==8)
@@ -443,6 +486,7 @@ public class GameController {
 							JSONObject obj = new JSONObject();
 							obj.put("END", Integer.toString(turns));
 							sendMassage(obj.toString());
+							gamePhase = GAME_PHASE.PLAY;
 						}
 					}else{
 						//TODO UI
@@ -452,7 +496,7 @@ public class GameController {
 							if(Receiver.type().equals("PlayerID"))
 								{
 									String[] Revc = Receiver.get().content();
-									AllCards.PLAYER.get(Integer.parseInt(Revc[1])).setHand(AllCards.CARD, Integer.parseInt(Revc[3]));
+									AllCards.PLAYER.get(Integer.parseInt(Revc[1])).setHand(AllCards.CARD, Integer.parseInt(Revc[3]),false);
 								}
 							else if(Receiver.type().equals("END")){
 								gamePhase = GAME_PHASE.PLAY;
@@ -462,47 +506,45 @@ public class GameController {
 					}
 				}
 				break;
-			case PLAY:if(turns==myOrder){
+			case PLAY:
+				System.out.println("PLAY_stage, player "+(turns+1)+"'s turns");
+				if(turns==myOrder){
 				int sel = 0;
-				if(Replyer.hasMessage()) sel=Integer.parseInt(Replyer.get().content()[0]);
-				if(sel>3&&sel<8)
+				while(!Replyer.hasMessage()) continue;
+					sel=Integer.parseInt(Replyer.get().content()[0]);
+				Replyer.clear();
+				if(sel-4<player.hand)
 				{
 					boolean touched=false;
-					int ks=AllCards.PLAYER.get(turns).handcards.get(sel).num;
-					switch(ks){
-					case 3:
-						touched=true;
-						break;
-					case 4:
-						touched=true;
-						break;
-					case 5:
-						touched=true;
-						break;
-						
-					case 6:
-						touched=true;
-						break;
-					case 9:
-						touched=true;
-						break;
-					case 10:
-						touched=true;
-						break;
-					}
-					JSONObject obj = new JSONObject();
-					if(touched==true){
-						player.removeHand(sel);
-					obj.put("Card", Integer.toString(sel));
-					}
-					sendMassage(obj.toString()); 
+						System.out.println("Play Card #"+(sel-3)+"!");
+						int ks=AllCards.PLAYER.get(turns).handcards.get(sel-4).num;
+						System.out.println(ks);
+						if(ks==3||ks==4||ks==5||ks==6)
+						{
+							touched=true;
+							((EffectCards) AllCards.PLAYER.get(turns).handcards.get(sel-4)).effect(player, ks-3, AllCards.CARD);
+						}else if(ks==9||ks==10)
+						{
+							touched=true;
+							AllCards.PLAYER.get(turns).getWeapon((Weapon) AllCards.PLAYER.get(turns).handcards.get(sel-4));
+						}
+						JSONObject obj = new JSONObject();
+						if(touched==true){
+							Replyer.clear();
+							System.out.println("used_a_card");
+							player.removeHand(sel-4, true);
+							obj.put("Card", Integer.toString(sel-4));
+						}
+						sendMassage(obj.toString()); 
 				}
 				else if(sel==8)
 				{
 					JSONObject obj = new JSONObject();
 					obj.put("END", Integer.toString(turns));
 					sendMassage(obj.toString());
+					gamePhase = GAME_PHASE.ATCK;
 				}
+					
 			}else{
 				//TODO UI
 				boolean done=true;
@@ -513,7 +555,7 @@ public class GameController {
 						{
 						String[] Revc = Receiver.get().content();
 						int sel=Integer.parseInt(Revc[1]);
-						int ks=AllCards.PLAYER.get(turns).handcards.get(sel).num;
+						int ks=AllCards.PLAYER.get(turns).handcards.get(sel-4).num;
 						switch(ks){
 						case 3:
 							touched=true;
@@ -524,7 +566,6 @@ public class GameController {
 						case 5:
 							touched=true;
 							break;
-							
 						case 6:
 							touched=true;
 							break;
@@ -535,10 +576,10 @@ public class GameController {
 							touched=true;
 							break;
 						}
-							AllCards.PLAYER.get(Integer.parseInt(Revc[1])).setHand(AllCards.CARD, Integer.parseInt(Revc[3]));
+							AllCards.PLAYER.get(Integer.parseInt(Revc[1])).setHand(AllCards.CARD, Integer.parseInt(Revc[3]), false);
 						}
 					else if(Receiver.type().equals("END")){
-						gamePhase = GAME_PHASE.PLAY;
+						gamePhase = GAME_PHASE.ATCK;
 						}
 					}
 				
@@ -550,6 +591,9 @@ public class GameController {
 			case EXCH:
 				break;
 			case END:
+				turns+=1;
+				turns%=PLAYER_NUM;
+				gamePhase=GAME_PHASE.DRAW;
 				break;
 			}
 			
@@ -568,8 +612,6 @@ public class GameController {
 					api.setMessage(REQUEST_SET_MESSAGE, GROUP_ID, obj.toString());
 				}
 			}
-			turns+=1;
-			turns%=PLAYER_NUM;
 		}
 		gameStage.nextStage();
 	}
@@ -592,12 +634,27 @@ public class GameController {
 			}
 		}
 		System.out.println(message);
+		System.out.println("gamestage: "+gameStage.stage);//TODO check game started
+		if(gameStage.isWaiting()){
+			if(content.contains("gonextstage")) {
+				gameStage.nextStage();
+				System.out.println("forced to play stage!");
+			}
+		}
+		if(gameStage.isPlaying()){
+			if(content.contains("changeacard")){
+				System.out.println("forced to change last card!"+subContent[0]);
+				new CardSet().PLAYER.get(myOrder).removeHand(new CardSet().PLAYER.get(myOrder).hand-1, true);
+				new CardSet().PLAYER.get(myOrder).setHand(new CardSet().CARD, Integer.parseInt(subContent[0]), true);
+			}
+		}
 		if(gameStage.isWaiting()) {
 			if("join".equals(subContent[0])) {
 				System.out.println(++waitCount);
 				playerOrder[waitCount] = senderID;
+				System.out.println("senderID: "+senderID);
 				if(waitCount == PLAYER_NUM-1) {
-
+					first_game=true;
 					final JSONObject obj = new JSONObject();
 					obj.put("msg_groupid", GROUP_ID);
 					obj.put("msg_senderid", ACCOUNT);

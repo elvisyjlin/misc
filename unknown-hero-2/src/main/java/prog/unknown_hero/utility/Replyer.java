@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class Replyer {
 
-	private static LinkedList<BaseMessage> messages;
+	public static LinkedList<BaseMessage> messages;
 	private static boolean sendable = false;
 	static Object mutex;
 	
@@ -14,19 +14,21 @@ public class Replyer {
 		enable();
 	}
 	
-	public static void send(BaseMessage message) {
+	public static boolean send(BaseMessage message) {
 		synchronized(mutex) {
 			if(!sendable) {
-				return;
+				return false;
 			}
 			messages.addLast(message);
 			mutex = new Object();
+			return true;
 		}
 	}
 	
 	public static boolean hasMessage() {
 		synchronized(mutex) {
 			if(!sendable) {
+				System.out.print("can't sent");
 				return false;
 			}
 			mutex = new Object();
@@ -68,5 +70,12 @@ public class Replyer {
 	public static void disable() {
 		sendable = false;
 	}
-	
+	public static void clear(){
+		messages.clear();
+	}
+
+	public static void clearFirst() {
+		messages.removeFirst();
+		
+	}
 }

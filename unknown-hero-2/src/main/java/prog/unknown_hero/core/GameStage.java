@@ -2,7 +2,7 @@ package prog.unknown_hero.core;
 
 public class GameStage {
 	
-	private int stage;
+	public static int stage;
 
 	private final static int INIT = 0;
 	private final static int WAIT = 1;
