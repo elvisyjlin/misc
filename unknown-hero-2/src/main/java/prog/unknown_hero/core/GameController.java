@@ -10,6 +10,7 @@ import java.util.List;
 import org.magiclen.json.JSONArray;
 import org.magiclen.json.JSONObject;
 
+import prog.unknown_hero.core.GameStage;
 import prog.unknown_hero.ui.WaitingPage;
 import prog.unknown_hero.ui.place;
 import prog.unknown_hero.utility.BaseMessage;
