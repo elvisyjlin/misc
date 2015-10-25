@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * Created by User on 2015/10/24.
  */
-public class MyHttpConnection {
+public class HttpConnection {
 
     static public final String TEST_FB_ID = "s1406465726045286";
     static public final String DEFAULT_DB = "http://sqltesttttt.azurewebsites.net/sql_adapter.php";

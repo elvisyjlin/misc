@@ -1,5 +1,8 @@
 package meichu.hackthon.com.meichuhackthon;
 
+import android.app.Activity;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -22,10 +25,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static List<DiaryItem> diaryItemList;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -36,6 +46,7 @@ public class MainActivity extends AppCompatActivity
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private String userId;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -53,6 +64,27 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+            userId = null;
+        } else {
+            userId = extras.getString("UserId");
+        }
+
+        diaryItemList = new ArrayList<DiaryItem>();
+
+        ContentCrawler.sendDiaryRequest(userId, "2015-09-24 23:59:00", "2015-10-24 23:59:00", new ContentCrawler.Callback() {
+            @Override
+            public void handle(List<DiaryItem> datas) {
+                Log.i("handle()", Integer.toString(datas.size()));
+                for(DiaryItem d : datas) {
+                    diaryItemList.add(d);
+                }
+                mViewPager.getAdapter().notifyDataSetChanged();
+            }
+        });
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -153,7 +185,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_calendar) {
             Fragment calendarFragment = new CalendarFragment();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.main_container, calendarFragment);
+            transaction.replace(R.id.main_container, calendarFragment);
             transaction.addToBackStack(null);
             transaction.commit();
             mViewPager.setSwipeable(false);
@@ -191,8 +223,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public int getCount() {
-            // Show 10 total pages.
-            return 10;
+            return diaryItemList.size();
         }
 
         @Override
@@ -231,9 +262,45 @@ public class MainActivity extends AppCompatActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.content_label);
-            textView.setText(test_strings[getArguments().getInt(ARG_SECTION_NUMBER) - 1]);
+            final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    DiaryItem diaryItem = diaryItemList.get(getArguments().getInt(ARG_SECTION_NUMBER) - 1);
+                    TextView textView;
+                    textView = (TextView) rootView.findViewById(R.id.time_label);
+                    textView.setText(diaryItem.getmTime());
+                    textView = (TextView) rootView.findViewById(R.id.mood_label);
+                    textView.setText(diaryItem.getmMood());
+                    final ImageView imageView = (ImageView) rootView.findViewById(R.id.image_view);
+                    imageView.setImageDrawable(null);
+                    if(diaryItem.getmPicture()!=null) {
+                        try {
+                            ContentCrawler.drawableFromUrl(diaryItem.getmPicture(), new ContentCrawler.DrawableCallback() {
+                                @Override
+                                public void handle(final Drawable d) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if(d!=null) {
+                                                imageView.setImageDrawable(d);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    textView = (TextView) rootView.findViewById(R.id.content_label);
+                    textView.setText(diaryItem.getmContent());
+                    textView = (TextView) rootView.findViewById(R.id.location_label);
+                    textView.setText(diaryItem.getmLocation());
+                }
+            });
+
             Log.i("onCreateView", "i=" + getArguments().getInt(ARG_SECTION_NUMBER));
             backToDiary();
             return rootView;

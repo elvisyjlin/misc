@@ -23,13 +23,9 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-
-import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -151,10 +147,11 @@ public class LoginActivity extends AppCompatActivity {
                 params.put("token", "123");
 //                params.put("token", accessToken.getToken());
 
-                MyHttpConnection.sendPostRequest(MyHttpConnection.DEFAULT_DB, params, "UTF-8", new MyHttpConnection.Callback() {
+                HttpConnection.sendPostRequest(HttpConnection.DEFAULT_DB, params, "UTF-8", new HttpConnection.Callback() {
                     @Override
-                    public void handle(String response) {Log.i("test", response);
-                       // Log.i("response", response);
+                    public void handle(String response) {
+                        Log.i("test", response);
+                        // Log.i("response", response);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -164,11 +161,14 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
+                Log.i("Id", accessToken.getUserId());
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         // 轉跳至MainActivity
                         Intent intent = new Intent();
+                        intent.putExtra("UserId", "s" + accessToken.getUserId());
                         intent.setClass(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         LoginActivity.this.finish();
