@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -28,6 +27,8 @@ import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.melnykov.fab.FloatingActionButton;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,6 @@ public class MainActivity extends AppCompatActivity
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private String userId;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -54,11 +54,10 @@ public class MainActivity extends AppCompatActivity
     private static CustomViewPager mViewPager;
     private static NavigationView navigationView;
 
-    /* The following strings are for test. They need retrieving from MySQL. */
-    private static String userName = "User";
-    private static String account = "user@facebook.com";
-    private static String[] test_strings = {"Hello.", "I am Elvis.", "Ha ha!", "I don't like you...", "LOL",
-                                        "Hmm...", "Oops!", "](-_-)[", "So sad.", "Bye!"};
+    private static String userId = "";
+    private static String userName = "";
+    private static String email = "";
+    private static String picture = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +67,18 @@ public class MainActivity extends AppCompatActivity
         Bundle extras = getIntent().getExtras();
         if(extras == null) {
             userId = null;
+            userName = null;
+            email = null;
+            picture = null;
         } else {
-            userId = extras.getString("UserId");
+            if(extras.getString("UserId")!=null)
+                userId = extras.getString("UserId");
+            if(extras.getString("UserName")!=null)
+                userName = extras.getString("UserName");
+            if(extras.getString("Email")!=null)
+                email = extras.getString("Email");
+            if(extras.getString("Picture")!=null)
+                picture = extras.getString("Picture");
         }
 
         diaryItemList = new ArrayList<DiaryItem>();
@@ -81,7 +90,9 @@ public class MainActivity extends AppCompatActivity
                 for(DiaryItem d : datas) {
                     diaryItemList.add(d);
                 }
-                mViewPager.getAdapter().notifyDataSetChanged();
+                if(mViewPager!=null && mViewPager.getAdapter()!=null) {
+                    mViewPager.getAdapter().notifyDataSetChanged();
+                }
             }
         });
 
@@ -108,10 +119,35 @@ public class MainActivity extends AppCompatActivity
         navigationView.getMenu().getItem(0).setChecked(true);
 
         View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_main);
-        TextView textView = (TextView) headerLayout.findViewById(R.id.navTextView);
-        textView.setText(userName);
-        textView = (TextView) headerLayout.findViewById(R.id.navSubTextView);
-        textView.setText(account);
+        TextView textView;
+        if(userName!=null) {
+            textView = (TextView) headerLayout.findViewById(R.id.navTextView);
+            textView.setText(userName);
+        }
+        if(email!=null) {
+            textView = (TextView) headerLayout.findViewById(R.id.navSubTextView);
+            textView.setText(email);
+        }
+        if(picture!=null) {
+            final ImageView imageView = (ImageView) headerLayout.findViewById(R.id.imageView);
+            try {
+                ContentCrawler.drawableFromUrl(picture, new ContentCrawler.DrawableCallback() {
+                    @Override
+                    public void handle(final Drawable d) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (d != null) {
+                                    imageView.setImageDrawable(d);
+                                }
+                            }
+                        });
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.

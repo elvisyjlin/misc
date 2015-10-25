@@ -21,9 +21,17 @@
         android:layout_width="match_parent" android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <android.support.design.widget.FloatingActionButton android:id="@+id/fab"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end" android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_input_get" />
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        android:src="@drawable/edit"/>
+        <!--fab:fab_type="normal"-->
+        <!--fab:fab_shadow="true"-->
+        <!--fab:fab_colorNormal="@color/primary"-->
+        <!--fab:fab_colorPressed="@color/primary_pressed"-->
+        <!--fab:fab_colorRipple="@color/ripple" />-->
 
 </android.support.design.widget.CoordinatorLayout>

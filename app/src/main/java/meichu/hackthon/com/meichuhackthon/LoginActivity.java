@@ -15,7 +15,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -23,16 +27,18 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
+import org.json.JSONObject;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,6 +48,10 @@ public class LoginActivity extends AppCompatActivity {
 
     CallbackManager callbackManager;
     private AccessToken accessToken;
+    private String userId;
+    private String userName;
+    private String email;
+    private String picture;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -98,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
                 // swipe to page 2
                 if (state == 0 && mViewPager.getCurrentItem() == 1) {
-                    LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile", "user_friends"));
+                    LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile", "user_friends", "user_posts", "email"));
                 }
             }
         });
@@ -116,64 +126,92 @@ public class LoginActivity extends AppCompatActivity {
 
                 Log.d("FB", "access token got.");
 
-//                //send request and call graph api
-//                GraphRequest request = GraphRequest.newMeRequest(
-//                        accessToken,
-//                        new GraphRequest.GraphJSONObjectCallback() {
-//
-//                            //當RESPONSE回來的時候
-//                            @Override
-//                            public void onCompleted(JSONObject object, GraphResponse response) {
-//
-//                                //讀出姓名 ID FB個人頁面連結
-//                                Log.d("FB", "complete");
-//                                Log.d("FB", object.optString("name"));
-//                                Log.d("FB", object.optString("link"));
-//                                Log.d("FB", object.optString("id"));
-//
-//                            }
-//                        });
+                //send request and call graph api
+                GraphRequest request = GraphRequest.newMeRequest(
+                        accessToken,
+                        new GraphRequest.GraphJSONObjectCallback() {
 
-//                //包入你想要得到的資料 送出request
-//                Bundle parameters = new Bundle();
-//                parameters.putString("fields", "id,name,link");
-//                request.setParameters(parameters);
-//                request.executeAsync();
+                            //當RESPONSE回來的時候
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+
+                                //讀出姓名 ID FB個人頁面連結
+                                Log.d("FB", "complete");
+                                Log.d("FB", object.optString("name"));
+                                Log.d("FB", object.optString("link"));
+                                Log.d("FB", object.optString("id"));
+                                Log.d("FB", object.optString("email"));
+                                Log.d("FB", object.optJSONObject("picture").optJSONObject("data").optString("url"));
+                                Log.d("FB", object.toString());
+
+                                userId = accessToken.getUserId();
+                                userName = object.optString("name");
+                                email = object.optString("email");
+                                picture = object.optJSONObject("picture").optJSONObject("data").optString("url");
+
+                                // 獲得完資訊準備連線
+                                Map<String, String> params = new HashMap<String, String>();
+                                params.put("token", accessToken.getToken());
+
+                                HttpConnection.sendPostRequest(HttpConnection.DEFAULT_LOGIN, params, "UTF-8", new HttpConnection.Callback() {
+                                    @Override
+                                    public void handle(String response) {
+                                        Log.i("test", response);
+                                        // Log.i("response", response);
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText(LoginActivity.this, "recv", Toast.LENGTH_LONG);
+                                            }
+                                        });
+
+//                                        Log.i("Id", accessToken.getUserId());
+//
+//                                        runOnUiThread(new Runnable() {
+//                                            @Override
+//                                            public void run() {
+//                                                // 轉跳至MainActivity
+//                                                Intent intent = new Intent();
+//                                                intent.putExtra("UserId", "s" + userId);
+//                                                intent.putExtra("UserName", userName);
+//                                                intent.putExtra("Email", email);
+//                                                intent.putExtra("Picture", picture);
+//                                                intent.setClass(LoginActivity.this, MainActivity.class);
+//                                                startActivity(intent);
+//                                                LoginActivity.this.finish();
+//                                            }
+//                                        });
+
+                                    }
+                                });
+
+                                Log.i("Id", accessToken.getUserId());
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // 轉跳至MainActivity
+                                        Intent intent = new Intent();
+                                        intent.putExtra("UserId", "s" + userId);
+                                        intent.putExtra("UserName", userName);
+                                        intent.putExtra("Email", email);
+                                        intent.putExtra("Picture", picture);
+                                        intent.setClass(LoginActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        LoginActivity.this.finish();
+                                    }
+                                });
+                            }
+                        });
+
+                //包入你想要得到的資料 送出request
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,link,email,picture");
+                request.setParameters(parameters);
+                request.executeAsync();
 
                 Log.i("Token", accessToken.getToken());
 
-
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("token", "123");
-//                params.put("token", accessToken.getToken());
-
-                HttpConnection.sendPostRequest(HttpConnection.DEFAULT_DB, params, "UTF-8", new HttpConnection.Callback() {
-                    @Override
-                    public void handle(String response) {
-                        Log.i("test", response);
-                        // Log.i("response", response);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(LoginActivity.this, "recv", Toast.LENGTH_LONG);
-                            }
-                        });
-                    }
-                });
-
-                Log.i("Id", accessToken.getUserId());
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // 轉跳至MainActivity
-                        Intent intent = new Intent();
-                        intent.putExtra("UserId", "s" + accessToken.getUserId());
-                        intent.setClass(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        LoginActivity.this.finish();
-                    }
-                });
             }
 
             //登入取消
@@ -292,9 +330,20 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_login, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            View rootView = null;
+            if(getArguments().getInt(ARG_SECTION_NUMBER)==1) {
+                rootView = inflater.inflate(R.layout.fragment_login_1, container, false);
+
+                final Animation animation = new AlphaAnimation(1, 0); // Change alpha from fully visible to invisible
+                animation.setDuration(500); // duration - half a second
+                animation.setInterpolator(new AccelerateInterpolator()); // do not alter animation rate
+                animation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
+                animation.setRepeatMode(Animation.REVERSE); // Reverse animation at the end so the button will fade back in
+                final ImageView imageView = (ImageView) rootView.findViewById(R.id.swipe_left);
+                imageView.startAnimation(animation);
+            } else if(getArguments().getInt(ARG_SECTION_NUMBER)==2) {
+                rootView = inflater.inflate(R.layout.fragment_login_2, container, false);
+            }
             return rootView;
         }
     }

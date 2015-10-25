@@ -35,6 +35,7 @@ import java.util.Map;
 public class HttpConnection {
 
     static public final String TEST_FB_ID = "s1406465726045286";
+    static public final String DEFAULT_LOGIN = "http://sqltesttttt.azurewebsites.net/edit/login2.php";
     static public final String DEFAULT_DB = "http://sqltesttttt.azurewebsites.net/sql_adapter.php";
 
 //    private void testNew()
@@ -101,16 +102,22 @@ public class HttpConnection {
                     wr.close();
 
                     //Get Response
-                    InputStream is = connection.getInputStream();
-                    BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-                    String line;
-                    StringBuffer response = new StringBuffer();
-                    while((line = rd.readLine()) != null) {
-                        response.append(line);
-                        response.append('\r');
+                    int code = connection.getResponseCode();
+                    Log.i("code", code + "");
+                    if(code == 500) {
+                        InputStream is = connection.getErrorStream();
+                    } else {
+                        InputStream is = connection.getInputStream();
+                        BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+                        String line;
+                        StringBuffer response = new StringBuffer();
+                        while((line = rd.readLine()) != null) {
+                            response.append(line);
+                            response.append('\r');
+                        }
+                        rd.close();
+                        callback.handle(response.toString());
                     }
-                    rd.close();
-                    callback.handle(response.toString());
 
                 } catch (Exception e) {
                     e.printStackTrace();
