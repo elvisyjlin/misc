@@ -1,0 +1,41 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+    defaultConfig {
+        applicationId "meichu.hackthon.com.meichuhackthon"
+        minSdkVersion 21
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    useLibrary 'org.apache.http.legacy'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.+'
+    compile 'com.android.support:support-v4:23.+'
+    compile 'com.android.support:design:23.+'
+    compile 'com.facebook.android:facebook-android-sdk:4.7.0'
+    compile 'com.melnykov:floatingactionbutton:1.3.0'
+    compile files('libs/mobileservices/mobileservices-2.0.3.jar')
+    compile files('libs/mobileservices/guava-17.0.jar')
+    compile files('libs/mobileservices/gson-2.2.2.jar')
+    compile files('libs/notificationhubs/notification-hubs-0.3.jar')
+    compile files('libs/notifications/notifications-1.0.1.jar')
+    compile 'com.microsoft.azure.android:azure-storage-android:0.7.0@aar'
+}
